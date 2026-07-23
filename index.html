@@ -103,6 +103,13 @@
             100% { opacity: 1; transform: translateY(0); }
         }
 
+        /* ========== لودینگ اولیه صفحه ========== */
+        #initial-page-loader {
+            position: fixed; inset: 0; background: var(--bg); z-index: 99999;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transition: opacity 0.5s ease;
+        }
+
         /* ========== لودینگ امنیتی پرداخت ========== */
         #payment-loader { 
             position: fixed; inset: 0; background: rgba(255, 255, 255, 0.95); 
@@ -334,7 +341,7 @@
         .add-to-cart-btn:hover:not(:disabled) { background: var(--primary); color: white; transform: scale(1.03); box-shadow: 0 8px 20px rgba(5, 150, 105, 0.25); }
         .add-to-cart-btn:disabled { background: #f1f5f9; color: #94a3b8; border-color: #e2e8f0; cursor: not-allowed; }
 
-        /* ========== لودینگ شیک و مدرن اختصاصی صفحه محصول ========== */
+        /* ========== لودینگ شیک و مدرن اختصاصی صفحه محصول و لودینگ اولیه ========== */
         .elegant-loader-container {
             display: flex; align-items: center; justify-content: center; 
             height: 50vh; width: 100%;
@@ -390,7 +397,16 @@
         .sp-details-box {
             display: flex; flex-direction: column; gap: 1.5rem;
         }
-        .sp-title { font-size: 2.5rem; font-weight: 900; color: var(--text-dark); line-height: 1.4; }
+        .sp-title { font-size: 2.5rem; font-weight: 900; color: var(--text-dark); line-height: 1.4; margin-bottom: 0.5rem;}
+        
+        /* تگ دسته‌بندی در صفحه محصول */
+        .sp-category-badge {
+            display: inline-block; padding: 0.4rem 1rem; background: var(--surface); color: var(--primary-dark);
+            border: 1px solid var(--primary-light); border-radius: 50px; font-size: 0.9rem; font-weight: 700;
+            text-decoration: none; transition: var(--transition); align-self: flex-start; margin-bottom: 0.5rem; cursor: pointer;
+        }
+        .sp-category-badge:hover { background: var(--primary); color: white; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(5,150,105,0.2); }
+
         .sp-price-wrap {
             display: flex; align-items: baseline; gap: 1rem; padding-bottom: 1.5rem; border-bottom: 2px dashed var(--border);
         }
@@ -702,9 +718,116 @@
             text-align: center; padding-top: 2.5rem; margin-top: 3rem;
             border-top: 1px solid var(--border); font-size: 0.9rem; color: #94a3b8;
         }
+        
+        /* ========== استایل اسلایدر افقی دسته‌بندی‌ها ========== */
+        .category-carousel-wrapper {
+            position: relative;
+            max-width: 1400px;
+            margin: 1rem auto 2.5rem;
+            padding: 0 45px;
+            display: flex;
+            align-items: center;
+        }
+        .category-carousel {
+            display: flex;
+            gap: 1.5rem;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            padding: 1rem 0;
+            scrollbar-width: none; /* برای فایرفاکس */
+            -ms-overflow-style: none; /* برای اینترنت اکسپلورر و اج */
+            width: 100%;
+        }
+        .category-carousel::-webkit-scrollbar {
+            display: none; /* برای کروم و سافاری */
+        }
+        .category-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            flex-shrink: 0;
+            width: 95px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .category-item:hover {
+            transform: translateY(-5px);
+        }
+        .category-img {
+            width: 85px;
+            height: 85px;
+            border-radius: 50%;
+            background: white;
+            box-shadow: var(--shadow-sm);
+            border: 2px solid var(--border);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.8rem;
+            transition: var(--transition);
+        }
+        .category-item:hover .category-img {
+            box-shadow: 0 8px 20px rgba(5, 150, 105, 0.25);
+            border-color: var(--primary);
+        }
+        .category-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .category-name {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            text-align: center;
+            white-space: nowrap;
+        }
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: white;
+            border: 1px solid var(--border);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            z-index: 10;
+            color: var(--text-muted);
+            transition: var(--transition);
+            font-size: 1.2rem;
+        }
+        .carousel-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        .right-btn { right: 0; } /* فلش سمت راست */
+        .left-btn { left: 0; } /* فلش سمت چپ */
+
+        @media (max-width: 576px) {
+            .category-carousel-wrapper { padding: 0 35px; margin: 0.5rem auto 2rem; }
+            .carousel-btn { width: 32px; height: 32px; font-size: 0.9rem; }
+            .category-img { width: 70px; height: 70px; }
+            .category-name { font-size: 0.85rem; }
+            .category-item { width: 80px; }
+        }
     </style>
 </head>
 <body>
+
+    <!-- ==================== لودینگ اولیه صفحه (حداکثر 3 ثانیه) ==================== -->
+    <div id="initial-page-loader">
+        <div class="elegant-dots"><span></span><span></span><span></span></div>
+        <h2 style="color:var(--primary-dark); margin-top:20px; font-weight:800; font-size:1.8rem;">طبیعتی</h2>
+        <p style="color:var(--text-muted); margin-top:10px; font-weight:600;">در حال آماده‌سازی فروشگاه...</p>
+    </div>
 
     <!-- ==================== آیکون‌های شناور شبکه‌های اجتماعی ==================== -->
     <div class="floating-socials">
@@ -748,8 +871,8 @@
         </div>
     </header>
 
-    <!-- کانتینر اصلی صفحه فروشگاه -->
-    <div id="main-store-view">
+    <!-- کانتینر اصلی صفحه فروشگاه (مخفی شده تا از فلش شدن هیرو جلوگیری شود) -->
+    <div id="main-store-view" style="display: none;">
         <section class="hero">
             <div class="hero-content">
                 <h1>طبیعتی</h1>
@@ -766,6 +889,55 @@
 
         <div class="products-section" id="products">
             <h2 class="section-title"><i class="fas fa-store"></i> فروشگاه</h2>
+
+            <!-- ==================== اسلایدر افقی دایره‌ای دسته‌بندی‌ها ==================== -->
+            <div class="category-carousel-wrapper">
+                <!-- دکمه فلش راست (اسکرول به راست) -->
+                <button class="carousel-btn right-btn" onclick="scrollCarousel(1)"><i class="fas fa-chevron-right"></i></button>
+                
+                <div class="category-carousel" id="categoryCarousel">
+                    <a href="javascript:void(0)" onclick="navigateToCategory('adviyeh')" class="category-item">
+                        <div class="category-img"><img src="image-1.jpg" alt="ادویه"></div>
+                        <span class="category-name">ادویه</span>
+                    </a>
+                    <a href="javascript:void(0)" onclick="navigateToCategory('chashni')" class="category-item">
+                        <div class="category-img"><img src="image-2.jpg" alt="چاشنی"></div>
+                        <span class="category-name">چاشنی</span>
+                    </a>
+                    <a href="javascript:void(0)" onclick="navigateToCategory('khoshkbar')" class="category-item">
+                        <div class="category-img"><img src="image-3.jpg" alt="خشکبار"></div>
+                        <span class="category-name">خشکبار</span>
+                    </a>
+                    <a href="javascript:void(0)" onclick="navigateToCategory('damnoosh')" class="category-item">
+                        <div class="category-img"><img src="image-4.jpg" alt="دمنوش"></div>
+                        <span class="category-name">دمنوش</span>
+                    </a>
+                    <a href="javascript:void(0)" onclick="navigateToCategory('roghan')" class="category-item">
+                        <div class="category-img"><img src="image-5.jpg" alt="روغن"></div>
+                        <span class="category-name">روغن</span>
+                    </a>
+                    <a href="javascript:void(0)" onclick="navigateToCategory('araghijat')" class="category-item">
+                        <div class="category-img"><img src="image-6.jpg" alt="عرقیجات"></div>
+                        <span class="category-name">عرقیجات</span>
+                    </a>
+                    <a href="javascript:void(0)" onclick="navigateToCategory('shireh')" class="category-item">
+                        <div class="category-img"><img src="image-7.jpg" alt="شیره"></div>
+                        <span class="category-name">شیره</span>
+                    </a>
+                    <a href="javascript:void(0)" onclick="navigateToCategory('daneh-va-tokhm')" class="category-item">
+                        <div class="category-img"><img src="image-8.jpg" alt="دانه و تخم"></div>
+                        <span class="category-name">دانه و تخم</span>
+                    </a>
+                    <a href="javascript:void(0)" onclick="navigateToCategory('asal-va-zaferan')" class="category-item">
+                        <div class="category-img"><img src="image-9.jpg" alt="عسل و زعفران"></div>
+                        <span class="category-name">عسل و زعفران</span>
+                    </a>
+                </div>
+
+                <!-- دکمه فلش چپ (اسکرول به چپ) -->
+                <button class="carousel-btn left-btn" onclick="scrollCarousel(-1)"><i class="fas fa-chevron-left"></i></button>
+            </div>
+            <!-- ==================== پایان اسلایدر دسته‌بندی‌ها ==================== -->
             
             <div class="search-container">
                 <div class="search-box">
@@ -970,6 +1142,13 @@
     <script>
         const GAS_URL = "https://script.google.com/macros/s/AKfycbwYokyKy6DH7lhgIPYY292oJ-4u7Go9Nn2BfHgV8W_CaqM1jhk0Md-iBut638iOFuF0/exec"; 
         
+        // مپ دسته‌بندی‌ها به همراه نام فارسی آنها
+        const CATEGORIES_MAP = {
+            'adviyeh': 'ادویه', 'chashni': 'چاشنی', 'khoshkbar': 'خشکبار',
+            'damnoosh': 'دمنوش', 'roghan': 'روغن', 'araghijat': 'عرقیجات',
+            'shireh': 'شیره', 'daneh-va-tokhm': 'دانه و تخم', 'asal-va-zaferan': 'عسل و زعفران'
+        };
+
         let products = [];
         let shippingMethods = []; 
         let cart = JSON.parse(localStorage.getItem('tabiati_cart')) || [];
@@ -977,17 +1156,27 @@
         // متغیرهای فروشگاه
         let displayList = []; 
         let currentIndex = 0;
-        const ITEMS_PER_PAGE = 10;
+        const ITEMS_PER_PAGE = 6; // تغییر یافته به درخواست شما برای 6 محصول در هر اسکرول
         let isFetchingNext = false;
         let fullSearchList = [];
         let isSearchMode = false;
+        let currentCategory = null;
 
         // 1. Init & SPA Routing
         window.onload = async () => {
+            // مکانیزم محافظت برای محو لودینگ حداکثر پس از ۳ ثانیه
+            const initLoader = document.getElementById('initial-page-loader');
+            const loaderTimeout = setTimeout(() => {
+                if(initLoader) { 
+                    initLoader.style.opacity = '0'; 
+                    setTimeout(() => initLoader.style.display = 'none', 500); 
+                }
+            }, 3000);
+
             const urlParams = new URLSearchParams(window.location.search);
             const authority = urlParams.get('Authority');
             const status = urlParams.get('Status');
-            const productId = urlParams.get('id');
+            const idParam = urlParams.get('id'); // می‌تواند هم محصول باشد و هم شناسه دسته
 
             // درگاه زرین پال
             if (authority && status) {
@@ -1015,30 +1204,53 @@
                 setTimeout(() => pLoader.style.display = 'none', 2500);
             }
 
-            // لود اولیه محصولات
-            if (productId) {
-                // نمایش مستقیم لودینگ شیک داخل محتوای محصول قبل از دریافت دیتا
-                document.getElementById('main-store-view').style.display = 'none';
-                document.getElementById('single-product-view').style.display = 'block';
-                document.getElementById('sp-content').innerHTML = `
-                    <div class="elegant-loader-container">
-                        <div class="elegant-dots"><span></span><span></span><span></span></div>
-                    </div>`;
-            }
-            fetchStoreData(productId);
+            // لود اولیه اطلاعات فروشگاه
+            fetchStoreData(idParam).then(() => {
+                // اگر قبل از ۳ ثانیه اطلاعات دریافت شد، لودینگ را حذف می‌کنیم
+                clearTimeout(loaderTimeout);
+                if(initLoader) { 
+                    initLoader.style.opacity = '0'; 
+                    setTimeout(() => initLoader.style.display = 'none', 500); 
+                }
+            });
             updateCartUI();
         };
 
         // مدیریت تغییر صفحه با دکمه‌های Back/Forward مرورگر موبایل و وب (SPA)
         window.addEventListener('popstate', (e) => {
             const urlParams = new URLSearchParams(window.location.search);
-            const productId = urlParams.get('id');
-            if (productId && products.length > 0) {
-                renderSingleProductPage(productId);
+            const idParam = urlParams.get('id');
+            if (idParam) {
+                if (CATEGORIES_MAP[idParam]) {
+                    navigateToCategory(idParam, true);
+                } else {
+                    renderSingleProductPage(idParam);
+                }
             } else {
                 renderHomeView();
             }
         });
+
+        // ================= توابع مسیریابی و فیلتر دسته‌بندی =================
+        function navigateToCategory(catId, isInitial = false) {
+            currentCategory = catId;
+            if (!isInitial) history.pushState({view: 'category', id: catId}, '', '?id=' + catId);
+            
+            document.getElementById('single-product-view').style.display = 'none';
+            document.getElementById('main-store-view').style.display = 'block';
+            
+            // مخفی کردن کامل هیرو در حالت انتخاب دسته (مطابق درخواست)
+            const hero = document.querySelector('.hero');
+            if(hero) hero.style.display = 'none';
+            
+            // تغییر عنوان سکشن
+            const secTitle = document.querySelector('.section-title');
+            if(secTitle) secTitle.innerHTML = `<i class="fas fa-layer-group"></i> محصولات دسته: ${CATEGORIES_MAP[catId]}`;
+            
+            let filteredProducts = products.filter(p => p.category === catId);
+            window.scrollTo(0, 0);
+            initProductsRender(filteredProducts);
+        }
 
         function navigateToProduct(id) {
             history.pushState({view: 'product', id: id}, '', '?id=' + id);
@@ -1054,13 +1266,20 @@
         }
 
         function renderHomeView() {
+            currentCategory = null;
             document.title = "طبیعتی | محصولات سالم و ارگانیک";
             document.getElementById('single-product-view').style.display = 'none';
             document.getElementById('main-store-view').style.display = 'block';
+            
+            // بازگرداندن هیرو در صفحه اصلی
+            const hero = document.querySelector('.hero');
+            if(hero) hero.style.display = 'flex';
+            
+            const secTitle = document.querySelector('.section-title');
+            if(secTitle) secTitle.innerHTML = `<i class="fas fa-store"></i> فروشگاه`;
+            
             window.scrollTo(0,0);
-            if(products.length > 0 && document.getElementById('products-grid').innerHTML.includes('skel-card')) {
-                initProductsRender(products);
-            }
+            initProductsRender(products);
         }
 
         // ================= رندر صفحه تک محصول =================
@@ -1077,11 +1296,13 @@
             const hasDiscount = discount > 0 && discount < price;
             const finalPrice = hasDiscount ? discount : price;
             const outOfStock = Number(prod.stock) <= 0;
+            const catName = CATEGORIES_MAP[prod.category] || 'دسته بندی نشده';
+            const catId = prod.category || '';
             
             let imgHtml = prod.image.startsWith('http') ? `<img src="${prod.image}" alt="${prod.name}" onclick="openImageModal('${prod.image}')">` : `<i class="fas ${prod.image.includes('fa-') ? prod.image : 'fa-box-open'}" style="font-size: 8rem; color: var(--primary-light); padding: 3rem;"></i>`;
             let descHtml = prod.description ? prod.description.replace(/\n/g, '<br>') : 'توضیحات تکمیلی برای این محصول ثبت نشده است.';
 
-            // رندر خود محصول
+            // رندر خود محصول همراه با دکمه دسته‌بندی
             document.getElementById('sp-content').innerHTML = `
                 <div class="single-product-container">
                     <div class="sp-image-box">
@@ -1089,6 +1310,7 @@
                         ${imgHtml}
                     </div>
                     <div class="sp-details-box">
+                        ${catId ? `<a href="javascript:void(0)" onclick="navigateToCategory('${catId}')" class="sp-category-badge"><i class="fas fa-tags"></i> دسته: ${catName}</a>` : ''}
                         <h1 class="sp-title">${prod.name}</h1>
                         <div class="sp-price-wrap">
                             <span class="sp-current-price">${finalPrice.toLocaleString('fa-IR')} <span style="font-size: 1.2rem; font-weight: normal; color: var(--text-dark);">تومان</span></span>
@@ -1157,7 +1379,7 @@
         }
 
         // ================= دریافت داده از بک اند =================
-        async function fetchStoreData(productId) {
+        async function fetchStoreData(idParam) {
             try {
                 let res = await fetch(GAS_URL + "?action=getStoreData");
                 let data = await res.json();
@@ -1167,46 +1389,59 @@
                 
                 populateShippingDropdown();
 
-                if (productId) {
-                    renderSingleProductPage(productId);
+                if (idParam) {
+                    if (CATEGORIES_MAP[idParam]) {
+                        navigateToCategory(idParam, true);
+                    } else {
+                        renderSingleProductPage(idParam);
+                    }
                 } else {
-                    initProductsRender(products);
+                    renderHomeView();
                 }
             } catch(e) { 
                 document.getElementById('products-grid').innerHTML = '<p style="text-align:center; grid-column:1/-1; color:red; font-weight:bold; background: white; padding: 2rem; border-radius:20px;">خطا در دریافت اطلاعات فروشگاه از سرور.</p>';
+                // برای اینکه در صورت ارور هم حتما صفحه از حالت ماتی خارج شود
+                document.getElementById('main-store-view').style.display = 'block';
             }
         }
 
         function populateShippingDropdown() {
             const select = document.getElementById('cust_shipping');
-            select.innerHTML = ''; // هیچ پیش فرضی نداریم، اولین گزینه مستقیما انتخاب میشود
+            select.innerHTML = ''; 
             
             shippingMethods.forEach(method => {
-                // اگر هزینه صفر باشد، اصلا هیچی نمینویسد
                 const costText = method.cost > 0 ? ` (هزینه: ${method.cost.toLocaleString('fa-IR')} تومان)` : '';
                 select.innerHTML += `<option value="${method.id}" data-cost="${method.cost}">${method.name}${costText}</option>`;
             });
             
             if(shippingMethods.length > 0) {
-                calculateFinalInvoice(); // اعمال مبلغ اولیه بلافاصله
+                calculateFinalInvoice(); 
             }
         }
 
-        // ================= جستجو =================
+        // ================= جستجو و فیلتر سمت سرور =================
         async function executeSearch() {
             const query = document.getElementById('searchInput').value.trim();
             document.getElementById('btn-search-more').style.display = 'none';
 
             if(!query) {
                 isSearchMode = false;
-                return initProductsRender(products);
+                let listToRender = currentCategory ? products.filter(p => p.category === currentCategory) : products;
+                return initProductsRender(listToRender);
             }
             
             isSearchMode = true;
             document.getElementById('products-grid').innerHTML = '<div class="skel-card"><div class="skeleton skel-img-box"></div><div class="skeleton skel-title-box"></div><div class="skeleton skel-price-box"></div><div class="skeleton skel-btn-box"></div></div>'.repeat(3);
             
             try {
-                let res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action: 'search', query: query }) });
+                let res = await fetch(GAS_URL, { 
+                    method: 'POST', 
+                    body: JSON.stringify({ 
+                        action: 'search', 
+                        query: query, 
+                        categoryId: currentCategory // ارسال شناسه دسته برای فیلتر سمت سرور
+                    }) 
+                });
                 let data = await res.json();
                 
                 fullSearchList = data.data;
@@ -1218,10 +1453,11 @@
                     return;
                 }
 
-                const initialBatch = fullSearchList.slice(0, 6);
+                // در حالت جستجو هم 6 عدد لود می‌شود
+                const initialBatch = fullSearchList.slice(0, ITEMS_PER_PAGE);
                 renderProductsBatch(initialBatch, grid);
 
-                if(fullSearchList.length > 6) {
+                if(fullSearchList.length > ITEMS_PER_PAGE) {
                     document.getElementById('btn-search-more').style.display = 'block';
                 }
 
@@ -1230,7 +1466,7 @@
 
         function showMoreSearchResults() {
             const grid = document.getElementById('products-grid');
-            const restBatch = fullSearchList.slice(6);
+            const restBatch = fullSearchList.slice(ITEMS_PER_PAGE);
             renderProductsBatch(restBatch, grid);
             document.getElementById('btn-search-more').style.display = 'none';
         }
@@ -1244,7 +1480,10 @@
             const grid = document.getElementById('products-grid');
             grid.innerHTML = '';
             
-            if(list.length === 0) return;
+            if(list.length === 0) {
+                 grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:50px; background:white; border-radius:30px; box-shadow: var(--shadow-sm);"><i class="fas fa-box-open fa-4x" style="color:#cbd5e1; margin-bottom:20px;"></i><h3 style="color:#64748b; font-size:1.5rem;">در حال حاضر محصولی در این دسته وجود ندارد.</h3></div>';
+                 return;
+            }
             appendNextBatch();
         }
 
@@ -1540,6 +1779,13 @@
             setTimeout(() => toast.classList.add('show'), 10);
             setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 500); }, 3000);
         }
+
+        // ================= Category Carousel Scroll =================
+        function scrollCarousel(direction) {
+            const carousel = document.getElementById('categoryCarousel');
+            const scrollAmount = 200; 
+            carousel.scrollBy({ left: direction * -scrollAmount, behavior: 'smooth' });
+        }
     </script>
 </body>
-</html>
+</html>    
