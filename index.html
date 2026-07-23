@@ -14,12 +14,12 @@
     <meta property="og:url" content="https://tabiati.ir/">
     <meta property="og:title" content="طبیعتی | محصولات سالم و ارگانیک">
     <meta property="og:description" content="فروشگاه اینترنتی طبیعتی. خرید مطمئن محصولات سالم، ارگانیک و طبیعی مستقیماً از دل طبیعت.">
-    <meta property="og:image" content="https://tabiati.ir/images/logo.png">
+    <meta property="og:image" content="https://tabiati.ir/logo.png">
     <meta property="og:site_name" content="طبیعتی">
     <meta property="og:locale" content="fa_IR">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="images/logo.png">
+    <link rel="icon" type="image/png" href="https://tabiati.ir/logo.png">
     
     <!-- Schema.org Markup -->
     <script type="application/ld+json">
@@ -48,7 +48,7 @@
           "url": "https://tabiati.ir/",
           "logo": {
             "@type": "ImageObject",
-            "url": "https://tabiati.ir/images/logo.png"
+            "url": "https://tabiati.ir/logo.png"
           },
           "contactPoint": {
             "@type": "ContactPoint",
@@ -127,7 +127,7 @@
             font-weight: 800; font-size: 1.5rem; color: var(--primary-dark);
             text-decoration: none; cursor: pointer;
         }
-        .header-logo img { width: 42px; height: 42px; border-radius: 14px; object-fit: cover; }
+        .header-logo img { height: 45px; width: auto; max-width: 160px; object-fit: contain; }
         
         .header-icons { display: flex; gap: 1rem; align-items: center; }
         .action-pill {
@@ -151,6 +151,20 @@
             display: flex; align-items: center; justify-content: center;
             font-weight: bold; border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
             z-index: 2;
+        }
+
+        /* ========== انیمیشن‌های سبد خرید ========== */
+        @keyframes cartBump {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.4) translateY(-3px); }
+            100% { transform: scale(1); }
+        }
+        .cart-badge.bump { animation: cartBump 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .fly-dot {
+            position: fixed; width: 18px; height: 18px; background: var(--primary);
+            border-radius: 50%; z-index: 9999; pointer-events: none;
+            box-shadow: 0 4px 10px rgba(5,150,105,0.5);
+            transition: top 0.7s cubic-bezier(0.5, 0, 0.2, 1), left 0.7s cubic-bezier(0.5, 0, 0.2, 1), transform 0.7s, opacity 0.7s;
         }
 
         /* ========== Hero Section ========== */
@@ -347,12 +361,15 @@
         }
         @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
         
-        .skel-card { background: white; border-radius: 24px; padding: 1.5rem; border: 1px solid var(--border); box-shadow: var(--shadow-sm); }
-        .skel-img-box { width: 100%; height: 180px; border-radius: 16px; margin-bottom: 1.5rem; }
-        .skel-title-box { height: 20px; width: 70%; margin: 0 auto 1rem; border-radius: 6px; }
-        .skel-desc-box { height: 35px; width: 100%; margin-bottom: 1.5rem; border-radius: 12px; }
-        .skel-price-box { height: 25px; width: 50%; margin: 0 auto 1.5rem; border-radius: 6px; }
-        .skel-btn-box { height: 50px; width: 100%; border-radius: 16px; }
+        .skel-card { 
+            background: white; border-radius: 24px; padding: 1.5rem; 
+            border: 1px solid var(--border); box-shadow: var(--shadow-sm); 
+            display: flex; flex-direction: column; height: 100%;
+        }
+        .skel-img-box { width: 100%; height: 180px; border-radius: 16px; margin-bottom: 1rem; flex-shrink: 0;}
+        .skel-title-box { height: 20px; width: 70%; margin: 0 auto 1.5rem; border-radius: 6px; flex-shrink: 0;}
+        .skel-price-box { height: 35px; width: 50%; margin: auto auto 1.5rem; border-radius: 6px; flex-shrink: 0;}
+        .skel-btn-box { height: 48px; width: 100%; border-radius: 16px; flex-shrink: 0;}
 
         /* ========== استایل صفحه اختصاصی محصول ========== */
         .single-product-container {
@@ -408,19 +425,20 @@
         /* ========== آیکون‌های شناور شبکه‌های اجتماعی ========== */
         .floating-socials {
             position: fixed; right: 20px; bottom: 30px; z-index: 998;
-            display: flex; flex-direction: column; gap: 15px;
+            display: flex; flex-direction: column; gap: 18px;
         }
         .social-float-btn {
             width: 55px; height: 55px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             color: white; font-size: 1.8rem; text-decoration: none;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.2); transition: var(--transition);
-            position: relative;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative; overflow: hidden; backdrop-filter: blur(5px);
         }
-        .social-float-btn:hover { transform: scale(1.15) translateX(-5px); color: white; }
+        .social-float-btn:hover { transform: translateY(-6px) scale(1.1); box-shadow: 0 12px 30px rgba(0,0,0,0.25); color: white; }
         
         .sf-instagram { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
-        .sf-rubika { background: linear-gradient(135deg, #2a2a72 0%, #009ffd 100%); font-weight: 900;} 
+        .sf-rubika { background: white; padding: 2px; } 
+        .sf-rubika img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
         
         .sf-whatsapp { background: #25D366; animation: socialPulse 2s infinite; }
         @keyframes socialPulse {
@@ -694,7 +712,7 @@
             <i class="fab fa-whatsapp"></i>
         </a>
         <a href="https://rubika.ir/irtabiati" target="_blank" class="social-float-btn sf-rubika" title="کانال روبیکا">
-            <span style="font-family: Tahoma; font-size: 1rem;">روبیکا</span>
+            <img src="https://tabiati.ir/7.png" alt="روبیکا">
         </a>
     </div>
 
@@ -711,9 +729,8 @@
     <!-- ==================== Header ==================== -->
     <header class="main-header">
         <!-- لوگو با تابع SPA برای جلوگیری از رفرش صفحه -->
-        <a onclick="navigateToHome()" class="header-logo">
-            <img src="images/logo.png" alt="لوگو طبیعتی" onerror="this.outerHTML='<i class=\'fas fa-leaf\' style=\'font-size:1.8rem; color:var(--primary);\'></i>'">
-            <span>طبیعتی</span>
+        <a onclick="navigateToHome()" class="header-logo" title="طبیعتی | فروشگاه ارگانیک">
+            <img src="https://tabiati.ir/logo.png" alt="لوگوی فروشگاه ارگانیک طبیعتی">
         </a>
         <div class="header-icons">
             <button class="action-pill" onclick="openModal('trackModal')" title="پیگیری سفارشات من">
@@ -759,10 +776,10 @@
 
             <div class="products-grid" id="products-grid">
                 <!-- Skeleton Loaders -->
-                <div class="skel-card"><div class="skeleton skel-img-box"></div><div class="skeleton skel-title-box"></div><div class="skeleton skel-desc-box"></div><div class="skeleton skel-price-box"></div><div class="skeleton skel-btn-box"></div></div>
-                <div class="skel-card"><div class="skeleton skel-img-box"></div><div class="skeleton skel-title-box"></div><div class="skeleton skel-desc-box"></div><div class="skeleton skel-price-box"></div><div class="skeleton skel-btn-box"></div></div>
-                <div class="skel-card"><div class="skeleton skel-img-box"></div><div class="skeleton skel-title-box"></div><div class="skeleton skel-desc-box"></div><div class="skeleton skel-price-box"></div><div class="skeleton skel-btn-box"></div></div>
-                <div class="skel-card"><div class="skeleton skel-img-box"></div><div class="skeleton skel-title-box"></div><div class="skeleton skel-desc-box"></div><div class="skeleton skel-price-box"></div><div class="skeleton skel-btn-box"></div></div>
+                <div class="skel-card"><div class="skeleton skel-img-box"></div><div class="skeleton skel-title-box"></div><div class="skeleton skel-price-box"></div><div class="skeleton skel-btn-box"></div></div>
+                <div class="skel-card"><div class="skeleton skel-img-box"></div><div class="skeleton skel-title-box"></div><div class="skeleton skel-price-box"></div><div class="skeleton skel-btn-box"></div></div>
+                <div class="skel-card"><div class="skeleton skel-img-box"></div><div class="skeleton skel-title-box"></div><div class="skeleton skel-price-box"></div><div class="skeleton skel-btn-box"></div></div>
+                <div class="skel-card"><div class="skeleton skel-img-box"></div><div class="skeleton skel-title-box"></div><div class="skeleton skel-price-box"></div><div class="skeleton skel-btn-box"></div></div>
             </div>
             
             <button id="btn-search-more" class="btn-show-more" style="display:none;" onclick="showMoreSearchResults()">
@@ -1104,7 +1121,7 @@
                         </div>
                         
                         <div class="sp-action-box">
-                            <button class="sp-btn-add" onclick="addToCart('${prod.id}')" ${outOfStock ? 'disabled' : ''}>
+                            <button class="sp-btn-add" onclick="addToCart('${prod.id}', event)" ${outOfStock ? 'disabled' : ''}>
                                 <i class="fas ${outOfStock ? 'fa-ban' : 'fa-cart-plus'}"></i> 
                                 ${outOfStock ? 'ناموجود در انبار' : 'افزودن به سبد خرید'}
                             </button>
@@ -1150,7 +1167,7 @@
                         <div class="current-price">${finalPrice.toLocaleString('fa-IR')} <span style="font-size:0.8rem; font-weight:normal;">تومان</span></div>
                         ${hasDiscount ? `<div class="old-price">${price.toLocaleString('fa-IR')}</div>` : ''}
                     </div>
-                    <button class="add-to-cart-btn" onclick="event.stopPropagation(); addToCart('${p.id}')" ${outOfStock ? 'disabled' : ''}>
+                    <button class="add-to-cart-btn" onclick="event.stopPropagation(); addToCart('${p.id}', event)" ${outOfStock ? 'disabled' : ''}>
                         <i class="fas ${outOfStock ? 'fa-ban' : 'fa-cart-plus'}"></i> 
                         ${outOfStock ? 'ناموجود' : 'افزودن به سبد'}
                     </button>
@@ -1208,7 +1225,7 @@
             }
             
             isSearchMode = true;
-            document.getElementById('products-grid').innerHTML = '<div class="skel-card"><div class="skeleton skel-img-box"></div><div class="skeleton skel-title-box"></div><div class="skeleton skel-desc-box"></div><div class="skeleton skel-price-box"></div><div class="skeleton skel-btn-box"></div></div>'.repeat(3);
+            document.getElementById('products-grid').innerHTML = '<div class="skel-card"><div class="skeleton skel-img-box"></div><div class="skeleton skel-title-box"></div><div class="skeleton skel-price-box"></div><div class="skeleton skel-btn-box"></div></div>'.repeat(3);
             
             try {
                 let res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action: 'search', query: query }) });
@@ -1291,7 +1308,7 @@
                         ${hasDiscount ? `<div class="old-price">${price.toLocaleString('fa-IR')}</div>` : ''}
                     </div>
                     
-                    <button class="add-to-cart-btn" onclick="event.stopPropagation(); addToCart('${p.id}')" ${outOfStock ? 'disabled' : ''}>
+                    <button class="add-to-cart-btn" onclick="event.stopPropagation(); addToCart('${p.id}', event)" ${outOfStock ? 'disabled' : ''}>
                         <i class="fas ${outOfStock ? 'fa-ban' : 'fa-cart-plus'}"></i> 
                         ${outOfStock ? 'ناموجود' : 'افزودن به سبد'}
                     </button>
@@ -1328,9 +1345,42 @@
             }
         }
 
-        function addToCart(id) {
+        function addToCart(id, event) {
             const prod = products.find(p => p.id == id);
             if(!prod) return;
+            
+            // انیمیشن پرواز به سبد خرید
+            if (event) {
+                const btn = event.currentTarget;
+                const cartIcon = document.querySelector('.fa-cart-shopping');
+                if (btn && cartIcon) {
+                    const dot = document.createElement('div');
+                    dot.className = 'fly-dot';
+                    const btnRect = btn.getBoundingClientRect();
+                    const cartRect = cartIcon.getBoundingClientRect();
+                    
+                    dot.style.left = (btnRect.left + btnRect.width / 2 - 9) + 'px';
+                    dot.style.top = (btnRect.top + btnRect.height / 2 - 9) + 'px';
+                    document.body.appendChild(dot);
+                    
+                    // Trigger reflow
+                    void dot.offsetWidth;
+                    
+                    dot.style.left = (cartRect.left + cartRect.width / 2 - 9) + 'px';
+                    dot.style.top = (cartRect.top + cartRect.height / 2 - 9) + 'px';
+                    dot.style.transform = 'scale(0.3)';
+                    dot.style.opacity = '0.2';
+                    
+                    setTimeout(() => {
+                        dot.remove();
+                        const badge = document.getElementById('cart-badge');
+                        badge.classList.remove('bump');
+                        void badge.offsetWidth;
+                        badge.classList.add('bump');
+                    }, 700);
+                }
+            }
+            
             const price = (prod.discountPrice > 0 && prod.discountPrice < prod.price) ? prod.discountPrice : prod.price;
             const existing = cart.find(i => i.id == id);
             
