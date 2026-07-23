@@ -2,15 +2,18 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="google-site-verification" content="Q4mwyUeqxyrhpJu7iTqDhZ9XDRg1ZjNXuNCm7MSKpuQ" />    
     
     <!-- ========== SEO & Meta Tags ========== -->
-    <title>طبیعتی | محصولات سالم و ارگانیک</title>
-    <meta name="description" content="فروشگاه اینترنتی طبیعتی. خرید مطمئن محصولات سالم، ارگانیک و طبیعی. عرضه مستقیم عسل، زعفران، روغن‌های درمانی و گیاهان دارویی از مزرعه تا سفره شما.">
-    <link rel="canonical" href="https://tabiati.ir/">
+    <title id="meta-title">طبیعتی | محصولات سالم و ارگانیک</title>
+    <meta id="meta-desc" name="description" content="فروشگاه اینترنتی طبیعتی. خرید مطمئن محصولات سالم، ارگانیک و طبیعی. عرضه مستقیم عسل، زعفران، روغن‌های درمانی و گیاهان دارویی از مزرعه تا سفره شما.">
+    <link id="meta-canonical" rel="canonical" href="https://tabiati.ir/">
     
+    <!-- Preload Hero Image for Instant Loading -->
+    <link rel="preload" href="image/asli.jpg" as="image">
+
     <!-- Open Graph (برای نمایش زیبای لینک در واتساپ، تلگرام و جستجوی گوگل) -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://tabiati.ir/">
@@ -23,8 +26,8 @@
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="https://tabiati.ir/logo.png">
     
-    <!-- Schema.org Markup -->
-    <script type="application/ld+json">
+    <!-- Schema.org Markup (Dynamic) -->
+    <script id="dynamic-schema" type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@graph": [
@@ -101,9 +104,11 @@
 
         /* ========== لودینگ ابتدایی و امنیتی پرداخت ========== */
         #payment-loader, #startup-loader { 
-            position: fixed; inset: 0; background: rgba(255, 255, 255, 0.95); 
-            z-index: 10001; display: none; flex-direction: column; 
-            align-items: center; justify-content: center; backdrop-filter: blur(10px);
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(255, 255, 255, 0.95); z-index: 10001; 
+            display: none; flex-direction: column; align-items: center; 
+            justify-content: center; backdrop-filter: blur(10px);
+            margin: 0; padding: 0;
         }
         #startup-loader {
             display: flex; /* لودینگ استارتاپ در ابتدا فعال است */
@@ -873,39 +878,39 @@
             <div class="category-carousel-wrapper" id="category-carousel-container">
                 <button class="carousel-btn right-btn" onclick="scrollCarousel(1)"><i class="fas fa-chevron-right"></i></button>
                 <div class="category-carousel" id="categoryCarousel">
-                    <a onclick="navigateToCategory('adviyeh', event)" class="category-item">
+                    <a href="?id=adviyeh" onclick="navigateToCategory('adviyeh', event)" class="category-item">
                         <div class="category-img"><img src="image/ادویه.jpg" alt="ادویه"></div>
                         <span class="category-name">ادویه</span>
                     </a>
-                    <a onclick="navigateToCategory('chashni', event)" class="category-item">
+                    <a href="?id=chashni" onclick="navigateToCategory('chashni', event)" class="category-item">
                         <div class="category-img"><img src="image/چاشنی.jpg" alt="چاشنی"></div>
                         <span class="category-name">چاشنی</span>
                     </a>
-                    <a onclick="navigateToCategory('khoshkbar', event)" class="category-item">
+                    <a href="?id=khoshkbar" onclick="navigateToCategory('khoshkbar', event)" class="category-item">
                         <div class="category-img"><img src="image/خشکبار.jpg" alt="خشکبار"></div>
                         <span class="category-name">خشکبار</span>
                     </a>
-                    <a onclick="navigateToCategory('damnoosh', event)" class="category-item">
+                    <a href="?id=damnoosh" onclick="navigateToCategory('damnoosh', event)" class="category-item">
                         <div class="category-img"><img src="image/دمنوش.jpg" alt="دمنوش"></div>
                         <span class="category-name">دمنوش</span>
                     </a>
-                    <a onclick="navigateToCategory('roghan', event)" class="category-item">
+                    <a href="?id=roghan" onclick="navigateToCategory('roghan', event)" class="category-item">
                         <div class="category-img"><img src="image/روغن.jpg" alt="روغن"></div>
                         <span class="category-name">روغن</span>
                     </a>
-                    <a onclick="navigateToCategory('araghijat', event)" class="category-item">
+                    <a href="?id=araghijat" onclick="navigateToCategory('araghijat', event)" class="category-item">
                         <div class="category-img"><img src="image/عرقیجات.jpg" alt="عرقیجات"></div>
                         <span class="category-name">عرقیجات</span>
                     </a>
-                    <a onclick="navigateToCategory('shireh', event)" class="category-item">
+                    <a href="?id=shireh" onclick="navigateToCategory('shireh', event)" class="category-item">
                         <div class="category-img"><img src="image/شیره.jpg" alt="شیره"></div>
                         <span class="category-name">شیره</span>
                     </a>
-                    <a onclick="navigateToCategory('daneh-va-tokhm', event)" class="category-item">
+                    <a href="?id=daneh-va-tokhm" onclick="navigateToCategory('daneh-va-tokhm', event)" class="category-item">
                         <div class="category-img"><img src="image/بذریجات.jpg" alt="دانه و تخم"></div>
                         <span class="category-name">دانه و تخم</span>
                     </a>
-                    <a onclick="navigateToCategory('asal-va-zaferan', event)" class="category-item">
+                    <a href="?id=asal-va-zaferan" onclick="navigateToCategory('asal-va-zaferan', event)" class="category-item">
                         <div class="category-img"><img src="image/عسل.jpg" alt="عسل و زعفران"></div>
                         <span class="category-name">عسل و زعفران</span>
                     </a>
@@ -1118,11 +1123,17 @@
         let isSearchMode = false;
         let currentCategoryId = null; // برای کنترل حالت دسته‌بندی
 
-        // مپ جامع دسته‌بندی‌ها برای شناسایی لینک‌ها و تبدیل نام
+        // مپ جامع دسته‌بندی‌ها برای شناسایی لینک‌ها و تبدیل نام و سئو
         const CATEGORY_MAP = {
-            'adviyeh': 'ادویه', 'chashni': 'چاشنی', 'khoshkbar': 'خشکبار',
-            'damnoosh': 'دمنوش', 'roghan': 'روغن', 'araghijat': 'عرقیجات',
-            'shireh': 'شیره', 'daneh-va-tokhm': 'دانه و تخم', 'asal-va-zaferan': 'عسل و زعفران'
+            'adviyeh': { name: 'ادویه', seo: 'خرید بهترین ادویه‌جات ارگانیک، زردچوبه، فلفل، دارچین و محصولات متنوع ادویه‌ای با کیفیت تضمینی و عطر بی‌نظیر مستقیم از طبیعت.' },
+            'chashni': { name: 'چاشنی', seo: 'خرید انواع چاشنی‌های طبیعی و سالم برای طعم دادن به غذاهای شما. مجموعه‌ای از بهترین طعم‌دهنده‌های ارگانیک.' },
+            'khoshkbar': { name: 'خشکبار', seo: 'فروش مرغوب‌ترین خشکبار، گردو، بادام، پسته و محصولات تازه. تضمین سلامت و کیفیت برای میان‌وعده‌های مقوی شما.' },
+            'damnoosh': { name: 'دمنوش', seo: 'انواع دمنوش‌های گیاهی آرام‌بخش و درمانی. خرید دمنوش‌های ارگانیک برای سلامتی جسم و روح.' },
+            'roghan': { name: 'روغن', seo: 'خرید روغن‌های طبیعی و درمانی خالص. روغن زیتون، کنجد و روغن‌های گیاهی با پرس سرد و حفظ تمام خواص.' },
+            'araghijat': { name: 'عرقیجات', seo: 'بهترین عرقیجات گیاهی سنتی و خالص. گلاب، عرق نعنا و عرقیات درمانی با بالاترین غلظت و کیفیت.' },
+            'shireh': { name: 'شیره', seo: 'خرید شیره انگور، خرما، توت و شیره میکس طبیعی. بمب انرژی و خون‌ساز فوق‌العاده برای تمام سنین.' },
+            'daneh-va-tokhm': { name: 'دانه و تخم', seo: 'انواع دانه‌های مغذی و بذریجات گیاهی. دانه چیا، کینوا، تخم شربتی و دانه‌های ارگانیک سرشار از ویتامین.' },
+            'asal-va-zaferan': { name: 'عسل و زعفران', seo: 'خرید عسل طبیعی کوهستان و زعفران اصل قائنات. با برگه آزمایش و تضمین خلوص ۱۰۰ درصدی.' }
         };
 
         window.onload = async () => {
@@ -1191,6 +1202,89 @@
             }
         }
 
+        // ================= توابع قدرتمند داینامیک سئو (SEO) =================
+        function updateDynamicSEO(type, id = null, extraData = null) {
+            const titleEl = document.getElementById('meta-title');
+            const descEl = document.getElementById('meta-desc');
+            const canonicalEl = document.getElementById('meta-canonical');
+            const schemaEl = document.getElementById('dynamic-schema');
+            const baseUrl = 'https://tabiati.ir/';
+
+            if (type === 'home') {
+                titleEl.innerText = 'طبیعتی | محصولات سالم و ارگانیک';
+                descEl.content = 'فروشگاه اینترنتی طبیعتی. خرید مطمئن محصولات سالم، ارگانیک و طبیعی. عرضه مستقیم عسل، زعفران، روغن‌های درمانی و گیاهان دارویی از مزرعه تا سفره شما.';
+                canonicalEl.href = baseUrl;
+                // برگرداندن اسکیما به حالت اولیه
+                schemaEl.innerText = JSON.stringify({
+                  "@context": "https://schema.org",
+                  "@type": "WebSite",
+                  "url": baseUrl,
+                  "name": "طبیعتی",
+                  "description": "محصولات سالم و ارگانیک"
+                });
+            } 
+            else if (type === 'category' && id && CATEGORY_MAP[id]) {
+                const catInfo = CATEGORY_MAP[id];
+                titleEl.innerText = `خرید ${catInfo.name} | فروشگاه طبیعتی`;
+                
+                // ایجاد متا دیسکریپشن فوق‌العاده سئو شده که به لیست 20 محصول اشاره دارد
+                const fullDesc = `${catInfo.seo} مشاهده لیست قیمت و خرید برترین محصولات این دسته شامل حداقل ۲۰ محصول برگزیده در فروشگاه طبیعتی.`;
+                descEl.content = fullDesc;
+                canonicalEl.href = `${baseUrl}?id=${id}`;
+
+                // تولید کدهای مخفی JSON-LD برای ربات‌های گوگل شامل 20 محصول دسته
+                let categoryProducts = products.filter(p => p.category === id).slice(0, 20);
+                let itemListElements = categoryProducts.map((p, index) => ({
+                    "@type": "ListItem",
+                    "position": index + 1,
+                    "item": {
+                        "@type": "Product",
+                        "name": p.name,
+                        "url": `${baseUrl}?id=${p.id}`,
+                        "image": p.image.startsWith('http') ? p.image : baseUrl + 'logo.png',
+                        "offers": {
+                            "@type": "Offer",
+                            "priceCurrency": "IRT",
+                            "price": p.discountPrice > 0 && p.discountPrice < p.price ? p.discountPrice : p.price,
+                            "availability": p.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock"
+                        }
+                    }
+                }));
+
+                const catSchema = {
+                    "@context": "https://schema.org",
+                    "@type": "ItemList",
+                    "itemListElement": itemListElements,
+                    "name": `محصولات دسته ${catInfo.name}`,
+                    "description": fullDesc
+                };
+                schemaEl.innerText = JSON.stringify(catSchema);
+            }
+            else if (type === 'product' && extraData) {
+                titleEl.innerText = `خرید ${extraData.name} | فروشگاه طبیعتی`;
+                descEl.content = extraData.description ? extraData.description.substring(0, 155) + '...' : `خرید آنلاین ${extraData.name} با بهترین کیفیت و تضمین اصالت کالا در فروشگاه طبیعتی.`;
+                canonicalEl.href = `${baseUrl}?id=${id}`;
+
+                // تولید اسکیمای اختصاصی محصول
+                const finalPrice = (extraData.discountPrice > 0 && extraData.discountPrice < extraData.price) ? extraData.discountPrice : extraData.price;
+                const prodSchema = {
+                    "@context": "https://schema.org",
+                    "@type": "Product",
+                    "name": extraData.name,
+                    "image": extraData.image.startsWith('http') ? extraData.image : baseUrl + 'logo.png',
+                    "description": extraData.description || `خرید ${extraData.name}`,
+                    "offers": {
+                        "@type": "Offer",
+                        "url": `${baseUrl}?id=${id}`,
+                        "priceCurrency": "IRT",
+                        "price": finalPrice,
+                        "availability": extraData.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock"
+                    }
+                };
+                schemaEl.innerText = JSON.stringify(prodSchema);
+            }
+        }
+
         window.addEventListener('popstate', (e) => {
             const urlParams = new URLSearchParams(window.location.search);
             const urlId = urlParams.get('id');
@@ -1213,10 +1307,12 @@
             if(event) event.preventDefault();
             history.pushState({view: 'category', id: catId}, '', '?id=' + catId);
             
-            // لودینگ نشان می‌دهیم تا سرور تایید و ارسال کند
-            document.getElementById('startup-loader').style.display = 'flex';
+            // به جای کل صفحه، فقط بخش گرید محصولات را لودینگ (اسکلتون) می‌اندازیم
+            if (document.getElementById('products-grid')) {
+                document.getElementById('products-grid').innerHTML = '<div class="skel-card"><div class="skeleton skel-img-box"></div><div class="skeleton skel-title-box"></div><div class="skeleton skel-price-box"></div><div class="skeleton skel-btn-box"></div></div>'.repeat(6);
+            }
+            
             await fetchStoreData(catId); 
-            hideStartupLoader();
         }
 
         function navigateToProduct(id) {
@@ -1224,13 +1320,24 @@
             document.getElementById('main-store-view').style.display = 'none';
             document.getElementById('single-product-view').style.display = 'block';
             window.scrollTo(0,0);
-            renderSingleProductPage(id);
+            
+            // نمایش لودینگ اختصاصی و زیبای محصول در وسط صفحه
+            document.getElementById('sp-content').innerHTML = `
+                <div class="elegant-loader-container">
+                    <div class="soft-dots-loader"><span></span><span></span><span></span></div>
+                </div>
+            `;
+            
+            // تاخیر کوچک برای اعمال تغییرات و سپس رندر
+            setTimeout(() => {
+                renderSingleProductPage(id);
+            }, 50);
         }
 
         // نمای صفحه اصلی (Home)
         function renderHomeView() {
             currentCategoryId = null;
-            document.title = "طبیعتی | محصولات سالم و ارگانیک";
+            updateDynamicSEO('home');
             document.getElementById('single-product-view').style.display = 'none';
             document.getElementById('main-store-view').style.display = 'block';
             
@@ -1248,8 +1355,8 @@
         // نمای صفحه دسته‌بندی (محسوس)
         function renderCategoryPage(catId) {
             currentCategoryId = catId;
-            const catName = CATEGORY_MAP[catId];
-            document.title = `خرید ${catName} | فروشگاه طبیعتی`;
+            const catName = CATEGORY_MAP[catId].name;
+            updateDynamicSEO('category', catId);
             
             document.getElementById('single-product-view').style.display = 'none';
             document.getElementById('main-store-view').style.display = 'block';
@@ -1261,8 +1368,11 @@
             // نمایش بنر و هدر اختصاصی دسته‌بندی
             document.getElementById('category-hero').style.display = 'block';
             document.getElementById('cat-banner-title').innerText = `دسته‌بندی: ${catName}`;
-            document.getElementById('main-section-title').innerHTML = `<i class="fas fa-layer-group"></i> محصولات ${catName}`;
-            document.getElementById('searchInput').placeholder = `جستجو فقط در محصولات ${catName}...`;
+            
+            // کلمه "محصولات" طبق دستور حذف شد
+            document.getElementById('main-section-title').innerHTML = `<i class="fas fa-layer-group"></i> ${catName}`;
+            
+            document.getElementById('searchInput').placeholder = `جستجو فقط در دسته ${catName}...`;
 
             window.scrollTo(0,0);
             initProductsRender(products); // products اینجا فقط مربوط به همین دسته است (فیلتر شده توسط سرور)
@@ -1281,6 +1391,11 @@
                 products = data.products || [];
                 shippingMethods = data.shipping || [];
                 populateShippingDropdown();
+
+                // پس از دریافت داده‌ها، سئو را مجدد با محصولات دریافت شده آپدیت می‌کنیم
+                if(catId && !prodId) {
+                    updateDynamicSEO('category', catId);
+                }
 
                 // تصمیم‌گیری رندر بر اساس پارامتر ورودی
                 if(prodId && !catId) {
@@ -1301,9 +1416,10 @@
             const prod = products.find(p => p.id == id);
             if(!prod) { navigateToHome(); return; }
 
+            updateDynamicSEO('product', id, prod);
+
             document.getElementById('main-store-view').style.display = 'none';
             document.getElementById('single-product-view').style.display = 'block';
-            document.title = `خرید ${prod.name} | فروشگاه طبیعتی`;
 
             const price = Number(prod.price);
             const discount = Number(prod.discountPrice);
@@ -1313,7 +1429,7 @@
             
             // تولید نام و آیدی دسته بندی (پیش‌فرض ادویه اگر پیدا نشد)
             const catId = prod.category || 'adviyeh';
-            const catName = CATEGORY_MAP[catId] || 'دسته‌بندی نشده';
+            const catName = CATEGORY_MAP[catId] ? CATEGORY_MAP[catId].name : 'دسته‌بندی نشده';
 
             let imgHtml = prod.image.startsWith('http') ? `<img src="${prod.image}" alt="${prod.name}" onclick="openImageModal('${prod.image}')">` : `<i class="fas ${prod.image.includes('fa-') ? prod.image : 'fa-box-open'}" style="font-size: 8rem; color: var(--primary-light); padding: 3rem;"></i>`;
             let descHtml = prod.description ? prod.description.replace(/\n/g, '<br>') : 'توضیحات تکمیلی برای این محصول ثبت نشده است.';
