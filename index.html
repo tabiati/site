@@ -116,6 +116,30 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
+        /* لودینگ چشمک‌زن نرم و جذاب */
+        .soft-dots-loader {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        .soft-dots-loader span {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            animation: softGlowBlink 1.4s infinite cubic-bezier(0.2, 0.68, 0.18, 1.08) both;
+        }
+        .soft-dots-loader span:nth-child(1) { animation-delay: -0.32s; }
+        .soft-dots-loader span:nth-child(2) { animation-delay: -0.16s; background-color: var(--accent); }
+        .soft-dots-loader span:nth-child(3) { background-color: var(--primary-light); }
+        
+        @keyframes softGlowBlink {
+            0%, 80%, 100% { transform: scale(0); opacity: 0.3; }
+            40% { transform: scale(1); opacity: 1; box-shadow: 0 0 15px rgba(5, 150, 105, 0.6); }
+        }
+
         /* ========== Header ========== */
         .main-header {
             position: sticky; top: 0; z-index: 100;
@@ -174,7 +198,7 @@
         .hero {
             position: relative; 
             height: 100vh; 
-            background: url('https://tabiati.ir/1.jpg') center/cover no-repeat;
+            background: url('image/asli.jpg') center/cover no-repeat;
             display: flex; align-items: center; justify-content: center;
             text-align: center; color: white; border-radius: 0 0 40px 40px;
             margin-bottom: 3rem;
@@ -786,16 +810,15 @@
 
     <!-- ==================== لودینگ پرداخت امن بانکی ==================== -->
     <div id="payment-loader">
-        <div class="spinner-bank"></div>
-        <h2 style="color:var(--primary-dark); font-weight:800; font-size: 1.5rem;">درگاه پرداخت امن</h2>
-        <p id="payment-loader-text" style="color:var(--text-muted); margin-top:10px; font-weight: 600;">در حال برقراری ارتباط با شاپرک...</p>
+        <img src="https://tabiati.ir/logo.png" alt="طبیعتی" style="height: 60px; margin-bottom: 10px; object-fit: contain;">
+        <div class="soft-dots-loader"><span></span><span></span><span></span></div>
+        <p id="payment-loader-text" style="display:none;"></p>
     </div>
 
     <!-- ==================== لودینگ استارتاپ (شروع سایت) ==================== -->
     <div id="startup-loader">
-        <div class="spinner-bank"></div>
-        <h2 style="color:var(--primary-dark); font-weight:800; font-size: 1.5rem;">طبیعتی</h2>
-        <p style="color:var(--text-muted); margin-top:10px; font-weight: 600;">در حال دریافت اطلاعات از سرور...</p>
+        <img src="https://tabiati.ir/logo.png" alt="طبیعتی" style="height: 60px; margin-bottom: 10px; object-fit: contain;">
+        <div class="soft-dots-loader"><span></span><span></span><span></span></div>
     </div>
 
     <!-- ==================== کانتینر نوتیفیکیشن‌ها ==================== -->
@@ -851,39 +874,39 @@
                 <button class="carousel-btn right-btn" onclick="scrollCarousel(1)"><i class="fas fa-chevron-right"></i></button>
                 <div class="category-carousel" id="categoryCarousel">
                     <a onclick="navigateToCategory('adviyeh', event)" class="category-item">
-                        <div class="category-img"><img src="image-1.jpg" alt="ادویه"></div>
+                        <div class="category-img"><img src="image/ادویه.jpg" alt="ادویه"></div>
                         <span class="category-name">ادویه</span>
                     </a>
                     <a onclick="navigateToCategory('chashni', event)" class="category-item">
-                        <div class="category-img"><img src="image-2.jpg" alt="چاشنی"></div>
+                        <div class="category-img"><img src="image/چاشنی.jpg" alt="چاشنی"></div>
                         <span class="category-name">چاشنی</span>
                     </a>
                     <a onclick="navigateToCategory('khoshkbar', event)" class="category-item">
-                        <div class="category-img"><img src="image-3.jpg" alt="خشکبار"></div>
+                        <div class="category-img"><img src="image/خشکبار.jpg" alt="خشکبار"></div>
                         <span class="category-name">خشکبار</span>
                     </a>
                     <a onclick="navigateToCategory('damnoosh', event)" class="category-item">
-                        <div class="category-img"><img src="image-4.jpg" alt="دمنوش"></div>
+                        <div class="category-img"><img src="image/دمنوش.jpg" alt="دمنوش"></div>
                         <span class="category-name">دمنوش</span>
                     </a>
                     <a onclick="navigateToCategory('roghan', event)" class="category-item">
-                        <div class="category-img"><img src="image-5.jpg" alt="روغن"></div>
+                        <div class="category-img"><img src="image/روغن.jpg" alt="روغن"></div>
                         <span class="category-name">روغن</span>
                     </a>
                     <a onclick="navigateToCategory('araghijat', event)" class="category-item">
-                        <div class="category-img"><img src="image-6.jpg" alt="عرقیجات"></div>
+                        <div class="category-img"><img src="image/عرقیجات.jpg" alt="عرقیجات"></div>
                         <span class="category-name">عرقیجات</span>
                     </a>
                     <a onclick="navigateToCategory('shireh', event)" class="category-item">
-                        <div class="category-img"><img src="image-7.jpg" alt="شیره"></div>
+                        <div class="category-img"><img src="image/شیره.jpg" alt="شیره"></div>
                         <span class="category-name">شیره</span>
                     </a>
                     <a onclick="navigateToCategory('daneh-va-tokhm', event)" class="category-item">
-                        <div class="category-img"><img src="image-8.jpg" alt="دانه و تخم"></div>
+                        <div class="category-img"><img src="image/بذریجات.jpg" alt="دانه و تخم"></div>
                         <span class="category-name">دانه و تخم</span>
                     </a>
                     <a onclick="navigateToCategory('asal-va-zaferan', event)" class="category-item">
-                        <div class="category-img"><img src="image-9.jpg" alt="عسل و زعفران"></div>
+                        <div class="category-img"><img src="image/عسل.jpg" alt="عسل و زعفران"></div>
                         <span class="category-name">عسل و زعفران</span>
                     </a>
                 </div>
