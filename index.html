@@ -736,7 +736,7 @@
             <img src="https://tabiati.ir/logo.png" alt="لوگوی فروشگاه ارگانیک طبیعتی">
         </a>
         <div class="header-icons">
-            <button class="action-pill" onclick="openModal('trackModal')" title="پیگیری سفارشات من">
+            <button class="action-pill" onclick="window.location.href='https://tabiati.ir/shipping.html'" title="پیگیری سفارشات من">
                 <i class="fas fa-truck-fast" style="color: #6366f1;"></i>
                 <span class="desktop-text">پیگیری سفارش</span>
             </button>
@@ -756,7 +756,7 @@
                 <p>محصولات سالم و ارگانیک، مستقیماً از دل طبیعت تا سفره شما. تضمین کیفیت، سلامت و تازگی در هر سفارش.</p>
                 <div class="hero-buttons">
                     <a href="#products" class="btn-primary"><i class="fas fa-store"></i>فروشگاه</a>
-                    <a href="tel:09136395562" class="btn-outline"><i class="fas fa-headset"></i> پشتیبانی</a>
+                    <a href="https://tabiati.ir/contact.html" class="btn-outline"><i class="fas fa-headset"></i> پشتیبانی</a>
                 </div>
             </div>
             <div class="curtain-pull" onclick="document.getElementById('products').scrollIntoView({behavior: 'smooth'})">
@@ -908,27 +908,6 @@
         </div>
     </div>
 
-    <!-- ==================== مودال پیگیری سفارش ==================== -->
-    <div class="modal" id="trackModal">
-        <div class="modal-dialog">
-            <div class="modal-header">
-                <h3><i class="fas fa-clipboard-list" style="color:var(--primary);"></i> پیگیری سفارشات</h3>
-                <button class="cart-close-btn" onclick="closeModal('trackModal')"><i class="fas fa-times"></i></button>
-            </div>
-            <p style="font-size:0.95rem; color:var(--text-muted); margin-bottom:1.5rem; line-height: 1.6;">جهت مشاهده وضعیت، شماره موبایل ثبت شده یا شماره سفارش خود (مثلاً ORD-123456) را وارد کنید.</p>
-            <div style="display:flex; gap:0.8rem; margin-bottom:1rem;">
-                <input type="text" id="track_input" class="form-control" placeholder="09... یا ORD-..." style="margin-bottom:0;" dir="ltr" autocomplete="off">
-                <button class="checkout-btn" style="width:auto; padding:0 1.8rem; border-radius: 14px;" onclick="trackOrder()" id="btn-track"><i class="fas fa-search"></i></button>
-            </div>
-            <div id="track-results" style="margin-top:1.5rem;"></div>
-            <div class="pagination" id="track-pagination" style="display: none;">
-                <button onclick="prevTrackPage()" id="btn-track-prev">قبلی</button>
-                <span id="track-page-info">1 از 1</span>
-                <button onclick="nextTrackPage()" id="btn-track-next">بعدی</button>
-            </div>
-        </div>
-    </div>
-
     <!-- ==================== مودال رسید نهایی ==================== -->
     <div class="modal" id="receiptModal">
         <div class="modal-dialog">
@@ -938,7 +917,7 @@
             </div>
             <p style="color:var(--text-muted); margin-bottom: 1.5rem; font-weight:600; text-align:center;">سفارش شما با موفقیت ثبت شد.</p>
             <div id="receipt-details"></div>
-            <button class="checkout-btn" style="margin-top:20px; background:var(--bg); color:var(--text-dark); border:2px solid var(--border);" onclick="closeModal('receiptModal'); openModal('trackModal');">
+            <button class="checkout-btn" style="margin-top:20px; background:var(--bg); color:var(--text-dark); border:2px solid var(--border);" onclick="closeModal('receiptModal'); window.location.href='https://tabiati.ir/shipping.html';">
                 <i class="fas fa-clipboard-list"></i> رفتن به پیگیری سفارشات
             </button>
         </div>
@@ -955,9 +934,10 @@
                 <h4>لینک‌های سریع</h4>
                 <ul>
                     <li><a onclick="navigateToHome()" style="cursor:pointer;"><i class="fas fa-angle-left" style="font-size: 0.8em; color:var(--primary-light);"></i> صفحه اصلی</a></li>
-                    <li><a onclick="navigateToHome()" style="cursor:pointer;"><i class="fas fa-angle-left" style="font-size: 0.8em; color:var(--primary-light);"></i> محصولات ما</a></li>
-                    <li><a href="#" onclick="openModal('trackModal')"><i class="fas fa-angle-left" style="font-size: 0.8em; color:var(--primary-light);"></i> پیگیری سفارش</a></li>
-                    <li><a href="#"><i class="fas fa-angle-left" style="font-size: 0.8em; color:var(--primary-light);"></i> شرایط و قوانین</a></li>
+                    <li><a href="https://tabiati.ir/about.html"><i class="fas fa-angle-left" style="font-size: 0.8em; color:var(--primary-light);"></i> درباره ما</a></li>
+                    <li><a href="https://tabiati.ir/contact.html"><i class="fas fa-angle-left" style="font-size: 0.8em; color:var(--primary-light);"></i> تماس با ما</a></li>
+                    <li><a href="https://tabiati.ir/shipping.html"><i class="fas fa-angle-left" style="font-size: 0.8em; color:var(--primary-light);"></i> پیگیری سفارش</a></li>
+                    <li><a href="#"><i class="fas fa-angle-left" style="font-size: 0.8em; color:var(--primary-light);"></i> قوانین و شرایط</a></li>
                 </ul>
             </div>
             <div class="footer-col">
@@ -1001,11 +981,6 @@
         let isFetchingNext = false;
         let fullSearchList = [];
         let isSearchMode = false;
-
-        // متغیرهای پیگیری
-        let trackingList = [];
-        let currentTrackPage = 1;
-        const TRACK_ITEMS_PER_PAGE = 10;
 
         // 1. Init & SPA Routing
         window.onload = async () => {
@@ -1554,119 +1529,6 @@
             openModal('receiptModal');
         }
 
-        function toggleOrderDetails(element) {
-            const body = element.nextElementSibling;
-            const chevron = element.querySelector('.chevron-icon');
-            body.classList.toggle('show');
-            chevron.classList.toggle('rotate');
-        }
-
-        // ================= Visual Order Tracking =================
-        async function trackOrder() {
-            const trackInput = document.getElementById('track_input').value.trim();
-            if(!trackInput) return showToast('لطفا شماره موبایل یا شماره سفارش را وارد کنید.', 'error');
-            
-            const btn = document.getElementById('btn-track');
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-            const resDiv = document.getElementById('track-results');
-            
-            try {
-                let res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action: 'trackOrder', query: trackInput }) });
-                let data = await res.json();
-                
-                if(data.status === 'success' && data.data.length > 0) {
-                    trackingList = data.data; 
-                    currentTrackPage = 1;
-                    renderTrackingPage();
-                } else {
-                    document.getElementById('track-pagination').style.display = 'none';
-                    resDiv.innerHTML = '<div style="text-align:center; padding:25px; background:#fef2f2; border:1px solid #fecaca; color:#b91c1c; border-radius:20px;"><i class="fas fa-exclamation-triangle fa-3x" style="margin-bottom:15px; opacity:0.8;"></i><h4 style="font-weight:800; font-size:1.1rem;">سفارشی یافت نشد!</h4><p style="font-size:0.9rem; margin-top:5px;">سفارشی با این مشخصات در سیستم یافت نشد.</p></div>';
-                }
-            } catch(e) {
-                resDiv.innerHTML = '<p style="color:#ef4444; text-align:center; font-weight:bold; padding:20px; background:#fef2f2; border-radius:15px;">خطا در برقراری ارتباط با سرور.</p>';
-            }
-            btn.innerHTML = '<i class="fas fa-search"></i>';
-        }
-
-        function renderTrackingPage() {
-            const resDiv = document.getElementById('track-results');
-            const totalPages = Math.ceil(trackingList.length / TRACK_ITEMS_PER_PAGE) || 1;
-            
-            const paginator = document.getElementById('track-pagination');
-            if(totalPages > 1) {
-                paginator.style.display = 'flex';
-                document.getElementById('track-page-info').innerText = `صفحه ${currentTrackPage} از ${totalPages}`;
-                document.getElementById('btn-track-prev').disabled = currentTrackPage === 1;
-                document.getElementById('btn-track-next').disabled = currentTrackPage === totalPages;
-            } else {
-                paginator.style.display = 'none';
-            }
-
-            const startIdx = (currentTrackPage - 1) * TRACK_ITEMS_PER_PAGE;
-            const currentItems = trackingList.slice(startIdx, startIdx + TRACK_ITEMS_PER_PAGE);
-
-            resDiv.innerHTML = currentItems.map(o => {
-                
-                let s1='active', s2='', s3='';
-                let isPaySuccess = o.paymentStatus === 'Success';
-                
-                if(!isPaySuccess || o.orderStatus === 'Failed') {
-                    s1 = 'failed'; s2 = 'failed'; s3 = 'failed';
-                } else if (o.orderStatus === 'Pending') {
-                    s1 = 'completed'; s2 = 'active'; 
-                } else if (o.orderStatus === 'Processing') {
-                    s1 = 'completed'; s2 = 'active'; 
-                } else if (o.orderStatus === 'Shipped') {
-                    s1 = 'completed'; s2 = 'completed'; s3 = 'active';
-                } else if (o.orderStatus === 'Delivered' || o.orderStatus === 'Archived') {
-                    s1 = 'completed'; s2 = 'completed'; s3 = 'completed';
-                }
-
-                let timelineHtml = `
-                <div class="tracking-timeline">
-                    <div class="timeline-step ${s1}"><div class="step-icon"><i class="fas ${s1==='failed'?'fa-times':'fa-clipboard-check'}"></i></div><div class="step-label">${s1==='failed'?'لغو / ناموفق':'ثبت سفارش'}</div></div>
-                    <div class="timeline-step ${s2}"><div class="step-icon"><i class="fas ${s2==='failed'?'fa-times':(o.orderStatus==='Pending'?'fa-hourglass-half':'fa-box-open')}"></i></div><div class="step-label">${s2==='failed'?'':'در حال آماده‌سازی'}</div></div>
-                    <div class="timeline-step ${s3}"><div class="step-icon"><i class="fas ${s3==='failed'?'fa-times':(o.orderStatus==='Archived'?'fa-archive':'fa-home')}"></i></div><div class="step-label">${s3==='failed'?'':(o.orderStatus==='Archived'?'بایگانی شده':'تحویل مرسوله')}</div></div>
-                </div>`;
-
-                let itemsHtml = '';
-                try {
-                    itemsHtml = JSON.parse(o.cart).map(i => `<div style="display:flex;justify-content:space-between;font-size:0.9rem;border-bottom:1px dashed var(--border);padding:8px 0; color:var(--text-dark);"><span>${i.name}</span><b style="color:var(--primary-dark);">${i.qty} عدد</b></div>`).join('');
-                } catch(e) { itemsHtml = 'نامشخص'; }
-
-                let trackCodeBox = o.trackingCode ? `<div style="background:#f0fdf4; padding:15px; border-radius:15px; margin-top:20px; text-align:center; border:2px dashed var(--primary-light);"><strong style="color:var(--text-muted); font-size:0.9rem;">کد رهگیری پستی مرسوله شما:</strong><br><span style="font-size:1.5rem; letter-spacing:4px; font-weight:900; color:var(--primary-dark); display:block; margin-top:10px;">${o.trackingCode}</span></div>` : '';
-
-                return `
-                <div class="order-accordion">
-                    <div class="order-header" onclick="toggleOrderDetails(this)">
-                        <div class="order-summary">
-                            <span class="order-id">سفارش: <span style="color:var(--primary); font-family: Tahoma, sans-serif;">${o.orderId}</span></span>
-                            <span class="order-date"><i class="far fa-clock"></i> ${o.date || 'نامشخص'}</span>
-                        </div>
-                        <div class="order-status-badge">
-                            <span class="badge ${isPaySuccess ? 'bg-green' : 'bg-red'}">${isPaySuccess ? '<i class="fas fa-check-circle"></i> موفق' : '<i class="fas fa-times-circle"></i> ناموفق'}</span>
-                            <i class="fas fa-chevron-down chevron-icon"></i>
-                        </div>
-                    </div>
-                    <div class="order-body">
-                        ${timelineHtml}
-                        <div style="background:var(--surface); padding:15px 20px; border-radius:16px; margin-top:20px; border: 1px solid var(--border);">
-                            <strong style="font-size:0.9rem; color:var(--text-muted); display:block; margin-bottom:10px;">لیست اقلام سبد خرید:</strong>
-                            ${itemsHtml}
-                            <div style="display:flex; justify-content:space-between; align-items:center; font-weight:800; margin-top:15px; font-size:1.1rem; color:var(--text-dark);">
-                                <span>مبلغ نهایی فاکتور:</span>
-                                <span style="color:var(--primary-dark);">${Number(o.totalAmount).toLocaleString('fa-IR')} تومان</span>
-                            </div>
-                        </div>
-                        ${trackCodeBox}
-                    </div>
-                </div>`;
-            }).join('');
-        }
-
-        function prevTrackPage() { if(currentTrackPage > 1) { currentTrackPage--; renderTrackingPage(); } }
-        function nextTrackPage() { const tPages = Math.ceil(trackingList.length / TRACK_ITEMS_PER_PAGE); if(currentTrackPage < tPages) { currentTrackPage++; renderTrackingPage(); } }
-
         // ================= Toast =================
         function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
@@ -1680,4 +1542,4 @@
         }
     </script>
 </body>
-</html>      
+</html>
