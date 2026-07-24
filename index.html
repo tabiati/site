@@ -360,6 +360,9 @@
         .product-img:hover img { transform: scale(1.05); }
         
         .product-title { font-size: 1.25rem; font-weight: 800; margin-bottom: 1rem; color: var(--text-dark); line-height: 1.5; }
+        /* استایل افزوده شده برای اطمینان از عملکرد صحیح تگ های a در عناوین */
+        a.product-title { transition: color 0.3s; display: block; }
+        a.product-title:hover { color: var(--primary); }
         
         .price-section { 
             display: flex; flex-direction: column; justify-content: center; align-items: center; 
@@ -456,21 +459,32 @@
         .sp-description {
             font-size: 1.1rem; line-height: 2.2; color: var(--text-dark); font-weight: 500; text-align: justify;
         }
-        .sp-action-box { margin-top: 1rem; display: flex; gap: 1rem; }
+        .sp-action-box { margin-top: 1rem; display: flex; gap: 1rem; flex-wrap: wrap; }
         .sp-btn-add {
-            flex: 1; padding: 1.2rem; background: var(--primary); color: white; border: none;
+            flex: 1; min-width: 180px; padding: 1.2rem; background: var(--primary); color: white; border: none;
             border-radius: 16px; font-weight: 800; font-size: 1.2rem; cursor: pointer;
             transition: var(--transition); box-shadow: 0 10px 25px rgba(5, 150, 105, 0.3);
             display: flex; align-items: center; justify-content: center; gap: 0.8rem;
         }
         .sp-btn-add:hover:not(:disabled) { background: var(--primary-dark); transform: translateY(-3px); }
         .sp-btn-add:disabled { background: #cbd5e1; cursor: not-allowed; box-shadow: none; }
+        
         .sp-btn-back {
-            padding: 1.2rem 2rem; background: var(--surface); color: var(--text-dark);
+            flex: 1; min-width: 140px; padding: 1.2rem 2rem; background: var(--surface); color: var(--text-dark);
             border: 2px solid var(--border); border-radius: 16px; font-weight: 800; font-size: 1.1rem;
             cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 0.5rem; text-decoration: none;
         }
         .sp-btn-back:hover { background: #e2e8f0; }
+
+        /* استایل دکمه اشتراک گذاری جدید */
+        .sp-btn-share {
+            flex: 1; min-width: 140px; padding: 1.2rem 2rem; background: var(--surface); color: var(--accent);
+            border: 2px solid var(--accent); border-radius: 16px; font-weight: 800; font-size: 1.1rem;
+            cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 0.5rem; text-decoration: none;
+        }
+        .sp-btn-share:hover {
+            background: var(--accent); color: white; transform: translateY(-3px); box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);
+        }
 
         .suggested-section {
             max-width: 1400px; margin: 4rem auto 2rem; padding: 0 5%;
@@ -510,7 +524,7 @@
         @media (max-width: 768px) {
             .single-product-container { grid-template-columns: 1fr; gap: 2rem; padding: 1rem 5%; }
             .sp-title { font-size: 1.8rem; }
-            .sp-action-box { flex-direction: column; }
+            .sp-action-box { flex-direction: column; gap: 0.8rem; }
         }
         
         @media (max-width: 576px) {
@@ -769,6 +783,7 @@
         .category-item {
             display: flex; flex-direction: column; align-items: center; text-decoration: none;
             flex-shrink: 0; width: 95px; cursor: pointer; transition: var(--transition);
+            user-select: auto; /* برای کپی شدن راحت‌تر نام دسته */
         }
         .category-item:hover { transform: translateY(-5px); }
         .category-img {
@@ -1302,16 +1317,38 @@
             renderHomeView();
         }
 
-        // تابع کلیک روی دسته‌ها (بررسی سمت سرور)
+        // تابع کلیک روی دسته‌ها (بررسی سمت سرور و اعمال فوری رابط کاربری)
         async function navigateToCategory(catId, event) {
             if(event) event.preventDefault();
             history.pushState({view: 'category', id: catId}, '', '?id=' + catId);
             
-            // به جای کل صفحه، فقط بخش گرید محصولات را لودینگ (اسکلتون) می‌اندازیم
+            // ثبت ID دسته و نام آن
+            currentCategoryId = catId;
+            const catName = CATEGORY_MAP[catId] ? CATEGORY_MAP[catId].name : 'دسته‌بندی';
+
+            // تغییرات فوری ظاهر سایت قبل از دریافت اطلاعات از سرور (سریع و روان)
+            document.getElementById('single-product-view').style.display = 'none';
+            document.getElementById('main-store-view').style.display = 'block';
+            
+            // مخفی کردن هیرو و اسلایدر اصلی سایت
+            document.getElementById('main-hero').style.display = 'none';
+            document.getElementById('category-carousel-container').style.display = 'none';
+            
+            // نمایش بنر و هدر اختصاصی دسته‌بندی
+            document.getElementById('category-hero').style.display = 'block';
+            document.getElementById('cat-banner-title').innerText = `دسته‌بندی: ${catName}`;
+            document.getElementById('main-section-title').innerHTML = `<i class="fas fa-layer-group"></i> ${catName}`;
+            document.getElementById('searchInput').placeholder = `جستجو فقط در دسته ${catName}...`;
+            
+            // اسکرول به بالا
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // به جای کل صفحه، فقط بخش گرید محصولات را لودینگ (اسکلتون) می‌اندازیم تا اطلاعات از سرور بیاید
             if (document.getElementById('products-grid')) {
                 document.getElementById('products-grid').innerHTML = '<div class="skel-card"><div class="skeleton skel-img-box"></div><div class="skeleton skel-title-box"></div><div class="skeleton skel-price-box"></div><div class="skeleton skel-btn-box"></div></div>'.repeat(6);
             }
             
+            // دریافت اطلاعات از سرور
             await fetchStoreData(catId); 
         }
 
@@ -1374,6 +1411,7 @@
             
             document.getElementById('searchInput').placeholder = `جستجو فقط در دسته ${catName}...`;
 
+            // اگر به عنوان ورودی اولیه کاربر بود (بدون انیمیشن)، اسکرول شود
             window.scrollTo(0,0);
             initProductsRender(products); // products اینجا فقط مربوط به همین دسته است (فیلتر شده توسط سرور)
         }
@@ -1458,10 +1496,13 @@
                         <div class="sp-action-box">
                             <button class="sp-btn-add" onclick="addToCart('${prod.id}', event)" ${outOfStock ? 'disabled' : ''}>
                                 <i class="fas ${outOfStock ? 'fa-ban' : 'fa-cart-plus'}"></i> 
-                                ${outOfStock ? 'ناموجود در انبار' : 'افزودن به سبد خرید'}
+                                ${outOfStock ? 'ناموجود' : 'افزودن به سبد'}
+                            </button>
+                            <button class="sp-btn-share" onclick="shareProduct('${prod.id}', '${prod.name}', ${finalPrice})">
+                                <i class="fas fa-share-nodes"></i> اشتراک‌گذاری
                             </button>
                             <button class="sp-btn-back" onclick="navigateToHome()">
-                                <i class="fas fa-arrow-right"></i> بازگشت به فروشگاه
+                                <i class="fas fa-arrow-right"></i> فروشگاه
                             </button>
                         </div>
                     </div>
@@ -1469,6 +1510,26 @@
             `;
             
             renderSuggestedProducts(id);
+        }
+
+        // تابع اشتراک گذاری محصول
+        function shareProduct(id, name, price) {
+            const productUrl = window.location.origin + window.location.pathname + "?id=" + id;
+            const shareText = `محصول: ${name}\nقیمت: ${price.toLocaleString('fa-IR')} تومان\n\nلینک خرید آنلاین:\n${productUrl}`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: `خرید ${name}`,
+                    text: shareText,
+                    url: productUrl
+                }).catch(console.error);
+            } else {
+                navigator.clipboard.writeText(shareText).then(() => {
+                    showToast('لینک و مشخصات محصول کپی شد.', 'success');
+                }).catch(err => {
+                    showToast('خطا در کپی کردن اطلاعات.', 'error');
+                });
+            }
         }
 
         function renderSuggestedProducts(excludeId) {
@@ -1495,7 +1556,9 @@
                 <div class="product-card ${outOfStock ? 'out-of-stock-layer' : ''}" onclick="navigateToProduct('${p.id}')">
                     ${hasDiscount ? `<div class="discount-badge">${Math.round(((price-discount)/price)*100)}%</div>` : ''}
                     <div class="product-img">${imgHtml}</div>
-                    <h3 class="product-title">${p.name}</h3>
+                    <h3 class="product-title">
+                        <a href="?id=${p.id}" onclick="event.preventDefault(); event.stopPropagation(); navigateToProduct('${p.id}')" style="color: inherit; text-decoration: none;">${p.name}</a>
+                    </h3>
                     <div class="price-section">
                         <div class="current-price">${finalPrice.toLocaleString('fa-IR')} <span style="font-size:0.8rem; font-weight:normal;">تومان</span></div>
                         ${hasDiscount ? `<div class="old-price">${price.toLocaleString('fa-IR')}</div>` : ''}
@@ -1611,7 +1674,9 @@
                     <div class="product-img">
                         ${imgHtml}
                     </div>
-                    <h3 class="product-title">${p.name}</h3>
+                    <h3 class="product-title">
+                        <a href="?id=${p.id}" onclick="event.preventDefault(); event.stopPropagation(); navigateToProduct('${p.id}')" style="color: inherit; text-decoration: none;">${p.name}</a>
+                    </h3>
 
                     <div class="price-section">
                         <div class="current-price">${finalPrice.toLocaleString('fa-IR')} <span style="font-size:0.8rem; font-weight:normal;">تومان</span></div>
