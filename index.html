@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -485,8 +485,12 @@
 
         /* ========== آیکون‌های شناور شبکه‌های اجتماعی ========== */
         .floating-socials {
-            position: fixed; right: 20px; bottom: 130px; z-index: 998;
+            position: fixed; right: 20px; bottom: 25px; z-index: 998;
             display: flex; flex-direction: column; gap: 18px;
+            transition: opacity 0.6s ease, bottom 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .floating-socials.cart-active {
+            bottom: 120px; /* برای قرار گرفتن بالای نوار سبد خرید */
         }
         .social-float-btn {
             width: 55px; height: 55px; border-radius: 50%;
@@ -552,7 +556,8 @@
             .add-to-cart-btn { padding: 0.8rem; font-size: 0.85rem; border-radius: 12px; }
             .discount-badge { font-size: 0.8rem; padding: 0.2rem 0.5rem; top: 10px; right: 10px; border-radius: 4px;}
             
-            .floating-socials { bottom: 130px; right: 15px; }
+            .floating-socials { bottom: 25px; right: 15px; }
+            .floating-socials.cart-active { bottom: 115px; }
             .social-float-btn { width: 45px; height: 45px; font-size: 1.4rem;}
         }
 
@@ -922,6 +927,42 @@
             <div class="category-carousel-wrapper" id="category-carousel-container">
                 <button class="carousel-btn right-btn" onclick="scrollCarousel(1)"><i class="fas fa-chevron-right"></i></button>
                 <div class="category-carousel" id="categoryCarousel">
+                    <a href="?id=asal-va-zaferan" onclick="navigateToCategory('asal-va-zaferan', event)" class="category-item">
+                        <div class="category-img"><img src="image/عسل.jpg" alt="عسل و زعفران"></div>
+                        <span class="category-name">عسل و زعفران</span>
+                    </a>
+                    <a href="?id=Pakhayeekhtesasi" onclick="navigateToCategory('Pakhayeekhtesasi', event)" class="category-item">
+                        <div class="category-img"><img src="image/پک.jpg" alt="پک های اختصاصی"></div>
+                        <span class="category-name">پک های اختصاصی</span>
+                    </a>
+                    <a href="?id=Arayeshivabehdashti" onclick="navigateToCategory('Arayeshivabehdashti', event)" class="category-item">
+                        <div class="category-img"><img src="image/آرایشی و بهداشتی.jpg" alt="آرایشی و بهداشتی"></div>
+                        <span class="category-name">آرایشی و بهداشتی</span>
+                    </a>
+                    <a href="?id=Giyahandaroi" onclick="navigateToCategory('Giyahandaroi', event)" class="category-item">
+                        <div class="category-img"><img src="image/گیاهان-دارویی.jpg" alt="گیاهان دارویی"></div>
+                        <span class="category-name">گیاهان دارویی</span>
+                    </a>
+                    <a href="?id=khoshkbar" onclick="navigateToCategory('khoshkbar', event)" class="category-item">
+                        <div class="category-img"><img src="image/خشکبار.jpg" alt="خشکبار"></div>
+                        <span class="category-name">خشکبار</span>
+                    </a>
+                    <a href="?id=araghijat" onclick="navigateToCategory('araghijat', event)" class="category-item">
+                        <div class="category-img"><img src="image/عرقیجات.jpg" alt="عرقیجات"></div>
+                        <span class="category-name">عرقیجات</span>
+                    </a>
+                    <a href="?id=roghan" onclick="navigateToCategory('roghan', event)" class="category-item">
+                        <div class="category-img"><img src="image/روغن.jpg" alt="روغن"></div>
+                        <span class="category-name">روغن</span>
+                    </a>
+                    <a href="?id=damnoosh" onclick="navigateToCategory('damnoosh', event)" class="category-item">
+                        <div class="category-img"><img src="image/دمنوش.jpg" alt="دمنوش"></div>
+                        <span class="category-name">دمنوش</span>
+                    </a>
+                    <a href="?id=shireh" onclick="navigateToCategory('shireh', event)" class="category-item">
+                        <div class="category-img"><img src="image/شیره.jpg" alt="شیره"></div>
+                        <span class="category-name">شیره</span>
+                    </a>
                     <a href="?id=adviyeh" onclick="navigateToCategory('adviyeh', event)" class="category-item">
                         <div class="category-img"><img src="image/ادویه.jpg" alt="ادویه"></div>
                         <span class="category-name">ادویه</span>
@@ -930,33 +971,9 @@
                         <div class="category-img"><img src="image/چاشنی.jpg" alt="چاشنی"></div>
                         <span class="category-name">چاشنی</span>
                     </a>
-                    <a href="?id=khoshkbar" onclick="navigateToCategory('khoshkbar', event)" class="category-item">
-                        <div class="category-img"><img src="image/خشکبار.jpg" alt="خشکبار"></div>
-                        <span class="category-name">خشکبار</span>
-                    </a>
-                    <a href="?id=damnoosh" onclick="navigateToCategory('damnoosh', event)" class="category-item">
-                        <div class="category-img"><img src="image/دمنوش.jpg" alt="دمنوش"></div>
-                        <span class="category-name">دمنوش</span>
-                    </a>
-                    <a href="?id=roghan" onclick="navigateToCategory('roghan', event)" class="category-item">
-                        <div class="category-img"><img src="image/روغن.jpg" alt="روغن"></div>
-                        <span class="category-name">روغن</span>
-                    </a>
-                    <a href="?id=araghijat" onclick="navigateToCategory('araghijat', event)" class="category-item">
-                        <div class="category-img"><img src="image/عرقیجات.jpg" alt="عرقیجات"></div>
-                        <span class="category-name">عرقیجات</span>
-                    </a>
-                    <a href="?id=shireh" onclick="navigateToCategory('shireh', event)" class="category-item">
-                        <div class="category-img"><img src="image/شیره.jpg" alt="شیره"></div>
-                        <span class="category-name">شیره</span>
-                    </a>
                     <a href="?id=daneh-va-tokhm" onclick="navigateToCategory('daneh-va-tokhm', event)" class="category-item">
                         <div class="category-img"><img src="image/بذریجات.jpg" alt="دانه و تخم"></div>
                         <span class="category-name">دانه و تخم</span>
-                    </a>
-                    <a href="?id=asal-va-zaferan" onclick="navigateToCategory('asal-va-zaferan', event)" class="category-item">
-                        <div class="category-img"><img src="image/عسل.jpg" alt="عسل و زعفران"></div>
-                        <span class="category-name">عسل و زعفران</span>
                     </a>
                 </div>
                 <button class="carousel-btn left-btn" onclick="scrollCarousel(-1)"><i class="fas fa-chevron-left"></i></button>
@@ -1194,7 +1211,10 @@
             'araghijat': { name: 'عرقیجات', seo: 'بهترین عرقیجات گیاهی سنتی و خالص. گلاب، عرق نعنا و عرقیات درمانی با بالاترین غلظت و کیفیت.' },
             'shireh': { name: 'شیره', seo: 'خرید شیره انگور، خرما، توت و شیره میکس طبیعی. بمب انرژی و خون‌ساز فوق‌العاده برای تمام سنین.' },
             'daneh-va-tokhm': { name: 'دانه و تخم', seo: 'انواع دانه‌های مغذی و بذریجات گیاهی. دانه چیا، کینوا، تخم شربتی و دانه‌های ارگانیک سرشار از ویتامین.' },
-            'asal-va-zaferan': { name: 'عسل و زعفران', seo: 'خرید عسل طبیعی کوهستان و زعفران اصل قائنات. با برگه آزمایش و تضمین خلوص ۱۰۰ درصدی.' }
+            'asal-va-zaferan': { name: 'عسل و زعفران', seo: 'خرید عسل طبیعی کوهستان و زعفران اصل قائنات. با برگه آزمایش و تضمین خلوص ۱۰۰ درصدی.' },
+            'Giyahandaroi': { name: 'گیاهان دارویی', seo: 'خرید انواع گیاهان دارویی کمیاب و کوهی. درمان طبیعی بیماری‌ها با مرغوب‌ترین و تازه‌ترین گیاهان دارویی ارگانیک و تضمین کیفیت.' },
+            'Arayeshivabehdashti': { name: 'آرایشی و بهداشتی', seo: 'خرید محصولات آرایشی و بهداشتی کاملا طبیعی و ارگانیک. مراقبت از پوست و مو با محصولات سالم و بدون مواد شیمیایی مضر.' },
+            'Pakhayeekhtesasi': { name: 'پک های اختصاصی', seo: 'خرید پک‌های هدیه و اختصاصی طبیعتی. مجموعه‌ای از بهترین محصولات ارگانیک با بسته‌بندی زیبا، مناسب برای هدیه به عزیزان شما.' }
         };
 
         window.onload = async () => {
@@ -1870,14 +1890,33 @@
             document.getElementById('cart-total-price').innerText = totalAmount.toLocaleString('fa-IR') + ' تومان';
             calculateFinalInvoice(); 
 
-            // بروزرسانی نوار ثابت سبد خرید پایین صفحه
+            // بروزرسانی نوار ثابت سبد خرید پایین صفحه و انیمیشن آیکون‌های شناور
             const stickyCart = document.getElementById('sticky-bottom-cart');
+            const floatingSocials = document.querySelector('.floating-socials');
+            
             if(cart.length > 0) {
+                // اگر قبلا نوار پایین نامرئی بوده (اولین محصول اضافه شده)
+                if (!stickyCart.classList.contains('visible')) {
+                    // محو شدن نرم آیکون ها
+                    floatingSocials.style.opacity = '0';
+                    // بعد از 2 ثانیه، کلاس تغییر ارتفاع اعمال شده و ظاهر میشوند
+                    setTimeout(() => {
+                        floatingSocials.classList.add('cart-active');
+                        floatingSocials.style.opacity = '1';
+                    }, 2000);
+                } else {
+                    // اگر نوار از قبل باز بوده، مطمئن میشویم جایگاه و وضوح درست است
+                    floatingSocials.classList.add('cart-active');
+                    floatingSocials.style.opacity = '1';
+                }
+
                 stickyCart.classList.add('visible');
                 document.getElementById('sbc-qty').innerText = totalQty;
                 document.getElementById('sbc-price').innerText = totalAmount.toLocaleString('fa-IR') + ' تومان';
             } else {
                 stickyCart.classList.remove('visible');
+                floatingSocials.classList.remove('cart-active');
+                floatingSocials.style.opacity = '1'; // بازگشت به حالت عادی
             }
         }
 
