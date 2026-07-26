@@ -192,12 +192,6 @@
             100% { transform: scale(1); }
         }
         .cart-badge.bump { animation: cartBump 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .fly-dot {
-            position: fixed; width: 18px; height: 18px; background: var(--primary);
-            border-radius: 50%; z-index: 9999; pointer-events: none;
-            box-shadow: 0 4px 10px rgba(5,150,105,0.5);
-            transition: top 0.7s cubic-bezier(0.5, 0, 0.2, 1), left 0.7s cubic-bezier(0.5, 0, 0.2, 1), transform 0.7s, opacity 0.7s;
-        }
 
         /* ========== Hero Section ========== */
         .hero {
@@ -468,13 +462,6 @@
         }
         .sp-btn-add:hover:not(:disabled) { background: var(--primary-dark); transform: translateY(-3px); }
         .sp-btn-add:disabled { background: #cbd5e1; cursor: not-allowed; box-shadow: none; }
-        
-        .sp-btn-back {
-            flex: 1; min-width: 140px; padding: 1.2rem 2rem; background: var(--surface); color: var(--text-dark);
-            border: 2px solid var(--border); border-radius: 16px; font-weight: 800; font-size: 1.1rem;
-            cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 0.5rem; text-decoration: none;
-        }
-        .sp-btn-back:hover { background: #e2e8f0; }
 
         /* استایل دکمه اشتراک گذاری جدید */
         .sp-btn-share {
@@ -497,7 +484,7 @@
 
         /* ========== آیکون‌های شناور شبکه‌های اجتماعی ========== */
         .floating-socials {
-            position: fixed; right: 20px; bottom: 30px; z-index: 998;
+            position: fixed; right: 20px; bottom: 90px; z-index: 998;
             display: flex; flex-direction: column; gap: 18px;
         }
         .social-float-btn {
@@ -551,7 +538,7 @@
             .add-to-cart-btn { padding: 0.8rem; font-size: 0.85rem; border-radius: 12px; }
             .discount-badge { font-size: 0.8rem; padding: 0.2rem 0.5rem; top: 10px; right: 10px; border-radius: 4px;}
             
-            .floating-socials { bottom: 20px; right: 15px; }
+            .floating-socials { bottom: 85px; right: 15px; }
             .social-float-btn { width: 45px; height: 45px; font-size: 1.4rem;}
         }
 
@@ -733,6 +720,28 @@
         .toast.show { transform: translateY(0) scale(1); opacity: 1; }
         .toast.success { border-right: 4px solid var(--primary-light); }
         .toast.error { border-right: 4px solid #ef4444; }
+
+        /* ========== نوار ثابت سبد خرید در پایین (جدید) ========== */
+        .sticky-bottom-cart {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);
+            border-top: 1px solid var(--border); box-shadow: 0 -5px 25px rgba(0,0,0,0.1);
+            padding: 1rem 5%; z-index: 999;
+            display: flex; justify-content: space-between; align-items: center;
+            transform: translateY(120%); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            padding-bottom: calc(1rem + env(safe-area-inset-bottom));
+        }
+        .sticky-bottom-cart.visible { transform: translateY(0); }
+        .sbc-details { display: flex; align-items: center; gap: 12px; }
+        .sbc-text { display: flex; flex-direction: column; }
+        .sbc-title { font-weight: 800; font-size: 1rem; color: var(--text-dark); }
+        .sbc-price { font-weight: 900; font-size: 1.1rem; color: var(--primary-dark); }
+        .sbc-btn {
+            background: var(--primary); color: white; border: none;
+            padding: 0.8rem 1.5rem; border-radius: 12px; font-weight: 800; font-size: 1rem;
+            cursor: pointer; box-shadow: 0 4px 15px rgba(5,150,105,0.3); transition: var(--transition);
+        }
+        .sbc-btn:hover { background: var(--primary-dark); transform: translateY(-2px); }
 
         /* ========== فوتر حرفه‌ای ========== */
         .site-footer {
@@ -968,6 +977,21 @@
         <div id="sp-suggestions"></div>
     </div>
 
+    <!-- ==================== نوار ثابت سبد خرید پایین صفحه ==================== -->
+    <div class="sticky-bottom-cart" id="sticky-bottom-cart" onclick="openCartSidebar()">
+        <div class="sbc-details">
+            <div style="position: relative;">
+                <i class="fas fa-shopping-basket" style="font-size: 2rem; color: var(--primary);"></i>
+                <span class="cart-badge" id="sbc-qty" style="top: -8px; right: -8px; font-size: 0.85rem; width: 24px; height: 24px;">0</span>
+            </div>
+            <div class="sbc-text">
+                <span class="sbc-title">سبد خرید شما</span>
+                <span class="sbc-price" id="sbc-price">0 تومان</span>
+            </div>
+        </div>
+        <button class="sbc-btn">تکمیل خرید <i class="fas fa-arrow-left"></i></button>
+    </div>
+
     <!-- ==================== سبد خرید کشویی ==================== -->
     <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
     <aside class="cart-sidebar" id="cartSidebar">
@@ -1109,7 +1133,7 @@
                 <p>با اطمینان و خیال آسوده خرید کنید.</p>
                 <div class="trust-badges">
                     <div class="trust-badge-box">
-                        <a referrerpolicy='origin' target='_blank' href='https://trustseal.enamad.ir/?id=7013722&Code=BHG2IY5iqhFAcGyNPuviJZklCc1MWqwX'><img referrerpolicy='origin' src='https://trustseal.enamad.ir/logo.aspx?id=7013722&Code=BHG2IY5iqhFAcGyNPuviJZklCc1MWqwX' alt='' style='cursor:pointer' code='BHG2IY5iqhFAcGyNPuviJZklCc1MWqwX'></a>
+                        <a referrerpolicy='origin' target='_blank' href='https://trustseal.enamad.ir/?id=762704&Code=BHG2IY5iqhFAcGyNPuviJZklCc1MWqwX'><img referrerpolicy='origin' src='https://trustseal.enamad.ir/logo.aspx?id=762704&Code=BHG2IY5iqhFAcGyNPuviJZklCc1MWqwX' alt='' style='cursor:pointer' code='BHG2IY5iqhFAcGyNPuviJZklCc1MWqwX'></a>
                     </div>
                     <div class="trust-badge-box" title="پرداخت امن زرین‌پال">
                         <img src="https://cdn.zarinpal.com/badges/trustLogo/1.svg" alt="درگاه امن زرین پال">
@@ -1152,10 +1176,8 @@
         };
 
         window.onload = async () => {
-            // قانون لودینگ: حداکثر 3 ثانیه برای استارتاپ 
-            let loaderTimeout = setTimeout(() => {
-                hideStartupLoader();
-            }, 3000);
+            // مخفی کردن سریع لودینگ برای بهبود سرعت بارگذاری صفحه
+            hideStartupLoader();
 
             const urlParams = new URLSearchParams(window.location.search);
             const authority = urlParams.get('Authority');
@@ -1202,10 +1224,6 @@
                 await fetchStoreData(null); 
             }
             updateCartUI();
-            
-            // اگر دیتا سریع لود شد، تایمر ۳ ثانیه‌ای را متوقف کرده و مخفی کن
-            clearTimeout(loaderTimeout);
-            hideStartupLoader();
         };
 
         function hideStartupLoader() {
@@ -1501,9 +1519,6 @@
                             <button class="sp-btn-share" onclick="shareProduct('${prod.id}', '${prod.name}', ${finalPrice})">
                                 <i class="fas fa-share-nodes"></i> اشتراک‌گذاری
                             </button>
-                            <button class="sp-btn-back" onclick="navigateToHome()">
-                                <i class="fas fa-arrow-right"></i> فروشگاه
-                            </button>
                         </div>
                     </div>
                 </div>
@@ -1518,10 +1533,10 @@
             const shareText = `محصول: ${name}\nقیمت: ${price.toLocaleString('fa-IR')} تومان\n\nلینک خرید آنلاین:\n${productUrl}`;
             
             if (navigator.share) {
+                // پارامتر url برای جلوگیری از دوبار درج شدن لینک حذف شد
                 navigator.share({
                     title: `خرید ${name}`,
-                    text: shareText,
-                    url: productUrl
+                    text: shareText
                 }).catch(console.error);
             } else {
                 navigator.clipboard.writeText(shareText).then(() => {
@@ -1717,39 +1732,14 @@
             else overlay.classList.remove('active');
         }
 
+        function openCartSidebar() {
+            document.getElementById('cartSidebar').classList.add('open');
+            document.getElementById('cartOverlay').classList.add('active');
+        }
+
         function addToCart(id, event) {
             const prod = products.find(p => p.id == id);
             if(!prod) return;
-            
-            if (event) {
-                const btn = event.currentTarget;
-                const cartIcon = document.querySelector('.fa-cart-shopping');
-                if (btn && cartIcon) {
-                    const dot = document.createElement('div');
-                    dot.className = 'fly-dot';
-                    const btnRect = btn.getBoundingClientRect();
-                    const cartRect = cartIcon.getBoundingClientRect();
-                    
-                    dot.style.left = (btnRect.left + btnRect.width / 2 - 9) + 'px';
-                    dot.style.top = (btnRect.top + btnRect.height / 2 - 9) + 'px';
-                    document.body.appendChild(dot);
-                    
-                    void dot.offsetWidth;
-                    
-                    dot.style.left = (cartRect.left + cartRect.width / 2 - 9) + 'px';
-                    dot.style.top = (cartRect.top + cartRect.height / 2 - 9) + 'px';
-                    dot.style.transform = 'scale(0.3)';
-                    dot.style.opacity = '0.2';
-                    
-                    setTimeout(() => {
-                        dot.remove();
-                        const badge = document.getElementById('cart-badge');
-                        badge.classList.remove('bump');
-                        void badge.offsetWidth;
-                        badge.classList.add('bump');
-                    }, 700);
-                }
-            }
             
             const price = (prod.discountPrice > 0 && prod.discountPrice < prod.price) ? prod.discountPrice : prod.price;
             const existing = cart.find(i => i.id == id);
@@ -1767,6 +1757,9 @@
                 showToast('محصول به سبد خرید اضافه شد.', 'success');
             }
             saveCart();
+            
+            // باز شدن خودکار سبد خرید پس از اضافه کردن کالا
+            openCartSidebar();
         }
 
         function changeQty(id, delta) {
@@ -1817,6 +1810,16 @@
             }
             document.getElementById('cart-total-price').innerText = totalAmount.toLocaleString('fa-IR') + ' تومان';
             calculateFinalInvoice(); 
+
+            // بروزرسانی نوار ثابت سبد خرید پایین صفحه
+            const stickyCart = document.getElementById('sticky-bottom-cart');
+            if(cart.length > 0) {
+                stickyCart.classList.add('visible');
+                document.getElementById('sbc-qty').innerText = totalQty;
+                document.getElementById('sbc-price').innerText = totalAmount.toLocaleString('fa-IR') + ' تومان';
+            } else {
+                stickyCart.classList.remove('visible');
+            }
         }
 
         // ================= Checkout Logic =================
@@ -1824,7 +1827,10 @@
         function closeModal(id) { document.getElementById(id).classList.remove('show'); }
         
         function openCheckout() {
-            toggleCart(); 
+            // مخفی کردن سایدبار هنگام باز کردن فرم تسویه
+            document.getElementById('cartSidebar').classList.remove('open');
+            document.getElementById('cartOverlay').classList.remove('active');
+            
             calculateFinalInvoice();
             openModal('checkoutModal');
         }
