@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -1191,7 +1191,7 @@
         };
 
         window.onload = async () => {
-            // ۱. تنظیم تایمر ۳ ثانیه‌ای به عنوان نیروی کمکی (اگر مرورگر گیر کرد)
+            // تنظیم زمان‌سنج برای مخفی کردن قطعی لودینگ سایت (حداکثر 3 ثانیه)
             let loaderTimeout = setTimeout(() => {
                 hideStartupLoader();
             }, 3000);
@@ -1201,7 +1201,7 @@
             const status = urlParams.get('Status');
             const urlId = urlParams.get('id');
 
-            // ۲. پردازش منطق مسیردهی بلافاصله (برای جلوگیری از نمایش ناخواسته هیرو و ساختار اصلی)
+            // 1. پردازش منطق مسیردهی قبل از واکشی اطلاعات
             if (urlId) {
                 if(CATEGORY_MAP[urlId]) {
                     // مسیر دسته‌بندی
@@ -1219,7 +1219,6 @@
                     // مسیر تک محصول
                     document.getElementById('main-store-view').style.display = 'none';
                     document.getElementById('single-product-view').style.display = 'block';
-                    // نمایش لودینگ اختصاصی و زیبای محصول دقیقاً در کادر محصول
                     document.getElementById('sp-content').innerHTML = `
                         <div class="elegant-loader-container" style="height: 50vh;">
                             <div class="soft-dots-loader"><span></span><span></span><span></span></div>
@@ -1230,17 +1229,13 @@
                 // مسیر اصلی (خانه)
                 document.getElementById('single-product-view').style.display = 'none';
                 document.getElementById('main-store-view').style.display = 'block';
-                if (document.getElementById('products-grid')) {
-                    document.getElementById('products-grid').innerHTML = '<div class="skel-card"><div class="skeleton skel-img-box"></div><div class="skeleton skel-title-box"></div><div class="skeleton skel-price-box"></div><div class="skeleton skel-btn-box"></div></div>'.repeat(6);
-                }
             }
 
-            // ۳. >> مخفی کردن فوری لودینگ کل سایت << 
-            // حالا که کادر محصول یا اسکلت‌ها در جای خود قرار گرفتند، لودینگ اصلی بلافاصله می‌رود!
+            // 2. پایان بارگذاری ساختار سایت -> مخفی کردن فوری لودینگ اصلی سایت (مستقل از دریافت محصولات)
             clearTimeout(loaderTimeout);
             hideStartupLoader();
 
-            // ۴. پردازش زرین پال (دارای لودینگ اختصاصی خود است)
+            // 3. پردازش زرین پال (در صورت وجود)
             if (authority && status) {
                 const pLoader = document.getElementById('payment-loader');
                 pLoader.style.display = 'flex';
@@ -1266,7 +1261,7 @@
                 setTimeout(() => pLoader.style.display = 'none', 2500);
             }
 
-            // ۵. درخواست اطلاعات از سرور دیتابیس (این پردازش در پس‌زمینه انجام می‌شود در حالی که کاربر اسکلت/لودینگ محصول را می‌بیند)
+            // 4. دریافت اطلاعات محصولات از سرور (در پس‌زمینه انجام می‌شود و کاربر کادرهای لودینگ اختصاصی را می‌بیند)
             if (urlId) {
                 if(CATEGORY_MAP[urlId]) {
                     await fetchStoreData(urlId); 
@@ -1281,7 +1276,7 @@
 
         function hideStartupLoader() {
             document.getElementById('startup-loader').style.display = 'none';
-            // برای اطمینان مضاعف از پنهان نماندن صفحه اصلی
+            // برای اطمینان مضاعف از پنهان نماندن صفحه اصلی در صورت عدم وجود شناسه
             const urlParams = new URLSearchParams(window.location.search);
             if(!urlParams.get('id') && document.getElementById('main-store-view').style.display === 'none') {
                 document.getElementById('main-store-view').style.display = 'block';
