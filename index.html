@@ -95,6 +95,7 @@
         
         body { 
             background: var(--bg); color: var(--text-dark); overflow-x: hidden; 
+            width: 100%; position: relative; -webkit-font-smoothing: antialiased;
             animation: fadeInPage 0.8s ease-out;
         }
         @keyframes fadeInPage {
@@ -148,11 +149,11 @@
         /* ========== Header ========== */
         .main-header {
             position: sticky; top: 0; z-index: 100;
-            background: rgba(255,255,255,0.9); backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            background: rgba(255,255,255,0.98);
             box-shadow: 0 4px 25px rgba(0,0,0,0.04);
             border-bottom: 1px solid rgba(5, 150, 105, 0.08);
             padding: 1rem 5%; display: flex; align-items: center; justify-content: space-between;
+            transform: translateZ(0); -webkit-transform: translateZ(0); will-change: transform;
         }
         .header-logo {
             display: flex; align-items: center; gap: 10px;
@@ -230,8 +231,8 @@
         }
         .btn-primary:hover { background: var(--primary-dark); transform: translateY(-4px); box-shadow: 0 15px 30px rgba(5, 150, 105, 0.5); }
         .btn-outline {
-            background: transparent; border: 2px solid white; color: white;
-            backdrop-filter: blur(8px); cursor: pointer;
+            background: rgba(255, 255, 255, 0.1); border: 2px solid white; color: white;
+            cursor: pointer;
         }
         .btn-outline:hover { background: white; color: var(--primary-dark); transform: translateY(-4px); }
 
@@ -492,7 +493,7 @@
             display: flex; align-items: center; justify-content: center;
             color: white; font-size: 1.8rem; text-decoration: none;
             box-shadow: 0 8px 25px rgba(0,0,0,0.15); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative; overflow: hidden; backdrop-filter: blur(5px);
+            position: relative; overflow: hidden; transform: translateZ(0);
         }
         .social-float-btn:hover { transform: translateY(-6px) scale(1.1); box-shadow: 0 12px 30px rgba(0,0,0,0.25); color: white; }
         
@@ -737,14 +738,20 @@
         /* ========== نوار ثابت سبد خرید در پایین (جدید) ========== */
         .sticky-bottom-cart {
             position: fixed; bottom: 0; left: 0; width: 100%;
-            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.98); 
             border-top: 1px solid var(--border); box-shadow: 0 -5px 25px rgba(0,0,0,0.1);
             padding: 1rem 5%; z-index: 999;
             display: flex; justify-content: space-between; align-items: center;
-            transform: translateY(120%); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: translateY(120%) translateZ(0); 
+            -webkit-transform: translateY(120%) translateZ(0);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             padding-bottom: calc(1rem + env(safe-area-inset-bottom));
+            will-change: transform;
         }
-        .sticky-bottom-cart.visible { transform: translateY(0); }
+        .sticky-bottom-cart.visible { 
+            transform: translateY(0) translateZ(0); 
+            -webkit-transform: translateY(0) translateZ(0);
+        }
         .sbc-details { display: flex; align-items: center; gap: 12px; }
         .sbc-text { display: flex; flex-direction: column; }
         .sbc-title { font-weight: 800; font-size: 1rem; color: var(--text-dark); }
@@ -1191,7 +1198,7 @@
         };
 
         window.onload = async () => {
-            // تنظیم زمان‌سنج برای مخفی کردن قطعی لودینگ در صورت کندی شدید (حداکثر 3 ثانیه)
+            // ۱. تنظیم تایمر ۳ ثانیه‌ای به عنوان نیروی کمکی (اگر مرورگر گیر کرد)
             let loaderTimeout = setTimeout(() => {
                 hideStartupLoader();
             }, 3000);
@@ -1201,7 +1208,7 @@
             const status = urlParams.get('Status');
             const urlId = urlParams.get('id');
 
-            // پردازش منطق مسیردهی قبل از رندر شدن هر چیز (برای جلوگیری از نمایش ناخواسته هیرو)
+            // ۲. پردازش منطق مسیردهی بلافاصله (برای جلوگیری از نمایش ناخواسته هیرو و ساختار اصلی)
             if (urlId) {
                 if(CATEGORY_MAP[urlId]) {
                     // مسیر دسته‌بندی
@@ -1219,6 +1226,7 @@
                     // مسیر تک محصول
                     document.getElementById('main-store-view').style.display = 'none';
                     document.getElementById('single-product-view').style.display = 'block';
+                    // نمایش لودینگ اختصاصی و زیبای محصول دقیقاً در کادر محصول
                     document.getElementById('sp-content').innerHTML = `
                         <div class="elegant-loader-container" style="height: 50vh;">
                             <div class="soft-dots-loader"><span></span><span></span><span></span></div>
@@ -1229,9 +1237,17 @@
                 // مسیر اصلی (خانه)
                 document.getElementById('single-product-view').style.display = 'none';
                 document.getElementById('main-store-view').style.display = 'block';
+                if (document.getElementById('products-grid')) {
+                    document.getElementById('products-grid').innerHTML = '<div class="skel-card"><div class="skeleton skel-img-box"></div><div class="skeleton skel-title-box"></div><div class="skeleton skel-price-box"></div><div class="skeleton skel-btn-box"></div></div>'.repeat(6);
+                }
             }
 
-            // پردازش زرین پال
+            // ۳. >> مخفی کردن فوری لودینگ کل سایت << 
+            // حالا که کادر محصول یا اسکلت‌ها در جای خود قرار گرفتند، لودینگ اصلی بلافاصله می‌رود!
+            clearTimeout(loaderTimeout);
+            hideStartupLoader();
+
+            // ۴. پردازش زرین پال (دارای لودینگ اختصاصی خود است)
             if (authority && status) {
                 const pLoader = document.getElementById('payment-loader');
                 pLoader.style.display = 'flex';
@@ -1257,7 +1273,7 @@
                 setTimeout(() => pLoader.style.display = 'none', 2500);
             }
 
-            // درخواست اطلاعات از سرور
+            // ۵. درخواست اطلاعات از سرور دیتابیس (این پردازش در پس‌زمینه انجام می‌شود در حالی که کاربر اسکلت/لودینگ محصول را می‌بیند)
             if (urlId) {
                 if(CATEGORY_MAP[urlId]) {
                     await fetchStoreData(urlId); 
@@ -1268,15 +1284,11 @@
                 await fetchStoreData(null); 
             }
             updateCartUI();
-
-            // پس از اتمام تمامی کارها، اگر زیر 3 ثانیه بود، لودینگ را دستی ببند
-            clearTimeout(loaderTimeout);
-            hideStartupLoader();
         };
 
         function hideStartupLoader() {
             document.getElementById('startup-loader').style.display = 'none';
-            // برای اطمینان مضاعف از پنهان نماندن صفحه اصلی در صورت عدم وجود شناسه
+            // برای اطمینان مضاعف از پنهان نماندن صفحه اصلی
             const urlParams = new URLSearchParams(window.location.search);
             if(!urlParams.get('id') && document.getElementById('main-store-view').style.display === 'none') {
                 document.getElementById('main-store-view').style.display = 'block';
@@ -1766,19 +1778,6 @@
             });
         }
 
-        window.addEventListener('scroll', () => {
-            if(isSearchMode || isFetchingNext || currentIndex >= displayList.length) return;
-            if(document.getElementById('single-product-view').style.display === 'block') return;
-
-            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500) {
-                document.getElementById('loading-more').style.display = 'block';
-                setTimeout(() => { 
-                    appendNextBatch();
-                    document.getElementById('loading-more').style.display = 'none';
-                }, 300);
-            }
-        });
-
         function openImageModal(src) {
             document.getElementById('enlarged-img').src = src;
             openModal('imageModal');
@@ -1999,6 +1998,28 @@
             const scrollAmount = 200; 
             carousel.scrollBy({ left: direction * -scrollAmount, behavior: 'smooth' });
         }
+        
+        // بهینه سازی بسیار پیشرفته رویداد اسکرول برای جلوگیری از قطعی رندر 
+        let scrollTicking = false;
+        window.addEventListener('scroll', () => {
+            if(isSearchMode || isFetchingNext || currentIndex >= displayList.length) return;
+            if(document.getElementById('single-product-view').style.display === 'block') return;
+
+            if (!scrollTicking) {
+                window.requestAnimationFrame(() => {
+                    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500) {
+                        isFetchingNext = true; 
+                        document.getElementById('loading-more').style.display = 'block';
+                        setTimeout(() => { 
+                            appendNextBatch();
+                            document.getElementById('loading-more').style.display = 'none';
+                        }, 300);
+                    }
+                    scrollTicking = false;
+                });
+                scrollTicking = true;
+            }
+        });
     </script>
 </body>
 </html>
