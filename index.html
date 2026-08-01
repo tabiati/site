@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -627,6 +628,19 @@
             display: flex; justify-content: space-between; align-items: center;
             font-size: 1.3rem; font-weight: 800; margin-bottom: 1.5rem; color: var(--text-dark);
         }
+        
+        /* استایل دکمه جدید به اشتراک گذاری سبد خرید */
+        .share-cart-btn {
+            width: 100%; padding: 1.2rem; background: var(--surface);
+            color: var(--primary-dark); border: 2px solid var(--primary-light); border-radius: 16px;
+            font-weight: 800; font-size: 1.1rem; cursor: pointer; transition: var(--transition);
+            display: flex; justify-content: center; align-items: center; gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .share-cart-btn:hover {
+            background: var(--primary-light); color: white; transform: translateY(-3px); box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+        }
+
         .checkout-btn {
             width: 100%; padding: 1.2rem; background: var(--primary);
             color: white; border: none; border-radius: 16px;
@@ -1052,6 +1066,9 @@
                 <span>مبلغ قابل پرداخت:</span>
                 <span id="cart-total-price" style="color:var(--primary-dark);">0 تومان</span>
             </div>
+            <button class="share-cart-btn" id="btn-share-cart" onclick="shareCartLink()">
+                <i class="fas fa-link"></i> کپی لینک این سبد خرید
+            </button>
             <button class="checkout-btn" id="btn-checkout-cart" onclick="openCheckout()">
                 <i class="fas fa-check-circle"></i> ادامه جهت تسویه حساب
             </button>
@@ -1297,7 +1314,9 @@
                         }
                     } catch(e) { showToast('خطای ارتباط با سرور!', 'error'); }
                 } else {
-                    showToast('پرداخت لغو شد.', 'error');
+                    showToast('پرداخت لغو شد. در حال بازگشت موجودی...', 'error');
+                    // ارسال درخواست به سرور برای بازگرداندن موجودی قفل شده
+                    fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action: 'cancelOrder', authority: authority }) }).catch(e => console.log(e));
                 }
                 window.history.replaceState({}, document.title, window.location.pathname);
                 setTimeout(() => pLoader.style.display = 'none', 2500);
@@ -1537,6 +1556,39 @@
                 products = data.products || [];
                 shippingMethods = data.shipping || [];
                 populateShippingDropdown();
+
+                // بررسی اشتراک گذاری سبد خرید و رمزگشایی در صورت وجود لینک مربوطه
+                const urlParams = new URLSearchParams(window.location.search);
+                const sharedCart = urlParams.get('shared_cart');
+                if (sharedCart) {
+                    try {
+                        const decoded = JSON.parse(decodeURIComponent(atob(sharedCart)));
+                        if (Array.isArray(decoded)) {
+                            let mergedCart = [];
+                            decoded.forEach(item => {
+                                const p = products.find(prod => prod.id == item.id);
+                                if (p && p.stock > 0) {
+                                    let validQty = Math.min(item.qty, p.stock);
+                                    let finalPrice = (p.discountPrice > 0 && p.discountPrice < p.price) ? p.discountPrice : p.price;
+                                    mergedCart.push({ id: p.id, name: p.name, price: finalPrice, qty: validQty, stock: p.stock });
+                                }
+                            });
+                            if (mergedCart.length > 0) {
+                                cart = mergedCart;
+                                saveCart();
+                                showToast('سبد خرید اشتراکی با موفقیت بارگذاری شد.', 'success');
+                                openCartSidebar();
+                            }
+                        }
+                    } catch(e) {
+                        console.error('Invalid cart link', e);
+                    }
+                    
+                    // حذف پارامتر shared_cart از url تا در صورت رفرش مجدداً اضافه نشود
+                    const currentUrl = new URL(window.location);
+                    currentUrl.searchParams.delete('shared_cart');
+                    window.history.replaceState({}, document.title, currentUrl.pathname + currentUrl.search);
+                }
 
                 // پس از دریافت داده‌ها، سئو را مجدد با محصولات دریافت شده آپدیت می‌کنیم
                 if(catId && !prodId) {
@@ -1868,6 +1920,29 @@
             updateCartUI();
         }
 
+        // تابع تولید و کپی کردن لینک اشتراک گذاری سبد خرید
+        function shareCartLink() {
+            if(cart.length === 0) { 
+                showToast('سبد خرید خالی است.', 'error'); 
+                return; 
+            }
+            const minimalCart = cart.map(i => ({ id: i.id, qty: i.qty }));
+            const cartStr = JSON.stringify(minimalCart);
+            // رمزگذاری به شکل امن و مقاوم در برابر کاراکترهای یونیکد
+            const encoded = btoa(encodeURIComponent(cartStr));
+            const link = window.location.origin + window.location.pathname + "?shared_cart=" + encoded;
+            
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(link).then(() => {
+                    showToast('لینک سبد خرید کپی شد. می‌توانید آن را برای دوستان بفرستید.', 'success');
+                }).catch(() => {
+                    showToast('خطا در کپی لینک.', 'error');
+                });
+            } else {
+                prompt("لینک سبد خرید شما:", link);
+            }
+        }
+
         function updateCartUI() {
             let totalQty = cart.reduce((sum, i) => sum + i.qty, 0);
             document.getElementById('cart-badge').innerText = totalQty;
@@ -1878,8 +1953,10 @@
             if(cart.length === 0) {
                 container.innerHTML = '<div style="text-align:center; color:var(--text-muted); margin-top:80px;"><i class="fas fa-shopping-basket fa-4x" style="opacity:0.2; margin-bottom:20px;"></i><p style="font-size:1.1rem; font-weight:700;">سبد خرید شما خالی است.</p></div>';
                 document.getElementById('btn-checkout-cart').disabled = true;
+                document.getElementById('btn-share-cart').style.display = 'none';
             } else {
                 document.getElementById('btn-checkout-cart').disabled = false;
+                document.getElementById('btn-share-cart').style.display = 'flex';
                 container.innerHTML = '';
                 cart.forEach(i => {
                     totalAmount += (i.price * i.qty);
