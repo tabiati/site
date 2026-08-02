@@ -27,6 +27,7 @@
     <link rel="icon" type="image/png" href="https://tabiati.ir/logo.png">
 
     <!-- ==================== اولویت‌بندی رندر (Instant CSS) ==================== -->
+    <!-- این بخش باعث میشود صفحه سفید نشود و لودینگ بلافاصله در کسری از ثانیه اجرا شود -->
     <style id="instant-loader-css">
         body { margin: 0; padding: 0; }
         /* ========== لودینگ ابتدایی و امنیتی پرداخت ========== */
@@ -38,8 +39,8 @@
             margin: 0; padding: 0;
         }
         #startup-loader {
-            display: flex; 
-            z-index: 99999; 
+            display: flex; /* لودینگ استارتاپ در ابتدا فعال است */
+            z-index: 99999; /* بالاترین لایه ممکن */
         }
         .spinner-bank { 
             border: 4px solid #e2e8f0; border-top: 4px solid #059669; 
@@ -48,6 +49,7 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
+        /* لودینگ چشمک‌زن نرم و جذاب */
         .soft-dots-loader {
             display: flex;
             gap: 12px;
@@ -59,7 +61,7 @@
             width: 18px;
             height: 18px;
             border-radius: 50%;
-            background-color: #059669; 
+            background-color: #059669; /* رنگ مستقیم جایگزین متغیر برای لود فوری */
             animation: softGlowBlink 1.4s infinite cubic-bezier(0.2, 0.68, 0.18, 1.08) both;
         }
         .soft-dots-loader span:nth-child(1) { animation-delay: -0.32s; }
@@ -72,7 +74,7 @@
         }
     </style>
 
-    <!-- ==================== پیش‌اتصال (Preconnect) ==================== -->
+    <!-- ==================== پیش‌اتصال (Preconnect) برای افزایش چند برابری سرعت لود ==================== -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
@@ -1108,14 +1110,14 @@
                 
                 <!-- تغییر یافته به فرمت کشویی داینامیک آمادست -->
                 <div class="form-grid-2">
-                    <div class="form-group">
+                    <div class="form-group" style="position: relative;">
                         <label>استان:</label>
                         <select id="cust_province" class="form-control" required onchange="handleProvinceChange()">
                             <option value="">در حال بارگذاری استان‌ها...</option>
                         </select>
                         <i class="fas fa-circle-notch input-loader" id="prov-loader"></i>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" style="position: relative;">
                         <label>شهر:</label>
                         <select id="cust_city" class="form-control" required onchange="handleCityChange()">
                             <option value="">ابتدا استان را انتخاب کنید</option>
