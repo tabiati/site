@@ -1618,7 +1618,7 @@
             }
         }
 
-        // ================= توابع پستکس (دریافت استان/شهر و هزینه) =================
+        // ================= توابع پستکس (دریافت استان/شهر و هزینه) با الگوریتم کاملاً ضد گلوله =================
         async function fetchProvinces() {
             try {
                 let res = await fetch(GAS_URL + "?action=getPostexProvinces");
@@ -1628,7 +1628,11 @@
                     const provinceSelect = document.getElementById('cust_province');
                     provinceSelect.innerHTML = '<option value="">انتخاب استان...</option>';
                     allProvinces.forEach(prov => {
-                        provinceSelect.innerHTML += `<option value="${prov.code}" data-name="${prov.name}">${prov.name}</option>`;
+                        // دریافت مقدار از کلیدهای متفاوت جهت جلوگیری از خطای undefined
+                        let pId = prov.id || prov.Id || prov.provinceId || prov.province_id || prov.code || prov.Code || prov.provinceCode;
+                        let pName = prov.name || prov.Name || prov.provinceName || prov.province_name || prov.title || prov.Title;
+                        
+                        provinceSelect.innerHTML += `<option value="${pId}" data-name="${pName}">${pName}</option>`;
                     });
                 }
             } catch(e) {
@@ -1658,7 +1662,11 @@
                 if(data.status === 'success') {
                     citySelect.innerHTML = '<option value="">انتخاب شهر...</option>';
                     data.data.forEach(city => {
-                        citySelect.innerHTML += `<option value="${city.code}" data-name="${city.name}">${city.name}</option>`;
+                        // دریافت مقدار از کلیدهای متفاوت جهت جلوگیری از خطای undefined
+                        let cId = city.id || city.Id || city.cityId || city.city_id || city.code || city.Code || city.cityCode;
+                        let cName = city.name || city.Name || city.cityName || city.city_name || city.title || city.Title;
+                        
+                        citySelect.innerHTML += `<option value="${cId}" data-name="${cName}">${cName}</option>`;
                     });
                     citySelect.disabled = false;
                 }
@@ -1698,9 +1706,13 @@
                     activePostexQuotes = data.quotes;
                     shippingSelect.innerHTML = '';
                     data.quotes.forEach(quote => {
-                        const finalCost = quote.price_with_tax || quote.price;
+                        // الگوریتم ضد گلوله برای قیمت و نوع پست
+                        const finalCost = quote.price_with_tax || quote.price || quote.amount || quote.total_price || quote.total_amount || 0;
+                        let cCode = (quote.courier && quote.courier.courier_code) ? quote.courier.courier_code : (quote.courier_code || 'پست');
+                        let sType = (quote.courier && quote.courier.service_type) ? quote.courier.service_type : (quote.service_type || 'پیشتاز');
+                        
                         // ساختار value را ترکیبی میذاریم تا بعدا در سمت سرور راحت پارس شود
-                        shippingSelect.innerHTML += `<option value="${quote.courier.courier_code}|${quote.courier.service_type}|${finalCost}" data-cost="${finalCost}">${quote.courier.courier_code} - ${quote.courier.service_type} (هزینه: ${finalCost.toLocaleString('fa-IR')} تومان)</option>`;
+                        shippingSelect.innerHTML += `<option value="${cCode}|${sType}|${finalCost}" data-cost="${finalCost}">${cCode} - ${sType} (هزینه: ${finalCost.toLocaleString('fa-IR')} تومان)</option>`;
                     });
                     shippingSelect.disabled = false;
                     submitBtn.disabled = false;
