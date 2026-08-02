@@ -27,7 +27,6 @@
     <link rel="icon" type="image/png" href="https://tabiati.ir/logo.png">
 
     <!-- ==================== اولویت‌بندی رندر (Instant CSS) ==================== -->
-    <!-- این بخش باعث میشود صفحه سفید نشود و لودینگ بلافاصله در کسری از ثانیه اجرا شود -->
     <style id="instant-loader-css">
         body { margin: 0; padding: 0; }
         /* ========== لودینگ ابتدایی و امنیتی پرداخت ========== */
@@ -673,21 +672,15 @@
         .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.2rem; }
         @media (max-width: 480px) { .form-grid-2 { grid-template-columns: 1fr; gap: 0; } }
 
-        .form-group { margin-bottom: 1.2rem; position: relative;}
+        .form-group { margin-bottom: 1.2rem; }
         .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 700; color: var(--text-dark); font-size: 0.95rem;}
         .form-control {
             width: 100%; padding: 1rem 1.2rem; border: 2px solid var(--border);
             border-radius: 14px; font-size: 1rem; outline: none;
             transition: var(--transition); background: var(--surface); color: var(--text-dark);
-            appearance: auto;
         }
         .form-control:focus { border-color: var(--primary-light); background: white; box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1); }
-
-        /* لودینگ کوچک برای فرم */
-        .input-loader {
-            position: absolute; left: 15px; top: 40px; color: var(--primary);
-            font-size: 1.2rem; animation: spin 1s linear infinite; display: none;
-        }
+        .form-control:disabled { background: #e2e8f0; color: #94a3b8; cursor: not-allowed; }
 
         #imageModal .modal-dialog {
             background: transparent; box-shadow: none; padding: 0; max-width: 700px;
@@ -1108,21 +1101,20 @@
                     <input type="tel" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')" id="cust_phone" class="form-control" required placeholder="09..." maxlength="11">
                 </div>
                 
-                <!-- تغییر یافته به فرمت کشویی داینامیک آمادست -->
                 <div class="form-grid-2">
-                    <div class="form-group" style="position: relative;">
+                    <div class="form-group">
                         <label>استان:</label>
-                        <select id="cust_province" class="form-control" required onchange="handleProvinceChange()">
-                            <option value="">در حال بارگذاری استان‌ها...</option>
+                        <!-- تبدیل input به select برای دریافت کد استان پستکس -->
+                        <select id="cust_province" class="form-control" required onchange="loadCities()">
+                            <option value="">در حال دریافت لیست استان‌ها...</option>
                         </select>
-                        <i class="fas fa-circle-notch input-loader" id="prov-loader"></i>
                     </div>
-                    <div class="form-group" style="position: relative;">
+                    <div class="form-group">
                         <label>شهر:</label>
-                        <select id="cust_city" class="form-control" required onchange="handleCityChange()">
+                        <!-- تبدیل input به select برای دریافت کد شهر پستکس -->
+                        <select id="cust_city" class="form-control" required onchange="fetchPostexQuotes()" disabled>
                             <option value="">ابتدا استان را انتخاب کنید</option>
                         </select>
-                        <i class="fas fa-circle-notch input-loader" id="city-loader"></i>
                     </div>
                 </div>
 
@@ -1132,8 +1124,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label>کد پستی (۱۰ رقمی):</label>
-                    <input type="tel" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')" id="cust_postal" class="form-control" required placeholder="کد پستی 10 رقمی معتبر الزامی است" maxlength="10">
+                    <label>کد پستی (اختیاری):</label>
+                    <input type="tel" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')" id="cust_postal" class="form-control" placeholder="کد پستی 10 رقمی" maxlength="10">
                 </div>
                 
                 <div class="form-group">
@@ -1141,20 +1133,15 @@
                     <textarea id="cust_note" class="form-control" rows="2" placeholder="اگر توضیح یا درخواست خاصی در مورد سفارش دارید بنویسید..."></textarea>
                 </div>
 
-                <!-- این بخش حالا توسط آمادست پر خواهد شد -->
-                <div class="form-group" style="position: relative;">
-                    <label>روش ارسال (بر اساس شهر مقصد و وزن):</label>
+                <div class="form-group">
+                    <label>روش ارسال (محاسبه هوشمند بر اساس مقصد):</label>
+                    <!-- این لیست دیگر ایستا نیست و توسط استعلام از پستکس پر می‌شود -->
                     <select id="cust_shipping" class="form-control" required onchange="calculateFinalInvoice()">
                         <option value="">لطفا استان و شهر را انتخاب کنید</option>
                     </select>
-                    <i class="fas fa-circle-notch input-loader" id="ship-loader"></i>
                 </div>
 
                 <div style="background:var(--surface); border:1px dashed var(--primary-light); padding:15px; border-radius:14px; margin-bottom:1.5rem;">
-                    <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:0.95rem;">
-                        <span>جمع وزن مرسوله:</span>
-                        <strong id="invoice-cart-weight">0 گرم</strong>
-                    </div>
                     <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:0.95rem;">
                         <span>جمع سبد خرید:</span>
                         <strong id="invoice-cart-total">0 تومان</strong>
@@ -1238,7 +1225,8 @@
         const GAS_URL = "https://script.google.com/macros/s/AKfycbwYokyKy6DH7lhgIPYY292oJ-4u7Go9Nn2BfHgV8W_CaqM1jhk0Md-iBut638iOFuF0/exec"; 
         
         let products = [];
-        let amadastProvinces = []; // کش برای استان‌ها
+        let shippingMethods = []; // نگهداری لیست آفلاین برای پشتیبان
+        let activePostexQuotes = []; // نگهداری لیست قیمت‌های دریافتی از پستکس
         let cart = JSON.parse(localStorage.getItem('tabiati_cart')) || [];
         
         let displayList = []; 
@@ -1248,6 +1236,9 @@
         let fullSearchList = [];
         let isSearchMode = false;
         let currentCategoryId = null; 
+
+        // متغیرهای استانی پستکس
+        let allProvinces = [];
 
         // مپ جامع دسته‌بندی‌ها برای شناسایی لینک‌ها و تبدیل نام و سئو
         const CATEGORY_MAP = {
@@ -1319,17 +1310,17 @@
             if (authority && status) {
                 const pLoader = document.getElementById('payment-loader');
                 pLoader.style.display = 'flex';
-                document.getElementById('payment-loader-text').innerText = 'در حال تایید امن تراکنش و صدور رسید پستی...';
+                document.getElementById('payment-loader-text').innerText = 'در حال تایید امن تراکنش و صدور بارنامه پستی...';
                 
                 if (status === 'OK') {
                     try {
                         let res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action: 'verify', authority: authority }) });
                         let data = await res.json();
                         if (data.status === 'success') {
-                            showToast('پرداخت موفق! کد مرجع: ' + data.ref_id, 'success');
+                            showToast('پرداخت موفق! ثبت در پستکس انجام شد.', 'success');
                             let purchasedItems = [...cart]; 
                             cart = []; saveCart();
-                            setTimeout(() => showReceipt(purchasedItems, data.ref_id, data.amadast_tracking_code, data.courier_tracking_code), 1500); 
+                            setTimeout(() => showReceipt(purchasedItems, data.ref_id, data.tracking_code), 1500); 
                         } else {
                             showToast('خطا در تایید تراکنش: ' + data.message, 'error');
                         }
@@ -1343,7 +1334,7 @@
                 setTimeout(() => pLoader.style.display = 'none', 2500);
             }
 
-            // ۵. درخواست اطلاعات از سرور دیتابیس (این پردازش در پس‌زمینه انجام می‌شود در حالی که کاربر اسکلت/لودینگ محصول را می‌بیند)
+            // ۵. درخواست اطلاعات از سرور دیتابیس
             if (urlId) {
                 if(CATEGORY_MAP[urlId]) {
                     await fetchStoreData(urlId); 
@@ -1354,9 +1345,6 @@
                 await fetchStoreData(null); 
             }
             updateCartUI();
-
-            // ۶. واکشی اطلاعات پایه استان‌ها از آمادست برای فرم تسویه حساب
-            fetchAmadastProvinces();
         };
 
         function hideStartupLoader() {
@@ -1557,7 +1545,6 @@
             document.getElementById('category-hero').style.display = 'block';
             document.getElementById('cat-banner-title').innerText = `دسته‌بندی: ${catName}`;
             
-            // کلمه "محصولات" طبق دستور حذف شد
             document.getElementById('main-section-title').innerHTML = `<i class="fas fa-layer-group"></i> ${catName}`;
             
             document.getElementById('searchInput').placeholder = `جستجو فقط در دسته ${catName}...`;
@@ -1567,10 +1554,9 @@
             initProductsRender(products); // products اینجا فقط مربوط به همین دسته است (فیلتر شده توسط سرور)
         }
 
-        // ================= دریافت داده از سرور (یکپارچه با فیلتر دسته) =================
+        // ================= دریافت داده از سرور =================
         async function fetchStoreData(catId = null, prodId = null) {
             try {
-                // اگر catId وجود داشته باشد، به سرور ارسال می‌شود تا از همانجا فیلتر شود
                 let url = GAS_URL + "?action=getStoreData";
                 if(catId) url += "&category=" + catId;
 
@@ -1578,6 +1564,7 @@
                 let data = await res.json();
                 
                 products = data.products || [];
+                shippingMethods = data.shipping || []; 
 
                 // بررسی اشتراک گذاری سبد خرید و رمزگشایی در صورت وجود لینک مربوطه
                 const urlParams = new URLSearchParams(window.location.search);
@@ -1631,103 +1618,115 @@
             }
         }
 
-        // ================= توابع قدرتمند اتصال به آمادست (استان/شهر/هزینه) =================
-        async function fetchAmadastProvinces() {
+        // ================= توابع پستکس (دریافت استان/شهر و هزینه) =================
+        async function fetchProvinces() {
             try {
-                let res = await fetch(GAS_URL + "?action=getProvinces");
+                let res = await fetch(GAS_URL + "?action=getPostexProvinces");
                 let data = await res.json();
                 if(data.status === 'success') {
-                    amadastProvinces = data.data;
-                    let provSelect = document.getElementById('cust_province');
-                    provSelect.innerHTML = '<option value="">استان خود را انتخاب کنید</option>';
-                    amadastProvinces.forEach(p => {
-                        provSelect.innerHTML += `<option value="${p.id}">${p.title}</option>`;
+                    allProvinces = data.data;
+                    const provinceSelect = document.getElementById('cust_province');
+                    provinceSelect.innerHTML = '<option value="">انتخاب استان...</option>';
+                    allProvinces.forEach(prov => {
+                        provinceSelect.innerHTML += `<option value="${prov.code}" data-name="${prov.name}">${prov.name}</option>`;
                     });
                 }
-            } catch(e) { console.error("Error fetching provinces", e); }
+            } catch(e) {
+                console.error('Error fetching provinces');
+            }
         }
 
-        async function handleProvinceChange() {
-            let provId = document.getElementById('cust_province').value;
-            let citySelect = document.getElementById('cust_city');
-            let cityLoader = document.getElementById('city-loader');
+        async function loadCities() {
+            const provinceCode = document.getElementById('cust_province').value;
+            const citySelect = document.getElementById('cust_city');
+            const shippingSelect = document.getElementById('cust_shipping');
             
-            citySelect.innerHTML = '<option value="">ابتدا استان را انتخاب کنید</option>';
-            document.getElementById('cust_shipping').innerHTML = '<option value="">لطفا استان و شهر را انتخاب کنید</option>';
+            citySelect.innerHTML = '<option value="">در حال دریافت...</option>';
+            citySelect.disabled = true;
+            shippingSelect.innerHTML = '<option value="">ابتدا شهر را انتخاب کنید</option>';
             calculateFinalInvoice();
 
-            if(!provId) return;
-
-            cityLoader.style.display = 'inline-block';
-            try {
-                let res = await fetch(GAS_URL + "?action=getCities&province_id=" + provId);
-                let data = await res.json();
-                if(data.status === 'success') {
-                    citySelect.innerHTML = '<option value="">شهر خود را انتخاب کنید</option>';
-                    data.data.forEach(c => {
-                        citySelect.innerHTML += `<option value="${c.id}">${c.title}</option>`;
-                    });
-                }
-            } catch(e) {
-                showToast("خطا در بارگذاری شهرها", 'error');
+            if(!provinceCode) {
+                citySelect.innerHTML = '<option value="">ابتدا استان را انتخاب کنید</option>';
+                return;
             }
-            cityLoader.style.display = 'none';
-        }
 
-        async function handleCityChange() {
-            let cityId = document.getElementById('cust_city').value;
-            let shipSelect = document.getElementById('cust_shipping');
-            let shipLoader = document.getElementById('ship-loader');
-            
-            shipSelect.innerHTML = '<option value="">در حال محاسبه خودکار هزینه...</option>';
-            if(!cityId) return;
-
-            // محاسبه وزن و ارزش کل سبد خرید
-            let totalWeight = 0;
-            let totalValue = 0;
-            cart.forEach(item => {
-                let p = products.find(prod => prod.id == item.id);
-                if(p) {
-                    let w = Number(p.weight) || 10; // اگر وزن نداشت پیشفرض ۱۰ گرم
-                    totalWeight += (w * item.qty);
-                }
-                totalValue += (item.price * item.qty);
-            });
-            
-            // نمایش مجموع وزن محاسبه شده
-            document.getElementById('invoice-cart-weight').innerText = totalWeight + ' گرم';
-
-            shipLoader.style.display = 'inline-block';
             try {
-                // ارسال درخواست به بک‌اند جهت استعلام از آمادست
-                let res = await fetch(GAS_URL, {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        action: 'getShippingRates',
-                        city_id: cityId,
-                        weight: totalWeight,
-                        value: totalValue
-                    })
-                });
+                let res = await fetch(GAS_URL + "?action=getPostexCities&provinceCode=" + provinceCode);
                 let data = await res.json();
                 
-                shipSelect.innerHTML = '';
-                if(data.status === 'success' && data.data && data.data.length > 0) {
-                    data.data.forEach(rate => {
-                        const costText = rate.cost > 0 ? ` (هزینه: ${rate.cost.toLocaleString('fa-IR')} تومان)` : ' (پس کرایه)';
-                        shipSelect.innerHTML += `<option value="${rate.id}" data-cost="${rate.cost}">${rate.title}${costText}</option>`;
+                if(data.status === 'success') {
+                    citySelect.innerHTML = '<option value="">انتخاب شهر...</option>';
+                    data.data.forEach(city => {
+                        citySelect.innerHTML += `<option value="${city.code}" data-name="${city.name}">${city.name}</option>`;
                     });
-                } else {
-                    // Fallback امن در صورت عدم دریافت سرویس از آمادست
-                    shipSelect.innerHTML = `<option value="1" data-cost="50000">پست پیشتاز (هزینه: ۵۰,۰۰۰ تومان)</option>`;
-                    showToast('با توجه به ترافیک سرور پستی، مبلغ پایه محاسبه شد.', 'success');
+                    citySelect.disabled = false;
                 }
-                calculateFinalInvoice();
             } catch(e) {
-                shipSelect.innerHTML = `<option value="1" data-cost="50000">پست پیشتاز (هزینه: ۵۰,۰۰۰ تومان)</option>`;
-                calculateFinalInvoice();
+                citySelect.innerHTML = '<option value="">خطا در دریافت شهرها</option>';
             }
-            shipLoader.style.display = 'none';
+        }
+
+        async function fetchPostexQuotes() {
+            const cityCode = document.getElementById('cust_city').value;
+            const shippingSelect = document.getElementById('cust_shipping');
+            const submitBtn = document.getElementById('btn-submit-pay');
+            
+            if(!cityCode) {
+                shippingSelect.innerHTML = '<option value="">ابتدا شهر را انتخاب کنید</option>';
+                calculateFinalInvoice();
+                return;
+            }
+
+            if(cart.length === 0) return;
+
+            shippingSelect.innerHTML = '<option value="">در حال محاسبه آنلاین هزینه پست...</option>';
+            shippingSelect.disabled = true;
+            submitBtn.disabled = true;
+
+            const payload = {
+                action: 'getPostexQuotes',
+                cityCode: cityCode,
+                cart: cart.map(i => ({ id: i.id, qty: i.qty }))
+            };
+
+            try {
+                let res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload) });
+                let data = await res.json();
+
+                if(data.status === 'success' && data.quotes && data.quotes.length > 0) {
+                    activePostexQuotes = data.quotes;
+                    shippingSelect.innerHTML = '';
+                    data.quotes.forEach(quote => {
+                        const finalCost = quote.price_with_tax || quote.price;
+                        // ساختار value را ترکیبی میذاریم تا بعدا در سمت سرور راحت پارس شود
+                        shippingSelect.innerHTML += `<option value="${quote.courier.courier_code}|${quote.courier.service_type}|${finalCost}" data-cost="${finalCost}">${quote.courier.courier_code} - ${quote.courier.service_type} (هزینه: ${finalCost.toLocaleString('fa-IR')} تومان)</option>`;
+                    });
+                    shippingSelect.disabled = false;
+                    submitBtn.disabled = false;
+                    calculateFinalInvoice();
+                } else {
+                    shippingSelect.innerHTML = '<option value="">خطا در استعلام یا سرویسی یافت نشد</option>';
+                    fallbackToStaticShipping();
+                }
+            } catch (e) {
+                console.error("Quote error", e);
+                shippingSelect.innerHTML = '<option value="">خطا در ارتباط با پستکس</option>';
+                fallbackToStaticShipping();
+            }
+        }
+
+        // در صورتی که پستکس جواب نداد از سیستم قدیمی روی شیت استفاده کند
+        function fallbackToStaticShipping() {
+            const select = document.getElementById('cust_shipping');
+            select.innerHTML = '<option value="">انتخاب از روش‌های جایگزین...</option>';
+            shippingMethods.forEach(method => {
+                const costText = method.cost > 0 ? ` (هزینه: ${method.cost.toLocaleString('fa-IR')} تومان)` : '';
+                select.innerHTML += `<option value="${method.id}|static|${method.cost}" data-cost="${method.cost}">${method.name}${costText}</option>`;
+            });
+            select.disabled = false;
+            document.getElementById('btn-submit-pay').disabled = false;
+            calculateFinalInvoice();
         }
 
         // ================= رندر صفحه تک محصول =================
@@ -2024,6 +2023,11 @@
                 showToast('حداکثر موجودی انتخاب شد.', 'error');
             }
             saveCart();
+            
+            // اگر در مرحله تسویه بودیم و قیمت پستکس لود شده بود دوباره محاسبه کنیم
+            if(document.getElementById('checkoutModal').classList.contains('show')){
+                fetchPostexQuotes();
+            }
         }
 
         function saveCart() {
@@ -2107,10 +2111,7 @@
                 });
             }
             document.getElementById('cart-total-price').innerText = totalAmount.toLocaleString('fa-IR') + ' تومان';
-            
-            // چک کردن فرم تسویه اگر باز است
-            let cityId = document.getElementById('cust_city');
-            if(cityId && cityId.value) { handleCityChange(); } else { calculateFinalInvoice(); }
+            calculateFinalInvoice(); 
 
             // بروزرسانی نوار ثابت سبد خرید پایین صفحه و انیمیشن آیکون‌های شناور
             const stickyCart = document.getElementById('sticky-bottom-cart');
@@ -2151,6 +2152,9 @@
             document.getElementById('cartSidebar').classList.remove('open');
             document.getElementById('cartOverlay').classList.remove('active');
             
+            // لود استان های پستکس اگه قبلا لود نشده
+            if(allProvinces.length === 0) fetchProvinces();
+            
             calculateFinalInvoice();
             openModal('checkoutModal');
         }
@@ -2159,7 +2163,7 @@
             let cartTotal = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
             let shipSelect = document.getElementById('cust_shipping');
             let shipCost = 0;
-            if(shipSelect && shipSelect.selectedIndex >= 0) {
+            if(shipSelect.selectedIndex >= 0) {
                 let selectedOption = shipSelect.options[shipSelect.selectedIndex];
                 shipCost = Number(selectedOption.getAttribute('data-cost')) || 0;
             }
@@ -2171,19 +2175,20 @@
         async function submitCheckout(e) {
             e.preventDefault();
             
-            let provSelect = document.getElementById('cust_province');
-            let citySelect = document.getElementById('cust_city');
+            const provSelect = document.getElementById('cust_province');
+            const citySelect = document.getElementById('cust_city');
+            const shipSelect = document.getElementById('cust_shipping');
 
-            if(!provSelect.value || !citySelect.value) {
-                showToast('لطفا استان و شهر را دقیقاً از لیست انتخاب کنید.', 'error');
+            if(provSelect.value === '' || citySelect.value === '' || shipSelect.value === '') {
+                showToast('لطفا استان، شهر و روش ارسال را انتخاب کنید.', 'error');
                 return;
             }
 
             const addressObj = {
-                provinceId: provSelect.value,
-                provinceName: provSelect.options[provSelect.selectedIndex].text,
-                cityId: citySelect.value,
-                cityName: citySelect.options[citySelect.selectedIndex].text,
+                province_code: provSelect.value,
+                province_name: provSelect.options[provSelect.selectedIndex].getAttribute('data-name'),
+                city_code: citySelect.value,
+                city_name: citySelect.options[citySelect.selectedIndex].getAttribute('data-name'),
                 address: document.getElementById('cust_address').value.trim(),
                 postalCode: document.getElementById('cust_postal').value.trim(),
                 note: document.getElementById('cust_note').value.trim()
@@ -2193,26 +2198,13 @@
             btn.disabled = true;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> در حال انتقال به درگاه...';
 
-            let totalWeight = 0;
-            cart.forEach(item => {
-                let p = products.find(prod => prod.id == item.id);
-                if(p) {
-                    let w = Number(p.weight) || 10;
-                    totalWeight += (w * item.qty);
-                }
-            });
-
-            let shipSelect = document.getElementById('cust_shipping');
-            let selectedShippingMethodTitle = shipSelect.options[shipSelect.selectedIndex].text;
-
+            // shipSelect.value شامل کدپیک، نوع سرویس و قیمت است که با | جدا شده
             const payload = {
                 action: 'checkout',
                 customerName: document.getElementById('cust_name').value,
                 phone: document.getElementById('cust_phone').value,
                 address: JSON.stringify(addressObj), 
-                shippingMethod: document.getElementById('cust_shipping').value,
-                shippingTitle: selectedShippingMethodTitle,
-                totalWeight: totalWeight,
+                shippingMethod: shipSelect.value,
                 cart: cart.map(i => ({ id: i.id, qty: i.qty })) 
             };
 
@@ -2233,35 +2225,22 @@
             }
         }
 
-        function showReceipt(purchasedItems, refId, amadastCode, courierCode) {
-            let postalHtml = '';
-            if(courierCode) {
-                postalHtml = `
-                <div style="background:#eff6ff; padding:15px; border-radius:15px; margin-bottom:15px; border:2px dashed #3b82f6; text-align:center;">
-                    <strong style="color:var(--text-dark); font-size:0.9rem;"><i class="fas fa-truck-fast" style="color:#3b82f6;"></i> بارکد پستی مرسوله شما:</strong> <br>
-                    <span style="font-size:1.2rem; font-weight:800; color:#1d4ed8; letter-spacing:1px; display:inline-block; margin-top:8px;">${courierCode}</span>
+        function showReceipt(purchasedItems, refId, trackingCode) {
+            let html = `
+                <div style="background:#f0fdf4; padding:15px; border-radius:15px; margin-bottom:10px; border:2px dashed var(--primary-light); text-align:center;">
+                    <strong style="color:var(--text-muted); font-size:0.9rem;">کد پیگیری تراکنش بانکی:</strong> <br>
+                    <span style="font-size:1.3rem; font-weight:800; color:var(--primary-dark); letter-spacing:2px; display:inline-block; margin-top:8px;">${refId}</span>
                 </div>`;
-            } else if (amadastCode) {
-                postalHtml = `
-                <div style="background:#eff6ff; padding:15px; border-radius:15px; margin-bottom:15px; border:2px dashed #3b82f6; text-align:center;">
-                    <strong style="color:var(--text-dark); font-size:0.9rem;"><i class="fas fa-truck-fast" style="color:#3b82f6;"></i> کد رهگیری شرکت حمل‌کننده:</strong> <br>
-                    <span style="font-size:1.2rem; font-weight:800; color:#1d4ed8; letter-spacing:1px; display:inline-block; margin-top:8px;">${amadastCode}</span>
-                    <p style="font-size:0.8rem; color:#64748b; margin-top:5px;">سفارش شما تحویل پست شد.</p>
-                </div>`;
-            } else {
-                postalHtml = `
-                <div style="background:#f8fafc; padding:10px; border-radius:10px; margin-bottom:15px; text-align:center; border:1px solid #cbd5e1;">
-                    <span style="color:#64748b; font-size:0.85rem;"><i class="fas fa-clock"></i> بارکد پستی به زودی در بخش پیگیری سفارشات قرار می‌گیرد.</span>
+                
+            if(trackingCode) {
+                html += `
+                <div style="background:#fffbeb; padding:15px; border-radius:15px; margin-bottom:20px; border:2px solid var(--accent); text-align:center;">
+                    <strong style="color:var(--text-muted); font-size:0.9rem;">کد رهگیری پستکس / بارنامه:</strong> <br>
+                    <span style="font-size:1.2rem; font-weight:800; color:#d97706; letter-spacing:1px; display:inline-block; margin-top:8px;">${trackingCode}</span>
                 </div>`;
             }
 
-            let html = `
-                <div style="background:#f0fdf4; padding:15px; border-radius:15px; margin-bottom:15px; border:2px solid var(--primary-light); text-align:center;">
-                    <strong style="color:var(--text-muted); font-size:0.9rem;">کد پیگیری تراکنش بانکی:</strong> <br>
-                    <span style="font-size:1.3rem; font-weight:800; color:var(--primary-dark); letter-spacing:2px; display:inline-block; margin-top:8px;">${refId}</span>
-                </div>
-                ${postalHtml}
-                <h4 style="margin-bottom:10px; font-size:1rem; color:var(--text-dark);"><i class="fas fa-clipboard-list"></i> لیست اقلام خریداری شده:</h4>
+            html += `<h4 style="margin-bottom:10px; font-size:1rem; color:var(--text-dark);"><i class="fas fa-clipboard-list"></i> لیست اقلام خریداری شده:</h4>
                 <div style="background:var(--bg); border-radius:15px; padding:15px; border:1px solid var(--border); max-height:220px; overflow-y:auto;">
             `;
             
