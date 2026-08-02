@@ -315,6 +315,17 @@
             box-shadow: 0 10px 20px rgba(5, 150, 105, 0.2);
         }
 
+        /* انیمیشن افزوده شدن به سبد (جدید) */
+        .btn-success-anim {
+            background-color: #10b981 !important;
+            color: white !important;
+            border-color: #10b981 !important;
+            transform: scale(1.05) !important;
+            pointer-events: none;
+            transition: all 0.3s ease !important;
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4) !important;
+        }
+
         /* ========== استایل‌های کنترل تعداد درون کارد محصول (ویرایش جدید) ========== */
         .inline-qty-cart {
             display: flex; gap: 0.5rem; width: 100%; margin-top: auto; justify-content: space-between;
@@ -401,7 +412,6 @@
         .current-price { font-size: 1.5rem; font-weight: 900; color: var(--primary-dark); }
         .old-price { text-decoration: line-through; color: #94a3b8; font-size: 1rem; font-weight: 600; }
         
-        /* دکمه قبلی حفظ شده تا برای بخش‌هایی که نیاز به تغییر نداشتند مشکل ایجاد نشود (البته الان با کنترل تعداد جایگزین می‌شود) */
         .add-to-cart-btn {
             width: 100%; padding: 1.1rem; background: white;
             color: var(--primary); border: 2px solid var(--primary); border-radius: 16px;
@@ -519,61 +529,78 @@
             margin-bottom: 2rem; display: flex; align-items: center; gap: 0.8rem;
         }
 
-        /* ========== آیکون‌های شناور شبکه‌های اجتماعی ========== */
-        .floating-socials {
+        /* ========== استایل دکمه‌های شناور تماس با ما (FAB) جدید ========== */
+        .floating-fab-container {
             position: fixed; right: 20px; bottom: 25px; z-index: 998;
-            display: flex; flex-direction: column; gap: 18px;
-            transition: opacity 0.6s ease, bottom 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex; flex-direction: column; align-items: flex-end;
+            transition: bottom 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .floating-socials.cart-active {
+        .floating-fab-container.cart-active {
             bottom: 120px; /* برای قرار گرفتن بالای نوار سبد خرید */
         }
-        .social-float-btn {
-            width: 55px; height: 55px; border-radius: 50%;
+        .fab-menu {
+            display: flex; flex-direction: column; gap: 10px;
+            margin-bottom: 15px;
+            opacity: 0; visibility: hidden; transform: translateY(20px) scale(0.9);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-origin: bottom right;
+        }
+        .fab-menu.active {
+            opacity: 1; visibility: visible; transform: translateY(0) scale(1);
+        }
+        .fab-item {
+            display: flex; align-items: center; justify-content: flex-start;
+            background: white; border-radius: 30px; padding: 5px 15px 5px 5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1); text-decoration: none;
+            color: var(--text-dark); font-weight: 700; font-size: 0.95rem;
+            transition: var(--transition); flex-direction: row-reverse; gap: 12px;
+        }
+        .fab-item:hover { transform: translateX(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
+        .fab-icon {
+            width: 40px; height: 40px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            color: white; font-size: 1.8rem; text-decoration: none;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative; overflow: hidden; transform: translateZ(0);
+            color: white; font-size: 1.4rem; overflow: hidden;
         }
-        .social-float-btn:hover { transform: translateY(-6px) scale(1.1); box-shadow: 0 12px 30px rgba(0,0,0,0.25); color: white; }
-        
-        .sf-instagram { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
-        .sf-rubika { background: transparent; padding: 0; } 
-        .sf-rubika img { width: 100%; height: 100%; object-fit: contain; }
-        
-        .sf-whatsapp { background: #25D366; animation: socialPulse 2s infinite; }
-        
-        /* انیمیشن‌های اختصاصی آیکون‌ها */
-        .sf-instagram i { animation: instaFloat 3s ease-in-out infinite; }
-        .sf-rubika img { animation: rubikaWiggle 2.5s ease-in-out infinite; }
-        
-        @keyframes instaFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-4px); }
+        .fab-main-btn {
+            background: var(--primary); color: white; border: none;
+            border-radius: 30px; padding: 12px 24px; font-size: 1.1rem;
+            font-weight: 800; display: flex; align-items: center; gap: 8px;
+            cursor: pointer; box-shadow: 0 8px 25px rgba(5,150,105,0.4);
+            transition: var(--transition); z-index: 2; position: relative;
         }
-        @keyframes rubikaWiggle {
-            0%, 100% { transform: scale(1) rotate(0deg); }
-            50% { transform: scale(1.1) rotate(5deg); }
+        .fab-main-btn:hover {
+            background: var(--primary-dark); transform: translateY(-3px); box-shadow: 0 12px 30px rgba(5,150,105,0.5);
         }
-        @keyframes socialPulse {
-            0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5); }
-            70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
-        }
+        
+        .sf-instagram .fab-icon { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
+        .sf-whatsapp .fab-icon { background: #25D366; }
+        .sf-rubika .fab-icon { background: transparent; padding: 0; } 
+        
+        .sf-instagram .fab-icon i { animation: instaFloat 3s ease-in-out infinite; }
+        .sf-rubika .fab-icon img { animation: rubikaWiggle 2.5s ease-in-out infinite; width: 100%; height: 100%; object-fit: contain;}
+        
+        @keyframes instaFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+        @keyframes rubikaWiggle { 0%, 100% { transform: scale(1) rotate(0deg); } 50% { transform: scale(1.1) rotate(5deg); } }
 
-        /* ========== استایل مودال لیست سریع سفارشات (اضافه شده) ========== */
+        /* ========== استایل مودال لیست سریع سفارشات (ویرایش جمع و جورتر) ========== */
         .qo-row {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 0.8rem 1rem; background: var(--surface); border: 1px solid var(--border);
-            border-radius: 12px; gap: 1rem;
+            padding: 0.5rem 0.8rem; background: var(--surface); border: 1px solid var(--border);
+            border-radius: 12px; gap: 0.5rem;
         }
-        .qo-info { flex: 1; display: flex; flex-direction: column; gap: 0.4rem; }
-        .qo-name { font-weight: 800; font-size: 0.95rem; color: var(--text-dark); }
-        .qo-price { color: var(--primary-dark); font-weight: 700; font-size: 0.9rem;}
-        .qo-actions { display: flex; align-items: center; gap: 0.5rem; flex-wrap: nowrap; }
+        .qo-info { flex: 1; display: flex; flex-direction: column; gap: 0.3rem; }
+        .qo-name { font-weight: 800; font-size: 0.85rem; color: var(--text-dark); }
+        .qo-price { color: var(--primary-dark); font-weight: 700; font-size: 0.85rem;}
+        .qo-actions { display: flex; align-items: center; gap: 0.4rem; flex-wrap: nowrap; }
+        
+        /* دکمه‌های جمع و جور داخل سفارش سریع */
+        .qo-actions .inline-qty-controls { padding: 0.15rem; min-width: 75px; }
+        .qo-actions .inline-qty-controls button { width: 25px; height: 25px; font-size: 0.85rem; }
+        .qo-actions .inline-qty-controls span { font-size: 0.85rem; width: 18px; }
+        .qo-actions .inline-add-btn { padding: 0.5rem 0.6rem; font-size: 0.8rem; }
         
         @media (max-width: 480px) {
-            .qo-row { flex-direction: column; align-items: stretch; gap: 0.8rem; }
+            .qo-row { flex-direction: column; align-items: stretch; gap: 0.6rem; }
             .qo-info { text-align: center; }
             .qo-actions { width: 100%; justify-content: space-between; }
         }
@@ -614,9 +641,9 @@
 
             .discount-badge { font-size: 0.8rem; padding: 0.2rem 0.5rem; top: 10px; right: 10px; border-radius: 4px;}
             
-            .floating-socials { bottom: 25px; right: 15px; }
-            .floating-socials.cart-active { bottom: 115px; }
-            .social-float-btn { width: 45px; height: 45px; font-size: 1.4rem;}
+            .floating-fab-container { bottom: 25px; right: 15px; }
+            .floating-fab-container.cart-active { bottom: 115px; }
+            .fab-main-btn { padding: 10px 18px; font-size: 1rem; }
         }
 
         /* ========== سبد خرید کشویی ========== */
@@ -920,17 +947,25 @@
 </head>
 <body style="background-color: #ffffff;">
 
-    <!-- ==================== آیکون‌های شناور شبکه‌های اجتماعی ==================== -->
-    <div class="floating-socials">
-        <a href="https://instagram.com/tabiati.ir" target="_blank" class="social-float-btn sf-instagram" title="اینستاگرام ما">
-            <i class="fab fa-instagram"></i>
-        </a>
-        <a href="https://wa.me/989136395562" target="_blank" class="social-float-btn sf-whatsapp" title="ارتباط در واتساپ">
-            <i class="fab fa-whatsapp"></i>
-        </a>
-        <a href="https://rubika.ir/irtabiati" target="_blank" class="social-float-btn sf-rubika" title="کانال روبیکا">
-            <img src="https://tabiati.ir/7.png" alt="روبیکا">
-        </a>
+    <!-- ==================== دکمه‌های شناور شبکه‌های اجتماعی (FAB) ==================== -->
+    <div class="floating-fab-container" id="fab-container">
+        <div class="fab-menu" id="fab-menu">
+            <a href="https://instagram.com/tabiati.ir" target="_blank" class="fab-item sf-instagram">
+                <span class="fab-icon"><i class="fab fa-instagram"></i></span>
+                <span class="fab-text">پیج اینستاگرام</span>
+            </a>
+            <a href="https://wa.me/989136395562" target="_blank" class="fab-item sf-whatsapp">
+                <span class="fab-icon"><i class="fab fa-whatsapp"></i></span>
+                <span class="fab-text">پشتیبانی واتساپ</span>
+            </a>
+            <a href="https://rubika.ir/irtabiati" target="_blank" class="fab-item sf-rubika">
+                <span class="fab-icon"><img src="https://tabiati.ir/7.png" alt="روبیکا"></span>
+                <span class="fab-text">کانال روبیکا</span>
+            </a>
+        </div>
+        <button class="fab-main-btn" onclick="toggleFabMenu()">
+            <i class="fas fa-headset"></i> تماس با ما
+        </button>
     </div>
 
     <!-- ==================== لودینگ پرداخت امن بانکی ==================== -->
@@ -1647,7 +1682,7 @@
             }
         }
 
-        // ================= توابع مدیریت تعداد (موقتی) =================
+        // ================= توابع مدیریت تعداد =================
         function changeTempQty(elementId, delta, maxStock) {
             let el = document.getElementById(elementId);
             if (!el) return;
@@ -1661,9 +1696,13 @@
             el.innerText = next;
         }
 
-        // تابع اصلی اضافه کردن به سبد خرید به همراه تعداد انتخابی (عدم باز شدن سبد)
+        // تابع اصلی اضافه کردن به سبد خرید به همراه تعداد انتخابی و انیمیشن
         function addToCartWithQty(id, contextPrefix, event) {
             if(event) event.stopPropagation();
+            
+            let btn = event ? event.currentTarget : null;
+            let originalContent = btn ? btn.innerHTML : '';
+
             let qtyEl = document.getElementById('temp_qty_' + contextPrefix + '_' + id);
             let qtyToAdd = qtyEl ? parseInt(qtyEl.innerText) : 1;
             
@@ -1673,9 +1712,11 @@
             const price = (prod.discountPrice > 0 && prod.discountPrice < prod.price) ? prod.discountPrice : prod.price;
             const existing = cart.find(i => i.id == id);
             
+            let success = false;
             if(existing) {
                 if(existing.qty + qtyToAdd <= prod.stock) {
                     existing.qty += qtyToAdd;
+                    success = true;
                     showToast(qtyToAdd + ' عدد به سبد خرید اضافه شد.', 'success');
                 } else {
                     showToast('موجودی انبار برای این تعداد کافی نیست.', 'error');
@@ -1684,6 +1725,7 @@
             } else {
                 if(qtyToAdd <= prod.stock) {
                     cart.push({ id: prod.id, name: prod.name, price: price, qty: qtyToAdd, stock: prod.stock });
+                    success = true;
                     showToast(qtyToAdd + ' عدد به سبد خرید اضافه شد.', 'success');
                 } else {
                     showToast('موجودی انبار برای این تعداد کافی نیست.', 'error');
@@ -1691,13 +1733,25 @@
                 }
             }
             saveCart();
-            // بر اساس دستور 2: سبد خرید باز نمی‌شود.
-            // نوار پایین سبد خرید (Sticky) توسط updateCartUI نمایش داده خواهد شد.
+
+            if (success && btn) {
+                btn.classList.add('btn-success-anim');
+                btn.innerHTML = '<i class="fas fa-check"></i> افزوده شد';
+                setTimeout(() => {
+                    btn.classList.remove('btn-success-anim');
+                    btn.innerHTML = originalContent;
+                }, 2000);
+            }
         }
 
-        // تابع قدیمی حفظ شد تا در صورت نیاز به افزودن سریع یک عدد بدون تغییر کد سایر جاها مشکلی پیش نیاید
+        // تابع قدیمی
         function addToCart(id, event) {
             addToCartWithQty(id, 'legacy', event);
+        }
+
+        // ================= توابع دکمه تماس با ما شناور (جدید) =================
+        function toggleFabMenu() {
+            document.getElementById('fab-menu').classList.toggle('active');
         }
 
         // ================= رندر صفحه تک محصول =================
@@ -1819,13 +1873,13 @@
 
                 let qtyControls = outOfStock ? 
                     `<button class="inline-add-btn" style="width:100%;" disabled><i class="fas fa-ban"></i> اتمام موجودی</button>` :
-                    `<div class="inline-qty-cart">
-                        <div class="inline-qty-controls">
-                            <button type="button" onclick="event.stopPropagation(); changeTempQty('temp_qty_sugg_${p.id}', 1, ${p.stock})"><i class="fas fa-plus"></i></button>
+                    `<div class="inline-qty-cart" onclick="event.stopPropagation()">
+                        <div class="inline-qty-controls" onclick="event.stopPropagation()">
+                            <button type="button" onclick="changeTempQty('temp_qty_sugg_${p.id}', 1, ${p.stock})"><i class="fas fa-plus"></i></button>
                             <span id="temp_qty_sugg_${p.id}">1</span>
-                            <button type="button" onclick="event.stopPropagation(); changeTempQty('temp_qty_sugg_${p.id}', -1, ${p.stock})"><i class="fas fa-minus"></i></button>
+                            <button type="button" onclick="changeTempQty('temp_qty_sugg_${p.id}', -1, ${p.stock})"><i class="fas fa-minus"></i></button>
                         </div>
-                        <button class="inline-add-btn" onclick="event.stopPropagation(); addToCartWithQty('${p.id}', 'sugg', event)">
+                        <button class="inline-add-btn" onclick="addToCartWithQty('${p.id}', 'sugg', event)">
                             افزودن
                         </button>
                     </div>`;
@@ -1944,13 +1998,13 @@
 
                 let qtyControls = outOfStock ? 
                     `<button class="inline-add-btn" style="width:100%;" disabled><i class="fas fa-ban"></i> اتمام موجودی</button>` :
-                    `<div class="inline-qty-cart">
-                        <div class="inline-qty-controls">
-                            <button type="button" onclick="event.stopPropagation(); changeTempQty('temp_qty_grid_${p.id}', 1, ${p.stock})"><i class="fas fa-plus"></i></button>
+                    `<div class="inline-qty-cart" onclick="event.stopPropagation()">
+                        <div class="inline-qty-controls" onclick="event.stopPropagation()">
+                            <button type="button" onclick="changeTempQty('temp_qty_grid_${p.id}', 1, ${p.stock})"><i class="fas fa-plus"></i></button>
                             <span id="temp_qty_grid_${p.id}">1</span>
-                            <button type="button" onclick="event.stopPropagation(); changeTempQty('temp_qty_grid_${p.id}', -1, ${p.stock})"><i class="fas fa-minus"></i></button>
+                            <button type="button" onclick="changeTempQty('temp_qty_grid_${p.id}', -1, ${p.stock})"><i class="fas fa-minus"></i></button>
                         </div>
-                        <button class="inline-add-btn" onclick="event.stopPropagation(); addToCartWithQty('${p.id}', 'grid', event)">
+                        <button class="inline-add-btn" onclick="addToCartWithQty('${p.id}', 'grid', event)">
                             افزودن
                         </button>
                     </div>`;
@@ -1981,21 +2035,31 @@
         }
 
         // ================= توابع سفارش سریع (Quick Order) =================
-        function openQuickOrderModal() {
+        async function openQuickOrderModal() {
             document.getElementById('quickSearchInput').value = '';
-            // نمایش محصولات به ترتیب از آخرین به اولی
-            qoData = [...products].reverse();
-            qoIndex = 0;
             document.getElementById('quick-order-list').innerHTML = '';
             openModal('quickOrderModal');
-            appendQoBatch();
+            
+            document.getElementById('quick-loading-more').style.display = 'block';
+            
+            try {
+                let res = await fetch(GAS_URL + "?action=getStoreData");
+                let data = await res.json();
+                qoData = (data.products || []).reverse();
+                qoIndex = 0;
+                document.getElementById('quick-loading-more').style.display = 'none';
+                appendQoBatch();
+            } catch (e) {
+                document.getElementById('quick-loading-more').style.display = 'none';
+                document.getElementById('quick-order-list').innerHTML = '<div style="text-align:center; padding:20px; color:#ef4444; font-weight:bold;">خطا در دریافت اطلاعات. لطفا دوباره تلاش کنید.</div>';
+            }
         }
 
         function appendQoBatch() {
             if(qoIndex >= qoData.length) return;
             isQoFetching = true;
             let list = document.getElementById('quick-order-list');
-            let batch = qoData.slice(qoIndex, qoIndex + 40); // 40 تا 40 تا اضافه شود
+            let batch = qoData.slice(qoIndex, qoIndex + 40);
             
             batch.forEach(p => {
                 const price = Number(p.price);
@@ -2005,13 +2069,13 @@
                 
                 let qtyControls = outOfStock ? 
                     `<span style="color:#ef4444; font-weight:bold; font-size:0.9rem; margin-right:auto;">ناموجود</span>` :
-                    `<div class="qo-actions">
-                        <div class="inline-qty-controls" style="min-width: 90px; padding: 0.2rem;">
-                            <button type="button" onclick="changeTempQty('temp_qty_qo_${p.id}', 1, ${p.stock})" style="width: 25px; height: 25px;"><i class="fas fa-plus"></i></button>
-                            <span id="temp_qty_qo_${p.id}" style="width: 15px; font-size:0.95rem;">1</span>
-                            <button type="button" onclick="changeTempQty('temp_qty_qo_${p.id}', -1, ${p.stock})" style="width: 25px; height: 25px;"><i class="fas fa-minus"></i></button>
+                    `<div class="qo-actions" onclick="event.stopPropagation()">
+                        <div class="inline-qty-controls">
+                            <button type="button" onclick="changeTempQty('temp_qty_qo_${p.id}', 1, ${p.stock})"><i class="fas fa-plus"></i></button>
+                            <span id="temp_qty_qo_${p.id}">1</span>
+                            <button type="button" onclick="changeTempQty('temp_qty_qo_${p.id}', -1, ${p.stock})"><i class="fas fa-minus"></i></button>
                         </div>
-                        <button class="inline-add-btn" style="padding: 0.5rem 0.8rem;" onclick="addToCartWithQty('${p.id}', 'qo', event)">
+                        <button class="inline-add-btn" onclick="addToCartWithQty('${p.id}', 'qo', event)">
                             افزودن
                         </button>
                     </div>`;
@@ -2048,7 +2112,6 @@
             let list = document.getElementById('quick-order-list');
             
             if(!query) {
-                qoData = [...products].reverse();
                 qoIndex = 0;
                 list.innerHTML = '';
                 appendQoBatch();
@@ -2182,7 +2245,7 @@
             calculateFinalInvoice(); 
 
             const stickyCart = document.getElementById('sticky-bottom-cart');
-            const floatingSocials = document.querySelector('.floating-socials');
+            const floatingSocials = document.querySelector('.floating-fab-container');
             
             if(cart.length > 0) {
                 if (!stickyCart.classList.contains('visible')) {
