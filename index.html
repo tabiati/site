@@ -1646,6 +1646,9 @@
                 let data = await res.json();
                 
                 products = data.products || [];
+                // مرتب سازی: محصولات موجود در ابتدا، محصولات ناموجود در انتها
+                products.sort((a, b) => (Number(b.stock) > 0 ? 1 : 0) - (Number(a.stock) > 0 ? 1 : 0));
+                
                 shippingMethods = data.shipping || [];
                 populateShippingDropdown();
 
@@ -1871,7 +1874,8 @@
         }
 
         function renderSuggestedProducts(excludeId) {
-            let available = products.filter(p => p.id != excludeId);
+            // فیلتر اضافه شد: فقط محصولاتی که موجود هستند وارد بخش پیشنهادها بشوند
+            let available = products.filter(p => p.id != excludeId && Number(p.stock) > 0);
             let shuffled = available.sort(() => 0.5 - Math.random());
             let selected = shuffled.slice(0, 4);
 
@@ -1953,6 +1957,9 @@
                 let data = await res.json();
                 
                 fullSearchList = data.data;
+                // مرتب سازی: محصولات موجود در ابتدا، محصولات ناموجود در انتها
+                fullSearchList.sort((a, b) => (Number(b.stock) > 0 ? 1 : 0) - (Number(a.stock) > 0 ? 1 : 0));
+                
                 const grid = document.getElementById('products-grid');
                 grid.innerHTML = '';
                 
@@ -2130,9 +2137,12 @@
                 let res = await fetch(GAS_URL + "?action=getStoreData");
                 let data = await res.json();
                 qoData = data.products.reverse();
+                // مرتب سازی: محصولات موجود در ابتدا، محصولات ناموجود در انتها
+                qoData.sort((a, b) => (Number(b.stock) > 0 ? 1 : 0) - (Number(a.stock) > 0 ? 1 : 0));
             } catch(e) {
                 // اگر مشکلی پیش آمد از دیتای محلی به عنوان نسخه پشتیبان استفاده می شود
                 qoData = [...products].reverse();
+                qoData.sort((a, b) => (Number(b.stock) > 0 ? 1 : 0) - (Number(a.stock) > 0 ? 1 : 0));
             }
 
             qoIndex = 0;
@@ -2198,6 +2208,8 @@
             
             if(!query) {
                 qoData = [...products].reverse();
+                // مرتب سازی در صورت بازگشت به لیست پیش‌فرض
+                qoData.sort((a, b) => (Number(b.stock) > 0 ? 1 : 0) - (Number(a.stock) > 0 ? 1 : 0));
                 qoIndex = 0;
                 list.innerHTML = '';
                 appendQoBatch();
@@ -2213,6 +2225,8 @@
                 let data = await res.json();
                 
                 qoData = data.data.reverse();
+                // مرتب سازی نتایج جستجوی سریع: محصولات موجود در ابتدا
+                qoData.sort((a, b) => (Number(b.stock) > 0 ? 1 : 0) - (Number(a.stock) > 0 ? 1 : 0));
                 qoIndex = 0;
                 list.innerHTML = '';
                 
