@@ -2075,11 +2075,17 @@
                 const discount = Number(p.discountPrice);
                 const finalPrice = (discount > 0 && discount < price) ? discount : price;
                 
+                // بررسی موجودی محصول طبق دستور
+                const outOfStock = Number(p.stock) <= 0;
+                
+                // اگر موجودی صفر بود بنویسد موجود نیست وگرنه قیمت را فرمت کند
+                const priceDisplay = outOfStock ? 'موجود نیست' : finalPrice.toLocaleString('fa-IR');
+                
                 html += `
                     <tr>
                         <td class="font-bold">${index + 1}</td>
                         <td class="text-right">${p.name}</td>
-                        <td class="font-bold">${finalPrice.toLocaleString('fa-IR')}</td>
+                        <td class="font-bold">${priceDisplay}</td>
                     </tr>
                 `;
             });
@@ -2479,4 +2485,4 @@
         });
     </script>
 </body>
-    </html>
+</html>
