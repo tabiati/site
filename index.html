@@ -931,9 +931,29 @@
             .category-name { font-size: 0.85rem; }
             .category-item { width: 80px; }
         }
+
+        /* ==================== استایل اختصاصی چاپ (مخفی کردن تمام بخش‌های سایت در زمان چاپ و نمایش دقیق A4) ==================== */
+        @media print {
+            body > *:not(#print-area) { display: none !important; }
+            #print-area { display: block !important; position: static; width: 100%; background: white; color: black; direction: rtl; }
+            @page { size: A4 portrait; margin: 1.5cm; }
+            
+            .print-header { text-align: center; margin-bottom: 25px; border-bottom: 3px solid #000; padding-bottom: 15px; }
+            .print-header h1 { margin: 0 0 10px 0; font-size: 28px; font-weight: 900; }
+            .print-header p { margin: 0; font-size: 16px; font-weight: bold; }
+            
+            .print-table { width: 100%; border-collapse: collapse; }
+            .print-table th, .print-table td { border: 2px solid #000; padding: 12px 8px; text-align: center; font-size: 15px; }
+            .print-table th { background-color: #f1f5f9 !important; -webkit-print-color-adjust: exact; font-weight: 900; font-size: 16px; }
+            .print-table td.text-right { text-align: right; padding-right: 15px; }
+            .print-table td.font-bold { font-weight: bold; }
+        }
     </style>
 </head>
 <body style="background-color: #ffffff;">
+
+    <!-- ==================== ناحیه مخصوص چاپ ==================== -->
+    <div id="print-area" style="display:none;"></div>
 
     <!-- ==================== آیکون‌های شناور شبکه‌های اجتماعی ==================== -->
     <div class="floating-socials">
@@ -1154,9 +1174,14 @@
     <!-- ==================== مودال سفارش سریع (جدید) ==================== -->
     <div class="modal" id="quickOrderModal">
         <div class="modal-dialog" style="max-width: 800px; padding: 1.5rem;">
-            <div class="modal-header" style="margin-bottom: 1rem;">
-                <h3><i class="fas fa-bolt" style="color:var(--accent);"></i> سفارش سریع</h3>
-                <button class="cart-close-btn" onclick="closeModal('quickOrderModal')"><i class="fas fa-times"></i></button>
+            <div class="modal-header" style="margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between;">
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <h3><i class="fas fa-bolt" style="color:var(--accent);"></i> سفارش سریع</h3>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <button class="cart-close-btn" style="background-color: var(--primary); color: white; border-color: var(--primary);" onclick="printQuickOrder()" title="چاپ لیست"><i class="fas fa-print"></i></button>
+                    <button class="cart-close-btn" onclick="closeModal('quickOrderModal')"><i class="fas fa-times"></i></button>
+                </div>
             </div>
             <div class="search-box" style="margin-bottom: 1.5rem; border-radius: 14px; box-shadow: none; border: 2px solid var(--border);">
                 <input type="text" id="quickSearchInput" placeholder="جستجوی سریع محصولات..." onkeyup="if(event.key==='Enter') executeQuickSearch()">
@@ -1308,7 +1333,7 @@
         
         let displayList = []; 
         let currentIndex = 0;
-        const ITEMS_PER_PAGE = 6; 
+        const ITEMS_PER_PAGE = 30; // تغییر تعداد محصولات در هر بار اسکرول به 30 محصول طبق درخواست
         let isFetchingNext = false;
         let fullSearchList = [];
         let isSearchMode = false;
@@ -1926,10 +1951,10 @@
                     return;
                 }
 
-                const initialBatch = fullSearchList.slice(0, 6);
+                const initialBatch = fullSearchList.slice(0, 30); // تعداد اولیه نمایش جستجو هم متناسب با اسکرول شد 30
                 renderProductsBatch(initialBatch, grid);
 
-                if(fullSearchList.length > 6) {
+                if(fullSearchList.length > 30) {
                     document.getElementById('btn-search-more').style.display = 'block';
                 }
 
@@ -1938,7 +1963,7 @@
 
         function showMoreSearchResults() {
             const grid = document.getElementById('products-grid');
-            const restBatch = fullSearchList.slice(6);
+            const restBatch = fullSearchList.slice(30); // همگام با عدد 30
             renderProductsBatch(restBatch, grid);
             document.getElementById('btn-search-more').style.display = 'none';
         }
@@ -2018,6 +2043,60 @@
             openModal('imageModal');
         }
 
+        // ================= توابع چاپ سفارش سریع (جدید) =================
+        function printQuickOrder() {
+            if(!qoData || qoData.length === 0) {
+                showToast('لیستی برای چاپ وجود ندارد!', 'error');
+                return;
+            }
+            
+            // دریافت تاریخ شمسی امروز
+            const today = new Date().toLocaleDateString('fa-IR');
+            
+            let html = `
+                <div class="print-header">
+                    <h1>فروشگاه طبیعتی</h1>
+                    <p>لیست سریع محصولات و قیمت‌ها - تاریخ: ${today}</p>
+                </div>
+                <table class="print-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 10%;">ردیف</th>
+                            <th style="width: 50%;">نام محصول</th>
+                            <th style="width: 40%;">قیمت (تومان)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            
+            // حلقه روی داده‌های لود شده در سفارش سریع برای چاپ منظم
+            qoData.forEach((p, index) => {
+                const price = Number(p.price);
+                const discount = Number(p.discountPrice);
+                const finalPrice = (discount > 0 && discount < price) ? discount : price;
+                
+                html += `
+                    <tr>
+                        <td class="font-bold">${index + 1}</td>
+                        <td class="text-right">${p.name}</td>
+                        <td class="font-bold">${finalPrice.toLocaleString('fa-IR')}</td>
+                    </tr>
+                `;
+            });
+            
+            html += `
+                    </tbody>
+                </table>
+            `;
+            
+            // تزریق محتوا به دیو مخفی مخصوص چاپ
+            const printArea = document.getElementById('print-area');
+            printArea.innerHTML = html;
+            
+            // فراخوانی متد چاپ مرورگر
+            window.print();
+        }
+
         // ================= توابع سفارش سریع (Quick Order) =================
         async function openQuickOrderModal() {
             document.getElementById('quickSearchInput').value = '';
@@ -2049,7 +2128,7 @@
             if(qoIndex >= qoData.length) return;
             isQoFetching = true;
             let list = document.getElementById('quick-order-list');
-            let batch = qoData.slice(qoIndex, qoIndex + 40); // 40 تا 40 تا اضافه شود
+            let batch = qoData.slice(qoIndex, qoIndex + 100); // به دستور شما 100 تا 100 تا اضافه شود
             
             batch.forEach(p => {
                 const price = Number(p.price);
@@ -2080,7 +2159,7 @@
                     </div>
                 `;
             });
-            qoIndex += 40;
+            qoIndex += 100; // همگام سازی ایندکس با 100 ردیف
             isQoFetching = false;
         }
 
@@ -2384,7 +2463,8 @@
 
             if (!scrollTicking) {
                 window.requestAnimationFrame(() => {
-                    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500) {
+                    // با افزایش عدد 500 به 1200، بارگذاری دقیقا کمی قبل از رسیدن به انتهای لیست (حدود ردیف دهم از 30 محصول) انجام می‌شود.
+                    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 1200) {
                         isFetchingNext = true; 
                         document.getElementById('loading-more').style.display = 'block';
                         setTimeout(() => { 
@@ -2399,4 +2479,4 @@
         });
     </script>
 </body>
-</html>
+    </html>
