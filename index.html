@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -1121,8 +1121,8 @@
                 مشاهده نتایج بیشتر <i class="fas fa-angle-down"></i>
             </button>
 
-            <div id="loading-more" style="display: none; text-align: center; padding: 20px; color: var(--primary);">
-                <i class="fas fa-circle-notch fa-spin fa-2x"></i>
+            <div id="loading-more" style="display: none; padding: 20px; justify-content: center;">
+                <div class="soft-dots-loader"><span></span><span></span><span></span></div>
             </div>
         </div>
     </div>
@@ -1157,6 +1157,10 @@
         </div>
         <div class="cart-items-container" id="cart-items"></div>
         <div class="cart-footer">
+            <div class="cart-discount" id="cart-discount-row" style="display: none; justify-content: space-between; align-items: center; font-size: 1.1rem; font-weight: 800; color: #ef4444; margin-bottom: 0.8rem;">
+                <span>تخفیف شما:</span>
+                <span id="cart-total-discount">0 تومان</span>
+            </div>
             <div class="cart-total">
                 <span>مبلغ قابل پرداخت:</span>
                 <span id="cart-total-price" style="color:var(--primary-dark);">0 تومان</span>
@@ -1199,8 +1203,8 @@
             <div id="quick-order-list" style="max-height: 60vh; overflow-y: auto; display: flex; flex-direction: column; gap: 0.8rem; padding-right: 5px;">
                 <!-- لیست محصولات در اینجا لود می‌شود -->
             </div>
-            <div id="quick-loading-more" style="display: none; text-align: center; padding: 15px; color: var(--primary);">
-                <i class="fas fa-circle-notch fa-spin fa-2x"></i>
+            <div id="quick-loading-more" style="display: none; padding: 15px; justify-content: center;">
+                <div class="soft-dots-loader"><span></span><span></span><span></span></div>
             </div>
         </div>
     </div>
@@ -1257,6 +1261,10 @@
                     <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:0.95rem;">
                         <span>جمع سبد خرید:</span>
                         <strong id="invoice-cart-total">0 تومان</strong>
+                    </div>
+                    <div id="invoice-discount-row" style="display:none; justify-content:space-between; margin-bottom:8px; font-size:0.95rem; color:#ef4444;">
+                        <span>تخفیف شما:</span>
+                        <strong id="invoice-cart-discount">0 تومان</strong>
                     </div>
                     <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:0.95rem;">
                         <span>هزینه ارسال:</span>
@@ -1343,7 +1351,7 @@
         
         let displayList = []; 
         let currentIndex = 0;
-        const ITEMS_PER_PAGE = 30; // تغییر تعداد محصولات در هر بار اسکرول به 30 محصول طبق درخواست
+        const ITEMS_PER_PAGE = 10; // تغییر تعداد محصولات در هر بار اسکرول به 10 محصول طبق درخواست جدید
         let isFetchingNext = false;
         let fullSearchList = [];
         let isSearchMode = false;
@@ -1968,10 +1976,10 @@
                     return;
                 }
 
-                const initialBatch = fullSearchList.slice(0, 30); // تعداد اولیه نمایش جستجو هم متناسب با اسکرول شد 30
+                const initialBatch = fullSearchList.slice(0, 10); // تعداد اولیه نمایش جستجو هم متناسب با اسکرول شد 10
                 renderProductsBatch(initialBatch, grid);
 
-                if(fullSearchList.length > 30) {
+                if(fullSearchList.length > 10) {
                     document.getElementById('btn-search-more').style.display = 'block';
                 }
 
@@ -1980,7 +1988,7 @@
 
         function showMoreSearchResults() {
             const grid = document.getElementById('products-grid');
-            const restBatch = fullSearchList.slice(30); // همگام با عدد 30
+            const restBatch = fullSearchList.slice(10); // همگام با عدد 10
             renderProductsBatch(restBatch, grid);
             document.getElementById('btn-search-more').style.display = 'none';
         }
@@ -2304,14 +2312,29 @@
                 container.innerHTML = '<div style="text-align:center; color:var(--text-muted); margin-top:80px;"><i class="fas fa-shopping-basket fa-4x" style="opacity:0.2; margin-bottom:20px;"></i><p style="font-size:1.1rem; font-weight:700;">سبد خرید شما خالی است.</p></div>';
                 document.getElementById('btn-checkout-cart').disabled = true;
                 document.getElementById('btn-share-cart').style.display = 'none';
+                
+                // در صورت خالی بودن سبد خرید ردیف تخفیف هم پنهان می‌شود
+                document.getElementById('cart-discount-row').style.display = 'none';
             } else {
                 document.getElementById('btn-checkout-cart').disabled = false;
                 document.getElementById('btn-share-cart').style.display = 'flex';
                 container.innerHTML = '';
+                
+                let totalDiscount = 0; // متغیر جدید برای محاسبه مجموع تخفیف
+                
                 cart.forEach(i => {
                     totalAmount += (i.price * i.qty);
                     
                     let productDetails = products.find(p => p.id == i.id);
+                    
+                    // محاسبه تخفیف این کالا در صورت وجود
+                    if (productDetails) {
+                        let origPrice = Number(productDetails.price);
+                        if (origPrice > i.price) {
+                            totalDiscount += (origPrice - i.price) * i.qty;
+                        }
+                    }
+                    
                     let imgSrc = productDetails ? productDetails.image : '';
                     let imgHtml = '';
                     if (imgSrc.startsWith('http')) {
@@ -2340,6 +2363,15 @@
                         </div>
                     </div>`;
                 });
+                
+                // به‌روزرسانی UI ردیف تخفیف در نوار کناری
+                let discountRow = document.getElementById('cart-discount-row');
+                if (totalDiscount > 0) {
+                    document.getElementById('cart-total-discount').innerText = totalDiscount.toLocaleString('fa-IR') + ' تومان';
+                    discountRow.style.display = 'flex';
+                } else {
+                    discountRow.style.display = 'none';
+                }
             }
             document.getElementById('cart-total-price').innerText = totalAmount.toLocaleString('fa-IR') + ' تومان';
             calculateFinalInvoice(); 
@@ -2382,14 +2414,39 @@
         }
 
         function calculateFinalInvoice() {
-            let cartTotal = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
+            let cartTotal = 0;
+            let totalDiscount = 0; // برای محاسبه و نمایش تخفیف پیش از درگاه پرداخت
+            
+            cart.forEach(i => {
+                cartTotal += (i.price * i.qty);
+                
+                let p = products.find(prod => prod.id == i.id);
+                if (p) {
+                    let origPrice = Number(p.price);
+                    if (origPrice > i.price) {
+                        totalDiscount += (origPrice - i.price) * i.qty;
+                    }
+                }
+            });
+            
             let shipSelect = document.getElementById('cust_shipping');
             let shipCost = 0;
             if(shipSelect.selectedIndex >= 0) {
                 let selectedOption = shipSelect.options[shipSelect.selectedIndex];
                 shipCost = Number(selectedOption.getAttribute('data-cost')) || 0;
             }
+            
             document.getElementById('invoice-cart-total').innerText = cartTotal.toLocaleString('fa-IR') + ' تومان';
+            
+            // مدیریت نمایش ردیف تخفیف در فاکتور پیش از درگاه
+            let invDiscRow = document.getElementById('invoice-discount-row');
+            if (totalDiscount > 0) {
+                document.getElementById('invoice-cart-discount').innerText = totalDiscount.toLocaleString('fa-IR') + ' تومان';
+                invDiscRow.style.display = 'flex';
+            } else {
+                invDiscRow.style.display = 'none';
+            }
+            
             document.getElementById('invoice-shipping-cost').innerText = shipCost > 0 ? shipCost.toLocaleString('fa-IR') + ' تومان' : '0 تومان';
             document.getElementById('invoice-final-total').innerText = (cartTotal + shipCost).toLocaleString('fa-IR') + ' تومان';
         }
@@ -2493,8 +2550,8 @@
 
             if (!scrollTicking) {
                 window.requestAnimationFrame(() => {
-                    // با افزایش عدد 500 به 1200، بارگذاری دقیقا کمی قبل از رسیدن به انتهای لیست (حدود ردیف دهم از 30 محصول) انجام می‌شود.
-                    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 1200) {
+                    // با افزایش عدد 500 به 800، بارگذاری دقیقا کمی قبل از رسیدن به انتهای لیست انجام می‌شود.
+                    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 800) {
                         isFetchingNext = true; 
                         document.getElementById('loading-more').style.display = 'block';
                         setTimeout(() => { 
