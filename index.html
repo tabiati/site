@@ -1646,7 +1646,9 @@
                 let data = await res.json();
                 
                 products = data.products || [];
-                // مرتب سازی: محصولات موجود در ابتدا، محصولات ناموجود در انتها
+                // اصلاح 1: ابتدا معکوس کردن آرایه برای نمایش محصولات دقیقاً از ابتدای شیت به انتهای شیت
+                products.reverse();
+                // اصلاح 2: مرتب سازی جهت قرارگیری قطعی محصولات موجود در ابتدا، محصولات ناموجود در انتها
                 products.sort((a, b) => (Number(b.stock) > 0 ? 1 : 0) - (Number(a.stock) > 0 ? 1 : 0));
                 
                 shippingMethods = data.shipping || [];
@@ -1956,8 +1958,10 @@
                 });
                 let data = await res.json();
                 
-                fullSearchList = data.data;
-                // مرتب سازی: محصولات موجود در ابتدا، محصولات ناموجود در انتها
+                fullSearchList = data.data || [];
+                // اصلاح 1: نمایش جستجو نیز از ابتدای شیت به انتهاست
+                fullSearchList.reverse(); 
+                // اصلاح 2: اولویت‌بندی محصولات موجود در نتایج جستجو
                 fullSearchList.sort((a, b) => (Number(b.stock) > 0 ? 1 : 0) - (Number(a.stock) > 0 ? 1 : 0));
                 
                 const grid = document.getElementById('products-grid');
@@ -2136,13 +2140,14 @@
                 // دریافت تازه داده‌ها دقیقا در لحظه کلیک
                 let res = await fetch(GAS_URL + "?action=getStoreData");
                 let data = await res.json();
-                qoData = data.products.reverse();
+                qoData = data.products || [];
+                qoData.reverse(); // اولویت: نمایش از ابتدای شیت تا انتها
                 // مرتب سازی: محصولات موجود در ابتدا، محصولات ناموجود در انتها
                 qoData.sort((a, b) => (Number(b.stock) > 0 ? 1 : 0) - (Number(a.stock) > 0 ? 1 : 0));
             } catch(e) {
                 // اگر مشکلی پیش آمد از دیتای محلی به عنوان نسخه پشتیبان استفاده می شود
-                qoData = [...products].reverse();
-                qoData.sort((a, b) => (Number(b.stock) > 0 ? 1 : 0) - (Number(a.stock) > 0 ? 1 : 0));
+                // در اینجا چون متغیر products در ابتدا کاملاً صحیح (reverse و sort) شده است، نیازی به کدهای مخرب قبل نیست
+                qoData = [...products]; 
             }
 
             qoIndex = 0;
@@ -2207,9 +2212,7 @@
             let list = document.getElementById('quick-order-list');
             
             if(!query) {
-                qoData = [...products].reverse();
-                // مرتب سازی در صورت بازگشت به لیست پیش‌فرض
-                qoData.sort((a, b) => (Number(b.stock) > 0 ? 1 : 0) - (Number(a.stock) > 0 ? 1 : 0));
+                qoData = [...products]; // از آنجا که products در بدو ورود کاملاً صحیح سورت شده، فقط آن را جایگزین می‌کنیم
                 qoIndex = 0;
                 list.innerHTML = '';
                 appendQoBatch();
@@ -2224,9 +2227,11 @@
                 });
                 let data = await res.json();
                 
-                qoData = data.data.reverse();
+                qoData = data.data || [];
+                qoData.reverse(); // اولویت: نمایش از بالای شیت
                 // مرتب سازی نتایج جستجوی سریع: محصولات موجود در ابتدا
                 qoData.sort((a, b) => (Number(b.stock) > 0 ? 1 : 0) - (Number(a.stock) > 0 ? 1 : 0));
+                
                 qoIndex = 0;
                 list.innerHTML = '';
                 
