@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -13,6 +13,8 @@
     
     <!-- Preload Hero Image for Instant Loading -->
     <link rel="preload" href="image/asli.jpg" as="image">
+    <!-- Preload API Data for Ultra Fast Cold Starts -->
+    <link rel="preload" href="https://script.google.com/macros/s/AKfycbwYokyKy6DH7lhgIPYY292oJ-4u7Go9Nn2BfHgV8W_CaqM1jhk0Md-iBut638iOFuF0/exec?action=getStoreData" as="fetch" crossorigin="anonymous">
 
     <!-- Open Graph (برای نمایش زیبای لینک در واتساپ، تلگرام و جستجوی گوگل) -->
     <meta property="og:type" content="website">
@@ -23,7 +25,7 @@
     <meta property="og:site_name" content="طبیعتی">
     <meta property="og:locale" content="fa_IR">
     
-    <!-- ==================== Favicon (بهینه‌سازی شده و قطعی برای نمایش در نتایج گوگل) ==================== -->
+    <!-- ==================== Favicon ==================== -->
     <link rel="shortcut icon" href="https://tabiati.ir/logo.png">
     <link rel="icon" type="image/png" sizes="192x192" href="https://tabiati.ir/logo.png">
     <link rel="icon" type="image/png" sizes="96x96" href="https://tabiati.ir/logo.png">
@@ -78,7 +80,7 @@
         }
     </style>
 
-    <!-- ==================== پیش‌اتصال (Preconnect) برای افزایش چند برابری سرعت لود ==================== -->
+    <!-- ==================== پیش‌اتصال (Preconnect) ==================== -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
@@ -133,8 +135,8 @@
             --primary-light: #10b981;
             --primary-dark: #047857;
             --accent: #f59e0b;
-            --blue-primary: #3b82f6; /* رنگ آبی جدید و زنده */
-            --blue-dark: #2563eb;    /* آبی تیره تر برای هاور */
+            --blue-primary: #3b82f6; 
+            --blue-dark: #2563eb;    
             --bg: #ffffff; 
             --surface: #f8fafc;
             --text-dark: #0f172a; 
@@ -417,7 +419,6 @@
         .product-img:hover img { transform: scale(1.05); }
         
         .product-title { font-size: 1.25rem; font-weight: 800; margin-bottom: 1rem; color: var(--text-dark); line-height: 1.5; }
-        /* استایل افزوده شده برای اطمینان از عملکرد صحیح تگ های a در عناوین */
         a.product-title { transition: color 0.3s; display: block; }
         a.product-title:hover { color: var(--primary); }
         
@@ -508,7 +509,7 @@
         }
         .sp-action-box { margin-top: 1rem; display: flex; gap: 1rem; flex-wrap: wrap; align-items: stretch; }
         .sp-btn-add {
-            flex: 1; min-width: 180px; padding: 1.2rem; background: var(--blue-primary); color: white; border: none; /* تغییر به آبی */
+            flex: 1; min-width: 180px; padding: 1.2rem; background: var(--blue-primary); color: white; border: none; 
             border-radius: 16px; font-weight: 800; font-size: 1.2rem; cursor: pointer;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
             display: flex; align-items: center; justify-content: center; gap: 0.8rem;
@@ -542,7 +543,7 @@
             transition: opacity 0.6s ease, bottom 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         .floating-socials.cart-active {
-            bottom: 120px; /* برای قرار گرفتن بالای نوار سبد خرید */
+            bottom: 120px; 
         }
         .social-float-btn {
             width: 55px; height: 55px; border-radius: 50%;
@@ -559,10 +560,6 @@
         
         .sf-whatsapp { background: #25D366; animation: socialPulse 2s infinite; }
         
-        /* انیمیشن‌های اختصاصی آیکون‌ها */
-        .sf-instagram i { animation: instaFloat 3s ease-in-out infinite; }
-        .sf-rubika img { animation: rubikaWiggle 2.5s ease-in-out infinite; }
-        
         @keyframes instaFloat {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-4px); }
@@ -577,7 +574,7 @@
             100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
         }
 
-        /* ========== استایل مودال لیست سریع سفارشات (ویرایش و جمع و جورتر) ========== */
+        /* ========== استایل مودال لیست سریع سفارشات ========== */
         .qo-row {
             display: flex; justify-content: space-between; align-items: center;
             padding: 0.5rem 0.8rem; background: var(--surface); border: 1px solid var(--border);
@@ -696,7 +693,7 @@
             font-size: 1.3rem; font-weight: 800; margin-bottom: 1.5rem; color: var(--text-dark);
         }
         
-        /* استایل دکمه جدید به اشتراک گذاری سبد خرید */
+        /* استایل دکمه اشتراک گذاری سبد خرید */
         .share-cart-btn {
             width: 100%; padding: 1.2rem; background: var(--surface);
             color: var(--primary-dark); border: 2px solid var(--primary-light); border-radius: 16px;
@@ -908,7 +905,7 @@
         .category-item {
             display: flex; flex-direction: column; align-items: center; text-decoration: none;
             flex-shrink: 0; width: 95px; cursor: pointer; transition: var(--transition);
-            user-select: auto; /* برای کپی شدن راحت‌تر نام دسته */
+            user-select: auto; 
         }
         .category-item:hover { transform: translateY(-5px); }
         .category-img {
@@ -937,7 +934,7 @@
             .category-item { width: 80px; }
         }
 
-        /* ==================== استایل اختصاصی چاپ (مخفی کردن تمام بخش‌های سایت در زمان چاپ و نمایش دقیق A4) ==================== */
+        /* ==================== استایل اختصاصی چاپ ==================== */
         @media print {
             body > *:not(#print-area) { display: none !important; }
             #print-area { display: block !important; position: static; width: 100%; background: white; color: black; direction: rtl; }
@@ -1101,7 +1098,7 @@
             
             <div class="search-container">
                 <div class="search-box">
-                    <input type="text" id="searchInput" placeholder="جستجوی محصولات (عسل، زعفران...)" onkeyup="if(event.key==='Enter') executeSearch()">
+                    <input type="text" id="searchInput" placeholder="جستجوی محصولات (عسل، زعفران...)" onkeyup="handleSearchInput()">
                     <button onclick="executeSearch()">
                         <i class="fas fa-search"></i> 
                         <span>جستجو</span>
@@ -1197,7 +1194,7 @@
                 </div>
             </div>
             <div class="search-box" style="margin-bottom: 1.5rem; border-radius: 14px; box-shadow: none; border: 2px solid var(--border);">
-                <input type="text" id="quickSearchInput" placeholder="جستجوی سریع محصولات..." onkeyup="if(event.key==='Enter') executeQuickSearch()">
+                <input type="text" id="quickSearchInput" placeholder="جستجوی سریع محصولات..." onkeyup="handleQuickSearchInput()">
                 <button onclick="executeQuickSearch()" style="padding: 0 1.5rem; border-radius: 12px;"><i class="fas fa-search"></i></button>
             </div>
             <div id="quick-order-list" style="max-height: 60vh; overflow-y: auto; display: flex; flex-direction: column; gap: 0.8rem; padding-right: 5px;">
@@ -1345,24 +1342,29 @@
     <script>
         const GAS_URL = "https://script.google.com/macros/s/AKfycbwYokyKy6DH7lhgIPYY292oJ-4u7Go9Nn2BfHgV8W_CaqM1jhk0Md-iBut638iOFuF0/exec"; 
         
+        // متغیر گلوبال برای ذخیره همه محصولات در فرانت اند
+        window.allProducts = [];
+        
         let products = [];
         let shippingMethods = []; 
         let cart = JSON.parse(localStorage.getItem('tabiati_cart')) || [];
         
         let displayList = []; 
         let currentIndex = 0;
-        const ITEMS_PER_PAGE = 10; // تغییر تعداد محصولات در هر بار اسکرول به 10 محصول طبق درخواست جدید
+        const ITEMS_PER_PAGE = 10; 
         let isFetchingNext = false;
         let fullSearchList = [];
         let isSearchMode = false;
         let currentCategoryId = null; 
 
-        // متغیرهای بخش سفارش سریع
+        // متغیرهای بخش سفارش سریع و سرچ
         let qoData = [];
         let qoIndex = 0;
         let isQoFetching = false;
+        window.searchTimeout = null;
+        window.qSearchTimeout = null;
 
-        // مپ جامع دسته‌بندی‌ها برای شناسایی لینک‌ها و تبدیل نام و سئو
+        // مپ جامع دسته‌بندی‌ها 
         const CATEGORY_MAP = {
             'adviyeh': { name: 'ادویه', seo: 'خرید بهترین ادویه‌جات ارگانیک، زردچوبه، فلفل، دارچین و محصولات متنوع ادویه‌ای با کیفیت تضمینی و عطر بی‌نظیر مستقیم از طبیعت.' },
             'chashni': { name: 'چاشنی', seo: 'خرید انواع چاشنی‌های طبیعی و سالم برای طعم دادن به غذاهای شما. مجموعه‌ای از بهترین طعم‌دهنده‌های ارگانیک.' },
@@ -1379,15 +1381,15 @@
         };
 
         window.onload = async () => {
-            let loaderTimeout = setTimeout(() => {
-                hideStartupLoader();
-            }, 3000);
+            // نگهدارنده لودینگ به عنوان آخرین سنگر محافظتی
+            let loaderTimeout = setTimeout(() => { hideStartupLoader(); }, 5000);
 
             const urlParams = new URLSearchParams(window.location.search);
             const authority = urlParams.get('Authority');
             const status = urlParams.get('Status');
             const urlId = urlParams.get('id');
 
+            // نمایش سریع اسکلتون مربوط به ویوی درخواستی تا زمان خواندن کش/دیتا
             if (urlId) {
                 if(CATEGORY_MAP[urlId]) {
                     document.getElementById('single-product-view').style.display = 'none';
@@ -1417,9 +1419,6 @@
                 }
             }
 
-            clearTimeout(loaderTimeout);
-            hideStartupLoader();
-
             if (authority && status) {
                 const pLoader = document.getElementById('payment-loader');
                 pLoader.style.display = 'flex';
@@ -1446,15 +1445,8 @@
                 setTimeout(() => pLoader.style.display = 'none', 2500);
             }
 
-            if (urlId) {
-                if(CATEGORY_MAP[urlId]) {
-                    await fetchStoreData(urlId); 
-                } else {
-                    await fetchStoreData(null, urlId); 
-                }
-            } else {
-                await fetchStoreData(null); 
-            }
+            // فراخوانی داده ها با الگوی فوق سریع SWR
+            await fetchStoreData(CATEGORY_MAP[urlId] ? urlId : null, CATEGORY_MAP[urlId] ? null : urlId); 
             updateCartUI();
         };
 
@@ -1494,7 +1486,7 @@
                 descEl.content = fullDesc;
                 canonicalEl.href = `${baseUrl}?id=${id}`;
 
-                let categoryProducts = products.filter(p => p.category === id).slice(0, 20);
+                let categoryProducts = window.allProducts.filter(p => p.category === id).slice(0, 20);
                 let itemListElements = categoryProducts.map((p, index) => ({
                     "@type": "ListItem",
                     "position": index + 1,
@@ -1562,31 +1554,10 @@
             renderHomeView();
         }
 
-        async function navigateToCategory(catId, event) {
+        function navigateToCategory(catId, event) {
             if(event) event.preventDefault();
             history.pushState({view: 'category', id: catId}, '', '?id=' + catId);
-            
-            currentCategoryId = catId;
-            const catName = CATEGORY_MAP[catId] ? CATEGORY_MAP[catId].name : 'دسته‌بندی';
-
-            document.getElementById('single-product-view').style.display = 'none';
-            document.getElementById('main-store-view').style.display = 'block';
-            
-            document.getElementById('main-hero').style.display = 'none';
-            document.getElementById('category-carousel-container').style.display = 'none';
-            
-            document.getElementById('category-hero').style.display = 'block';
-            document.getElementById('cat-banner-title').innerText = `دسته‌بندی: ${catName}`;
-            document.getElementById('main-section-title').innerHTML = `<i class="fas fa-layer-group"></i> ${catName}`;
-            document.getElementById('searchInput').placeholder = `جستجو فقط در دسته ${catName}...`;
-            
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-
-            if (document.getElementById('products-grid')) {
-                document.getElementById('products-grid').innerHTML = '<div class="skel-card"><div class="skeleton skel-img-box"></div><div class="skeleton skel-title-box"></div><div class="skeleton skel-price-box"></div><div class="skeleton skel-btn-box"></div></div>'.repeat(6);
-            }
-            
-            await fetchStoreData(catId); 
+            renderCategoryPage(catId);
         }
 
         function navigateToProduct(id) {
@@ -1601,9 +1572,7 @@
                 </div>
             `;
             
-            setTimeout(() => {
-                renderSingleProductPage(id);
-            }, 50);
+            setTimeout(() => { renderSingleProductPage(id); }, 50);
         }
 
         function renderHomeView() {
@@ -1619,7 +1588,7 @@
             document.getElementById('searchInput').placeholder = 'جستجوی محصولات (عسل، زعفران...)';
 
             window.scrollTo(0,0);
-            initProductsRender(products);
+            initProductsRender(window.allProducts);
         }
 
         function renderCategoryPage(catId) {
@@ -1637,80 +1606,105 @@
             document.getElementById('cat-banner-title').innerText = `دسته‌بندی: ${catName}`;
             
             document.getElementById('main-section-title').innerHTML = `<i class="fas fa-layer-group"></i> ${catName}`;
-            
             document.getElementById('searchInput').placeholder = `جستجو فقط در دسته ${catName}...`;
 
             window.scrollTo(0,0);
-            initProductsRender(products); 
+            
+            // فیلتر کردن از حافظه محلی به جای ارسال درخواست به سرور
+            let catProducts = window.allProducts.filter(p => p.category === catId);
+            initProductsRender(catProducts); 
         }
 
-        // ================= دریافت داده از سرور =================
+        function routeView(catId, prodId) {
+            if(catId && !prodId) {
+                renderCategoryPage(catId);
+            } else if(prodId && !catId) {
+                renderSingleProductPage(prodId);
+            } else {
+                renderHomeView();
+            }
+            hideStartupLoader(); // پنهان سازی آنی لودینگ به محض آماده شدن رندر
+        }
+
+        function processSharedCart(sharedCart) {
+            if (sharedCart && window.allProducts.length > 0) {
+                try {
+                    const decoded = JSON.parse(decodeURIComponent(atob(sharedCart)));
+                    if (Array.isArray(decoded)) {
+                        let mergedCart = [];
+                        decoded.forEach(item => {
+                            const p = window.allProducts.find(prod => prod.id == item.id);
+                            if (p && p.stock > 0) {
+                                let validQty = Math.min(item.qty, p.stock);
+                                let finalPrice = (p.discountPrice > 0 && p.discountPrice < p.price) ? p.discountPrice : p.price;
+                                mergedCart.push({ id: p.id, name: p.name, price: finalPrice, qty: validQty, stock: p.stock });
+                            }
+                        });
+                        if (mergedCart.length > 0) {
+                            cart = mergedCart;
+                            saveCart();
+                            showToast('سبد خرید اشتراکی با موفقیت بارگذاری شد.', 'success');
+                            openCartSidebar();
+                        }
+                    }
+                } catch(e) { console.error('Invalid cart link', e); }
+                
+                const currentUrl = new URL(window.location);
+                currentUrl.searchParams.delete('shared_cart');
+                window.history.replaceState({}, document.title, currentUrl.pathname + currentUrl.search);
+            }
+        }
+
+        // ================= دریافت داده از سرور (معماری Stale-While-Revalidate) =================
         async function fetchStoreData(catId = null, prodId = null) {
             try {
-                let url = GAS_URL + "?action=getStoreData";
-                if(catId) url += "&category=" + catId;
+                const urlParams = new URLSearchParams(window.location.search);
+                const sharedCart = urlParams.get('shared_cart');
 
+                // 1. بارگذاری و نمایش سریع از حافظه (Cache) مرورگر کاربر
+                const cachedData = localStorage.getItem('tabiati_store_cache');
+                if (cachedData) {
+                    const data = JSON.parse(cachedData);
+                    window.allProducts = data.products || [];
+                    shippingMethods = data.shipping || [];
+                    // مرتب‌سازی برای اینکه موجودها اول بیایند
+                    window.allProducts.sort((a, b) => (Number(b.stock) > 0 ? 1 : 0) - (Number(a.stock) > 0 ? 1 : 0));
+                    products = window.allProducts;
+                    populateShippingDropdown();
+
+                    processSharedCart(sharedCart);
+                    routeView(catId, prodId);
+                }
+
+                // 2. درخواست بی‌صدا به سرور برای دریافت جدیدترین تغییرات
+                let url = GAS_URL + "?action=getStoreData";
                 let res = await fetch(url);
                 let data = await res.json();
                 
-                products = data.products || [];
-                // مرتب سازی: محصولات موجود در ابتدا، محصولات ناموجود در انتها
-                products.sort((a, b) => (Number(b.stock) > 0 ? 1 : 0) - (Number(a.stock) > 0 ? 1 : 0));
-                
+                localStorage.setItem('tabiati_store_cache', JSON.stringify(data));
+                window.allProducts = data.products || [];
                 shippingMethods = data.shipping || [];
+                window.allProducts.sort((a, b) => (Number(b.stock) > 0 ? 1 : 0) - (Number(a.stock) > 0 ? 1 : 0));
+                products = window.allProducts;
+
                 populateShippingDropdown();
 
-                const urlParams = new URLSearchParams(window.location.search);
-                const sharedCart = urlParams.get('shared_cart');
-                if (sharedCart) {
-                    try {
-                        const decoded = JSON.parse(decodeURIComponent(atob(sharedCart)));
-                        if (Array.isArray(decoded)) {
-                            let mergedCart = [];
-                            decoded.forEach(item => {
-                                const p = products.find(prod => prod.id == item.id);
-                                if (p && p.stock > 0) {
-                                    let validQty = Math.min(item.qty, p.stock);
-                                    let finalPrice = (p.discountPrice > 0 && p.discountPrice < p.price) ? p.discountPrice : p.price;
-                                    mergedCart.push({ id: p.id, name: p.name, price: finalPrice, qty: validQty, stock: p.stock });
-                                }
-                            });
-                            if (mergedCart.length > 0) {
-                                cart = mergedCart;
-                                saveCart();
-                                showToast('سبد خرید اشتراکی با موفقیت بارگذاری شد.', 'success');
-                                openCartSidebar();
-                            }
-                        }
-                    } catch(e) {
-                        console.error('Invalid cart link', e);
-                    }
-                    
-                    const currentUrl = new URL(window.location);
-                    currentUrl.searchParams.delete('shared_cart');
-                    window.history.replaceState({}, document.title, currentUrl.pathname + currentUrl.search);
-                }
-
-                if(catId && !prodId) {
-                    updateDynamicSEO('category', catId);
-                }
-
-                if(prodId && !catId) {
-                    renderSingleProductPage(prodId);
-                } else if(catId) {
-                    renderCategoryPage(catId);
-                } else {
-                    renderHomeView();
+                // اگر کش قبلی وجود نداشت، پس تازه حالا باید صفحه رندر شود
+                if (!cachedData) {
+                    processSharedCart(sharedCart);
+                    routeView(catId, prodId);
                 }
 
             } catch(e) { 
-                document.getElementById('products-grid').innerHTML = '<p style="text-align:center; grid-column:1/-1; color:red; font-weight:bold; background: white; padding: 2rem; border-radius:20px;">خطا در دریافت اطلاعات فروشگاه از سرور.</p>';
+                if(!localStorage.getItem('tabiati_store_cache')) {
+                    document.getElementById('products-grid').innerHTML = '<p style="text-align:center; grid-column:1/-1; color:red; font-weight:bold; background: white; padding: 2rem; border-radius:20px;">خطا در دریافت اطلاعات فروشگاه از سرور.</p>';
+                    hideStartupLoader();
+                }
             }
         }
 
         // ================= توابع مدیریت تعداد =================
         function changeTempQty(elementId, delta, maxStock) {
-            // توقف رویداد کلیک برای جلوگیری از باز شدن لینک کارد در کنترلرهای تعداد
             if(event) event.stopPropagation();
             
             let el = document.getElementById(elementId);
@@ -1725,15 +1719,13 @@
             el.innerText = next;
         }
 
-        // تابع اصلی اضافه کردن به سبد خرید به همراه تعداد انتخابی و اعمال انیمیشن کلیک
         function addToCartWithQty(id, contextPrefix, event, btnElement) {
-            // توقف رویداد کلیک برای جلوگیری از باز شدن لینک کارد در تمامی دکمه های افزودن به سبد
             if(event) event.stopPropagation();
             
             let qtyEl = document.getElementById('temp_qty_' + contextPrefix + '_' + id);
             let qtyToAdd = qtyEl ? parseInt(qtyEl.innerText) : 1;
             
-            const prod = products.find(p => p.id == id);
+            const prod = window.allProducts.find(p => p.id == id);
             if(!prod) return;
             
             const price = (prod.discountPrice > 0 && prod.discountPrice < prod.price) ? prod.discountPrice : prod.price;
@@ -1760,12 +1752,11 @@
 
             if(success) {
                 saveCart();
-                // اعمال انیمیشن تغییر وضعیت روی دکمه (تیک و رنگ سبز)
                 if (btnElement) {
                     const originalHtml = btnElement.innerHTML;
                     const originalWidth = btnElement.offsetWidth; 
                     
-                    btnElement.style.width = originalWidth + 'px'; // جلوگیری از پرش سایز دکمه
+                    btnElement.style.width = originalWidth + 'px'; 
                     btnElement.classList.add('btn-success-anim');
                     btnElement.innerHTML = '<i class="fas fa-check"></i> افزوده شد';
                     
@@ -1786,7 +1777,7 @@
 
         // ================= رندر صفحه تک محصول =================
         function renderSingleProductPage(id) {
-            const prod = products.find(p => p.id == id);
+            const prod = window.allProducts.find(p => p.id == id);
             if(!prod) { 
                 document.getElementById('sp-content').innerHTML = `
                     <div style="text-align:center; padding: 5rem 2rem; background: white; border-radius: 30px; margin: 2rem auto; max-width: 600px; box-shadow: var(--shadow-sm); border: 1px solid var(--border);">
@@ -1882,8 +1873,7 @@
         }
 
         function renderSuggestedProducts(excludeId) {
-            // فیلتر اضافه شد: فقط محصولاتی که موجود هستند وارد بخش پیشنهادها بشوند
-            let available = products.filter(p => p.id != excludeId && Number(p.stock) > 0);
+            let available = window.allProducts.filter(p => p.id != excludeId && Number(p.stock) > 0);
             let shuffled = available.sort(() => 0.5 - Math.random());
             let selected = shuffled.slice(0, 4);
 
@@ -1900,7 +1890,7 @@
                 const finalPrice = hasDiscount ? discount : price;
                 const outOfStock = Number(p.stock) <= 0;
                 let iconClass = p.image.includes('fa-') ? p.image : 'fa-box-open';
-                let imgHtml = p.image.startsWith('http') ? `<img src="${p.image}" alt="${p.name}">` : `<i class="fas ${iconClass}"></i>`;
+                let imgHtml = p.image.startsWith('http') ? `<img src="${p.image}" alt="${p.name}" loading="lazy">` : `<i class="fas ${iconClass}"></i>`;
 
                 let qtyControls = outOfStock ? 
                     `<button class="inline-add-btn" style="width:100%;" disabled><i class="fas fa-ban"></i> اتمام موجودی</button>` :
@@ -1944,29 +1934,30 @@
             if(shippingMethods.length > 0) calculateFinalInvoice(); 
         }
 
-        // ================= جستجو (ارسال کاتگوری به سرور) =================
-        async function executeSearch() {
-            const query = document.getElementById('searchInput').value.trim();
+        // ================= توابع جستجو فوق سریع در کلاینت (Debounced) =================
+        function handleSearchInput() {
+            clearTimeout(window.searchTimeout);
+            // با 300 میلی ثانیه تاخیر باعث میشود تا کیبورد در حال تایپ فریز نشود
+            window.searchTimeout = setTimeout(() => { executeSearch(); }, 300);
+        }
+
+        function executeSearch() {
+            const query = document.getElementById('searchInput').value.trim().toLowerCase();
             document.getElementById('btn-search-more').style.display = 'none';
+
+            let baseList = currentCategoryId ? window.allProducts.filter(p => p.category === currentCategoryId) : window.allProducts;
 
             if(!query) {
                 isSearchMode = false;
-                return initProductsRender(products);
+                return initProductsRender(baseList);
             }
             
             isSearchMode = true;
             document.getElementById('products-grid').innerHTML = '<div class="skel-card"><div class="skeleton skel-img-box"></div><div class="skeleton skel-title-box"></div><div class="skeleton skel-price-box"></div><div class="skeleton skel-btn-box"></div></div>'.repeat(3);
             
-            try {
-                let res = await fetch(GAS_URL, { 
-                    method: 'POST', 
-                    body: JSON.stringify({ action: 'search', query: query, category: currentCategoryId }) 
-                });
-                let data = await res.json();
-                
-                fullSearchList = data.data;
-                // مرتب سازی: محصولات موجود در ابتدا، محصولات ناموجود در انتها
-                fullSearchList.sort((a, b) => (Number(b.stock) > 0 ? 1 : 0) - (Number(a.stock) > 0 ? 1 : 0));
+            // استفاده از تایم اوت برای عدم تداخل رندر اسکلتون و پردازش سنگین فیلتر
+            setTimeout(() => {
+                fullSearchList = baseList.filter(p => p.name.toLowerCase().includes(query) || (p.description && p.description.toLowerCase().includes(query)));
                 
                 const grid = document.getElementById('products-grid');
                 grid.innerHTML = '';
@@ -1976,19 +1967,18 @@
                     return;
                 }
 
-                const initialBatch = fullSearchList.slice(0, 10); // تعداد اولیه نمایش جستجو هم متناسب با اسکرول شد 10
+                const initialBatch = fullSearchList.slice(0, 10); 
                 renderProductsBatch(initialBatch, grid);
 
                 if(fullSearchList.length > 10) {
                     document.getElementById('btn-search-more').style.display = 'block';
                 }
-
-            } catch(e) { showToast("خطا در جستجو", 'error'); }
+            }, 50);
         }
 
         function showMoreSearchResults() {
             const grid = document.getElementById('products-grid');
-            const restBatch = fullSearchList.slice(10); // همگام با عدد 10
+            const restBatch = fullSearchList.slice(10); 
             renderProductsBatch(restBatch, grid);
             document.getElementById('btn-search-more').style.display = 'none';
         }
@@ -2028,7 +2018,8 @@
                 const outOfStock = Number(p.stock) <= 0;
                 
                 let iconClass = p.image.includes('fa-') ? p.image : 'fa-box-open';
-                let imgHtml = p.image.startsWith('http') ? `<img src="${p.image}" alt="${p.name}">` : `<i class="fas ${iconClass}"></i>`;
+                // اضافه شدن ویژگی lazy loading در کارت ها برای روانی اسکرول
+                let imgHtml = p.image.startsWith('http') ? `<img src="${p.image}" alt="${p.name}" loading="lazy">` : `<i class="fas ${iconClass}"></i>`;
 
                 let qtyControls = outOfStock ? 
                     `<button class="inline-add-btn" style="width:100%;" disabled><i class="fas fa-ban"></i> اتمام موجودی</button>` :
@@ -2068,14 +2059,13 @@
             openModal('imageModal');
         }
 
-        // ================= توابع چاپ سفارش سریع (جدید) =================
+        // ================= توابع چاپ سفارش سریع =================
         function printQuickOrder() {
             if(!qoData || qoData.length === 0) {
                 showToast('لیستی برای چاپ وجود ندارد!', 'error');
                 return;
             }
             
-            // دریافت تاریخ شمسی امروز
             const today = new Date().toLocaleDateString('fa-IR');
             
             let html = `
@@ -2094,16 +2084,12 @@
                     <tbody>
             `;
             
-            // حلقه روی داده‌های لود شده در سفارش سریع برای چاپ منظم
             qoData.forEach((p, index) => {
                 const price = Number(p.price);
                 const discount = Number(p.discountPrice);
                 const finalPrice = (discount > 0 && discount < price) ? discount : price;
                 
-                // بررسی موجودی محصول طبق دستور
                 const outOfStock = Number(p.stock) <= 0;
-                
-                // اگر موجودی صفر بود بنویسد موجود نیست وگرنه قیمت را فرمت کند
                 const priceDisplay = outOfStock ? 'موجود نیست' : finalPrice.toLocaleString('fa-IR');
                 
                 html += `
@@ -2120,49 +2106,36 @@
                 </table>
             `;
             
-            // تزریق محتوا به دیو مخفی مخصوص چاپ
             const printArea = document.getElementById('print-area');
             printArea.innerHTML = html;
-            
-            // فراخوانی متد چاپ مرورگر
             window.print();
         }
 
         // ================= توابع سفارش سریع (Quick Order) =================
         async function openQuickOrderModal() {
             document.getElementById('quickSearchInput').value = '';
-            // نمایش لودینگ مناسب قبل از دریافت داده در لحظه کلیک
             document.getElementById('quick-order-list').innerHTML = `
                 <div style="text-align:center; padding: 40px; display:flex; flex-direction:column; align-items:center; gap:15px;">
-                    <i class="fas fa-circle-notch fa-spin fa-3x" style="color:var(--primary);"></i>
-                    <span style="color:var(--text-muted); font-weight:bold;">در حال دریافت محصولات...</span>
+                    <div class="soft-dots-loader"><span></span><span></span><span></span></div>
+                    <span style="color:var(--text-muted); font-weight:bold;">در حال آماده‌سازی اطلاعات...</span>
                 </div>
             `;
             openModal('quickOrderModal');
 
-            try {
-                // دریافت تازه داده‌ها دقیقا در لحظه کلیک
-                let res = await fetch(GAS_URL + "?action=getStoreData");
-                let data = await res.json();
-                qoData = data.products;
-                // مرتب سازی: محصولات موجود در ابتدا، محصولات ناموجود در انتها
-                qoData.sort((a, b) => (Number(b.stock) > 0 ? 1 : 0) - (Number(a.stock) > 0 ? 1 : 0));
-            } catch(e) {
-                // اگر مشکلی پیش آمد از دیتای محلی به عنوان نسخه پشتیبان استفاده می شود
-                qoData = [...products];
-                qoData.sort((a, b) => (Number(b.stock) > 0 ? 1 : 0) - (Number(a.stock) > 0 ? 1 : 0));
-            }
-
-            qoIndex = 0;
-            document.getElementById('quick-order-list').innerHTML = '';
-            appendQoBatch();
+            // واگذاری دریافت به دیتای محلی به جای اتصال به سرور!
+            setTimeout(() => {
+                qoData = [...window.allProducts];
+                qoIndex = 0;
+                document.getElementById('quick-order-list').innerHTML = '';
+                appendQoBatch();
+            }, 100);
         }
 
         function appendQoBatch() {
             if(qoIndex >= qoData.length) return;
             isQoFetching = true;
             let list = document.getElementById('quick-order-list');
-            let batch = qoData.slice(qoIndex, qoIndex + 100); // به دستور شما 100 تا 100 تا اضافه شود
+            let batch = qoData.slice(qoIndex, qoIndex + 100); 
             
             batch.forEach(p => {
                 const price = Number(p.price);
@@ -2193,15 +2166,14 @@
                     </div>
                 `;
             });
-            qoIndex += 100; // همگام سازی ایندکس با 100 ردیف
+            qoIndex += 100; 
             isQoFetching = false;
         }
 
-        // اسکرول برای لیست سفارش سریع
         document.getElementById('quick-order-list').addEventListener('scroll', function() {
             if(isQoFetching || qoIndex >= qoData.length) return;
             if (this.scrollTop + this.clientHeight >= this.scrollHeight - 100) {
-                document.getElementById('quick-loading-more').style.display = 'block';
+                document.getElementById('quick-loading-more').style.display = 'flex';
                 setTimeout(() => {
                     appendQoBatch();
                     document.getElementById('quick-loading-more').style.display = 'none';
@@ -2209,32 +2181,27 @@
             }
         });
 
-        // جستجو در لیست سفارش سریع (از طریق ارتباط با بک اند)
-        async function executeQuickSearch() {
-            const query = document.getElementById('quickSearchInput').value.trim();
+        function handleQuickSearchInput() {
+            clearTimeout(window.qSearchTimeout);
+            window.qSearchTimeout = setTimeout(() => { executeQuickSearch(); }, 300);
+        }
+
+        function executeQuickSearch() {
+            const query = document.getElementById('quickSearchInput').value.trim().toLowerCase();
             let list = document.getElementById('quick-order-list');
             
             if(!query) {
-                qoData = [...products];
-                // مرتب سازی در صورت بازگشت به لیست پیش‌فرض
-                qoData.sort((a, b) => (Number(b.stock) > 0 ? 1 : 0) - (Number(a.stock) > 0 ? 1 : 0));
+                qoData = [...window.allProducts];
                 qoIndex = 0;
                 list.innerHTML = '';
                 appendQoBatch();
                 return;
             }
             
-            list.innerHTML = '<div style="text-align:center; padding:20px;"><i class="fas fa-spinner fa-spin fa-2x" style="color:var(--primary);"></i></div>';
-            try {
-                let res = await fetch(GAS_URL, { 
-                    method: 'POST', 
-                    body: JSON.stringify({ action: 'search', query: query, category: null }) 
-                });
-                let data = await res.json();
-                
-                qoData = data.data;
-                // مرتب سازی نتایج جستجوی سریع: محصولات موجود در ابتدا
-                qoData.sort((a, b) => (Number(b.stock) > 0 ? 1 : 0) - (Number(a.stock) > 0 ? 1 : 0));
+            list.innerHTML = '<div style="text-align:center; padding:20px;"><div class="soft-dots-loader"><span></span><span></span><span></span></div></div>';
+            
+            setTimeout(() => {
+                qoData = window.allProducts.filter(p => p.name.toLowerCase().includes(query) || (p.description && p.description.toLowerCase().includes(query)));
                 qoIndex = 0;
                 list.innerHTML = '';
                 
@@ -2244,10 +2211,7 @@
                 }
                 
                 appendQoBatch();
-            } catch(e) {
-                showToast("خطا در جستجو", 'error');
-                list.innerHTML = '';
-            }
+            }, 50);
         }
 
         // ================= Cart Logic =================
@@ -2313,21 +2277,19 @@
                 document.getElementById('btn-checkout-cart').disabled = true;
                 document.getElementById('btn-share-cart').style.display = 'none';
                 
-                // در صورت خالی بودن سبد خرید ردیف تخفیف هم پنهان می‌شود
                 document.getElementById('cart-discount-row').style.display = 'none';
             } else {
                 document.getElementById('btn-checkout-cart').disabled = false;
                 document.getElementById('btn-share-cart').style.display = 'flex';
                 container.innerHTML = '';
                 
-                let totalDiscount = 0; // متغیر جدید برای محاسبه مجموع تخفیف
+                let totalDiscount = 0; 
                 
                 cart.forEach(i => {
                     totalAmount += (i.price * i.qty);
                     
-                    let productDetails = products.find(p => p.id == i.id);
+                    let productDetails = window.allProducts.find(p => p.id == i.id);
                     
-                    // محاسبه تخفیف این کالا در صورت وجود
                     if (productDetails) {
                         let origPrice = Number(productDetails.price);
                         if (origPrice > i.price) {
@@ -2364,7 +2326,6 @@
                     </div>`;
                 });
                 
-                // به‌روزرسانی UI ردیف تخفیف در نوار کناری
                 let discountRow = document.getElementById('cart-discount-row');
                 if (totalDiscount > 0) {
                     document.getElementById('cart-total-discount').innerText = totalDiscount.toLocaleString('fa-IR') + ' تومان';
@@ -2415,12 +2376,12 @@
 
         function calculateFinalInvoice() {
             let cartTotal = 0;
-            let totalDiscount = 0; // برای محاسبه و نمایش تخفیف پیش از درگاه پرداخت
+            let totalDiscount = 0; 
             
             cart.forEach(i => {
                 cartTotal += (i.price * i.qty);
                 
-                let p = products.find(prod => prod.id == i.id);
+                let p = window.allProducts.find(prod => prod.id == i.id);
                 if (p) {
                     let origPrice = Number(p.price);
                     if (origPrice > i.price) {
@@ -2438,7 +2399,6 @@
             
             document.getElementById('invoice-cart-total').innerText = cartTotal.toLocaleString('fa-IR') + ' تومان';
             
-            // مدیریت نمایش ردیف تخفیف در فاکتور پیش از درگاه
             let invDiscRow = document.getElementById('invoice-discount-row');
             if (totalDiscount > 0) {
                 document.getElementById('invoice-cart-discount').innerText = totalDiscount.toLocaleString('fa-IR') + ' تومان';
@@ -2550,10 +2510,9 @@
 
             if (!scrollTicking) {
                 window.requestAnimationFrame(() => {
-                    // با افزایش عدد 500 به 800، بارگذاری دقیقا کمی قبل از رسیدن به انتهای لیست انجام می‌شود.
                     if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 800) {
                         isFetchingNext = true; 
-                        document.getElementById('loading-more').style.display = 'block';
+                        document.getElementById('loading-more').style.display = 'flex';
                         setTimeout(() => { 
                             appendNextBatch();
                             document.getElementById('loading-more').style.display = 'none';
