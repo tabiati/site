@@ -11,9 +11,7 @@
     <meta id="meta-desc" name="description" content="فروشگاه اینترنتی طبیعتی. خرید مطمئن محصولات سالم، ارگانیک و طبیعی. عرضه مستقیم عسل، زعفران، روغن‌های درمانی و گیاهان دارویی از مزرعه تا سفره شما.">
     <link id="meta-canonical" rel="canonical" href="https://tabiati.ir/">
     
-    <!-- Preload Hero Image for Instant Loading -->
     <link rel="preload" href="image/asli.jpg" as="image">
-    <!-- Preload API Data for Ultra Fast Cold Starts -->
     <link rel="preload" href="https://script.google.com/macros/s/AKfycbwYokyKy6DH7lhgIPYY292oJ-4u7Go9Nn2BfHgV8W_CaqM1jhk0Md-iBut638iOFuF0/exec?action=getStoreData" as="fetch" crossorigin="anonymous">
 
     <!-- Open Graph -->
@@ -36,7 +34,6 @@
     <!-- ==================== اولویت‌بندی رندر (Instant CSS) ==================== -->
     <style id="instant-loader-css">
         body { margin: 0; padding: 0; }
-        /* ========== لودینگ ابتدایی و امنیتی پرداخت ========== */
         #payment-loader, #startup-loader { 
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background: rgba(255, 255, 255, 0.95); z-index: 10001; 
@@ -79,7 +76,6 @@
         }
     </style>
 
-    <!-- ==================== پیش‌اتصال (Preconnect) ==================== -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
@@ -195,7 +191,31 @@
         }
         .action-pill:hover i { color: white !important; }
 
-        /* ========== Hero Section ========== */
+        /* دستور ۶: نشان‌گر دایره‌ای قرمز متناسب، زیبا و کاملاً مشخص برای تعداد سبد خرید */
+        .cart-pill-btn {
+            position: relative;
+        }
+        .cart-badge-red {
+            position: absolute;
+            top: -7px;
+            left: -7px;
+            background-color: #ef4444;
+            color: #ffffff;
+            font-size: 0.75rem;
+            font-weight: 900;
+            min-width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #ffffff;
+            box-shadow: 0 3px 10px rgba(239, 68, 68, 0.45);
+            z-index: 5;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* Hero Section */
         .hero {
             position: relative; 
             height: 100vh; 
@@ -383,7 +403,7 @@
         
         .product-img {
             font-size: 5rem; color: var(--primary-light);
-            margin: 0 0 1.5rem; height: 180px; width: 100%;
+            margin: 0 0 1rem; height: 180px; width: 100%;
             border-radius: 14px; overflow: hidden;
             display: flex; align-items: center; justify-content: center;
             position: relative; z-index: 5;
@@ -395,9 +415,16 @@
         }
         .product-img:hover img { transform: scale(1.05); }
         
-        .product-title { font-size: 1.25rem; font-weight: 800; margin-bottom: 1rem; color: var(--text-dark); line-height: 1.5; }
+        .product-title { font-size: 1.25rem; font-weight: 800; margin-bottom: 0.5rem; color: var(--text-dark); line-height: 1.5; }
         a.product-title { transition: color 0.3s; display: block; }
         a.product-title:hover { color: var(--primary); }
+
+        /* دستور ۴: استایل نمایش امتیاز ستاره‌ای در کارد محصول */
+        .card-rating-bar {
+            display: flex; align-items: center; justify-content: center; gap: 0.4rem;
+            font-size: 0.88rem; font-weight: 800; color: #d97706; margin-bottom: 0.8rem;
+        }
+        .card-rating-bar i { color: #f59e0b; }
         
         .price-section { 
             display: flex; flex-direction: column; justify-content: center; align-items: center; 
@@ -435,7 +462,6 @@
             align-items: start; animation: fadeInPage 0.8s ease-out;
         }
         
-        /* Carousel / Slider Styles */
         .carousel-container {
             position: relative; width: 100%; border-radius: 20px; overflow: hidden;
             background: #f8fafc; border: 1px solid var(--border);
@@ -470,7 +496,6 @@
         }
         .thumb-img.active, .thumb-img:hover { opacity: 1; border-color: var(--primary); }
 
-        /* Video Container */
         .video-box-container {
             margin-top: 2rem; width: 100%; border-radius: 20px; overflow: hidden;
             box-shadow: var(--shadow-sm); border: 1px solid var(--border); background: black;
@@ -480,7 +505,7 @@
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;
         }
 
-        .sp-details-box { display: flex; flex-direction: column; gap: 1.5rem; }
+        .sp-details-box { display: flex; flex-direction: column; gap: 1.2rem; }
         
         .sp-category-badge {
             display: inline-flex; align-items: center; gap: 0.5rem;
@@ -494,14 +519,27 @@
             transform: translateY(-2px); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2);
         }
 
-        .sp-title { font-size: 2.5rem; font-weight: 900; color: var(--text-dark); line-height: 1.4; margin-top: 0; }
+        /* دستور ۲: خلاصه وضعیت نوار فوقانی دیجی‌کالایی محصول */
+        .digi-summary-bar {
+            display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap;
+            background: #f8fafc; border: 1px solid var(--border); padding: 0.8rem 1.2rem;
+            border-radius: 14px; font-size: 0.9rem; font-weight: 700; color: var(--text-dark);
+        }
+        .digi-summary-item {
+            display: inline-flex; align-items: center; gap: 0.4rem; cursor: pointer;
+            transition: 0.2s; color: var(--text-dark); text-decoration: none;
+        }
+        .digi-summary-item:hover { color: var(--primary); }
+        .digi-summary-item i { font-size: 1rem; }
+
+        .sp-title { font-size: 2.2rem; font-weight: 900; color: var(--text-dark); line-height: 1.4; margin-top: 0; }
         .sp-price-wrap {
-            display: flex; align-items: baseline; gap: 1rem; padding-bottom: 1.5rem; border-bottom: 2px dashed var(--border);
+            display: flex; align-items: baseline; gap: 1rem; padding-bottom: 1.2rem; border-bottom: 2px dashed var(--border);
         }
         .sp-current-price { font-size: 2.2rem; font-weight: 900; color: var(--primary-dark); }
         .sp-old-price { text-decoration: line-through; color: #94a3b8; font-size: 1.2rem; font-weight: 600; }
         .sp-description {
-            font-size: 1.1rem; line-height: 2.2; color: var(--text-dark); font-weight: 500; text-align: justify;
+            font-size: 1.05rem; line-height: 2.1; color: var(--text-dark); font-weight: 500; text-align: justify;
         }
         .sp-action-box { margin-top: 1rem; display: flex; gap: 1rem; flex-wrap: wrap; align-items: stretch; }
         .sp-btn-add {
@@ -522,27 +560,44 @@
             background: var(--accent); color: white; transform: translateY(-3px); box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);
         }
 
-        /* Comments Section Styles */
-        .comments-section {
+        /* Comments & Questions Section Styles */
+        .comments-section, .questions-section {
             max-width: 1200px; margin: 3rem auto; padding: 0 5%;
         }
-        .comments-header {
-            font-size: 1.6rem; font-weight: 800; margin-bottom: 1.5rem; color: var(--text-dark);
-            display: flex; align-items: center; gap: 0.6rem;
+        .section-tab-header {
+            font-size: 1.5rem; font-weight: 800; margin-bottom: 1.5rem; color: var(--text-dark);
+            display: flex; align-items: center; gap: 0.6rem; border-bottom: 2px solid var(--border); padding-bottom: 0.8rem;
         }
-        .comment-card {
+        .comment-card, .question-card {
             background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
             padding: 1.2rem; margin-bottom: 1rem; display: flex; flex-direction: column; gap: 0.6rem;
         }
-        .comment-author { font-weight: 800; color: var(--primary-dark); font-size: 1rem; display: flex; align-items: center; gap: 0.5rem; }
-        .comment-date { font-size: 0.8rem; color: var(--text-muted); font-weight: normal; margin-right: auto; }
-        .comment-text { font-size: 0.98rem; line-height: 1.8; color: var(--text-dark); }
+        .comment-author, .question-author { font-weight: 800; color: var(--primary-dark); font-size: 0.98rem; display: flex; align-items: center; gap: 0.5rem; }
+        .comment-date, .question-date { font-size: 0.8rem; color: var(--text-muted); font-weight: normal; margin-right: auto; }
+        .comment-text, .question-text { font-size: 0.98rem; line-height: 1.8; color: var(--text-dark); }
         
-        .add-comment-box {
+        /* دستور ۵: استایل نمایش پاسخ مدیریت */
+        .admin-reply-box {
+            background: #e0f2fe; border-right: 4px solid var(--blue-primary); border-radius: 8px;
+            padding: 0.8rem 1rem; margin-top: 0.6rem; font-size: 0.92rem; color: #0369a1; line-height: 1.7;
+        }
+
+        /* دستور ۴: ویجت انتخاب امتیاز ستاره‌ای در فرم ثبت نظر */
+        .star-rating-widget {
+            display: flex; gap: 0.4rem; direction: ltr; margin-bottom: 0.8rem; cursor: pointer;
+        }
+        .star-rating-widget i {
+            font-size: 1.6rem; color: #cbd5e1; transition: 0.2s;
+        }
+        .star-rating-widget i.active, .star-rating-widget i:hover {
+            color: #f59e0b;
+        }
+        
+        .add-box {
             background: white; border: 2px dashed var(--primary-light); border-radius: 16px;
             padding: 1.8rem; margin-top: 2rem;
         }
-        .add-comment-box h4 { font-size: 1.2rem; font-weight: 800; margin-bottom: 1rem; color: var(--text-dark); }
+        .add-box h4 { font-size: 1.15rem; font-weight: 800; margin-bottom: 1rem; color: var(--text-dark); }
 
         .suggested-section {
             max-width: 1400px; margin: 4rem auto 2rem; padding: 0 5%;
@@ -585,6 +640,7 @@
             .single-product-container { grid-template-columns: 1fr; gap: 2rem; padding: 1rem 5%; }
             .sp-title { font-size: 1.8rem; }
             .sp-action-box { flex-direction: column; gap: 0.8rem; }
+            .digi-summary-bar { font-size: 0.82rem; gap: 0.8rem; }
         }
         
         @media (max-width: 576px) {
@@ -603,7 +659,7 @@
             .products-grid { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
             .product-card { padding: 1rem 0.8rem; border-radius: 16px; justify-content: space-between;}
             .product-img { height: 130px; margin: 0 0 1rem; border-radius: 12px; }
-            .product-title { font-size: 0.95rem; margin-bottom: 0.8rem; }
+            .product-title { font-size: 0.95rem; margin-bottom: 0.5rem; }
             .current-price { font-size: 1.1rem; }
             .old-price { font-size: 0.85rem; }
             .price-section { margin-bottom: 1rem; }
@@ -697,7 +753,7 @@
         .checkout-btn:hover:not(:disabled) { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(5, 150, 105, 0.3); }
         .checkout-btn:disabled { background: #cbd5e1; cursor: not-allowed; }
 
-        /* Modals & Profile Redesign */
+        /* Modals & Profile */
         .modal {
             position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7);
             z-index: 2000; display: flex; align-items: center; justify-content: center;
@@ -740,14 +796,12 @@
         }
         .image-modal-close:hover { color: #ef4444; transform: scale(1.1); }
 
-        /* Security Warning Box */
         .security-warning-box {
             background: #fffbe3; border: 1px solid var(--accent); border-radius: 12px;
             padding: 0.8rem 1rem; margin-bottom: 1.2rem; font-size: 0.88rem; font-weight: 700;
             color: #92400e; display: flex; align-items: center; gap: 0.8rem; line-height: 1.6;
         }
 
-        /* Saved Address Card */
         .saved-address-card {
             background: #f0fdf4; border: 1.5px dashed var(--primary-light);
             border-radius: 14px; padding: 1.2rem; margin-bottom: 1.2rem;
@@ -763,7 +817,6 @@
         .sac-edit-btn:hover { background: var(--primary); color: white; }
         .sac-body p { font-size: 0.9rem; color: var(--text-dark); margin-bottom: 0.4rem; line-height: 1.6; }
 
-        /* Order Accordion Card */
         .order-acc-card {
             background: white; border: 1px solid var(--border); border-radius: 14px;
             margin-bottom: 1rem; overflow: hidden; transition: 0.3s;
@@ -793,13 +846,11 @@
         .btn-mini-comment { background: #fef3c7; color: #d97706; }
         .btn-mini-comment:hover { background: #d97706; color: white; }
 
-        /* Badges */
         .badge { padding: 0.25rem 0.6rem; border-radius: 6px; font-size: 0.78rem; font-weight: 800; }
         .bg-yellow { background: #fef3c7; color: #b45309; }
         .bg-green { background: #d1fae5; color: #047857; }
         .bg-red { background: #fee2e2; color: #b91c1c; }
 
-        /* Checkout Order Summary */
         .checkout-cart-summary {
             background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
             padding: 1rem; margin-bottom: 1.2rem; max-height: 180px; overflow-y: auto;
@@ -828,7 +879,7 @@
         .toast.success { border-right: 4px solid var(--primary-light); }
         .toast.error { border-right: 4px solid #ef4444; }
 
-        /* دستور ۳: بازگرداندن استایل شناور سبد خرید پایین به ابعاد و سایز اصلی */
+        /* Sticky Cart Bar */
         .sticky-bottom-cart {
             position: fixed; bottom: 0; left: 0; width: 100%;
             background: rgba(255, 255, 255, 0.98); 
@@ -972,7 +1023,7 @@
 
     <div id="toast-container"></div>
 
-    <!-- ========== Header (دستور ۲: متن دکمه «ورود» شد) ========== -->
+    <!-- ========== Header (دستور ۶: نشان‌گر دایره‌ای قرمز برجسته برای سبد خرید) ========== -->
     <header class="main-header">
         <a onclick="navigateToHome()" class="header-logo" title="طبیعتی | فروشگاه ارگانیک">
             <img src="https://tabiati.ir/logo.png" alt="لوگوی فروشگاه ارگانیک طبیعتی">
@@ -985,6 +1036,11 @@
             <button class="action-pill" onclick="window.location.href='https://tabiati.ir/blog/'" title="مقالات و آموزش‌ها">
                 <i class="fas fa-book-open" style="color: #8b5cf6;"></i>
                 <span>مقالات</span>
+            </button>
+            <button class="action-pill cart-pill-btn" onclick="toggleCart()" title="سبد خرید">
+                <i class="fas fa-shopping-basket" style="color: var(--primary);"></i>
+                <span>سبد خرید</span>
+                <span class="cart-badge-red" id="cart-badge">0</span>
             </button>
         </div>
     </header>
@@ -1101,15 +1157,16 @@
     <div id="single-product-view" style="display: none;">
         <div id="sp-content"></div>
         <div id="sp-comments-area"></div>
+        <div id="sp-questions-area"></div>
         <div id="sp-suggestions"></div>
     </div>
 
-    <!-- Sticky Cart Bar (دستور ۳: بازگرداندن ابعاد و سایز درشت و اصلی قبلی) -->
+    <!-- Sticky Cart Bar -->
     <div class="sticky-bottom-cart" id="sticky-bottom-cart" onclick="openCartSidebar()">
         <div class="sbc-details">
             <div style="position: relative;">
                 <i class="fas fa-shopping-basket" style="font-size: 2rem; color: var(--primary);"></i>
-                <span class="cart-badge" id="sbc-qty" style="top: -8px; right: -8px; font-size: 0.85rem; width: 24px; height: 24px;">0</span>
+                <span class="cart-badge-red" id="sbc-qty" style="top: -8px; left: -8px; font-size: 0.85rem; width: 24px; height: 24px;">0</span>
             </div>
             <div class="sbc-text">
                 <span class="sbc-title">سبد خرید شما</span>
@@ -1155,7 +1212,7 @@
         </div>
     </div>
 
-    <!-- Modal: Auth (دستور ۱ و ۵: افزودن آیکن چشم + راهنمای رمز برای ثبت‌نام اولیه) -->
+    <!-- Modal: Auth -->
     <div class="modal" id="authModal">
         <div class="modal-dialog">
             <div class="modal-header">
@@ -1172,14 +1229,12 @@
                     <input type="tel" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')" id="auth_phone" class="form-control" required placeholder="09123456789" maxlength="11">
                 </div>
                 
-                <!-- دستور ۵: متن راهنمای ثبت‌نام اولیه -->
                 <div class="form-group">
                     <label>رمز عبور:</label>
                     <div style="font-size: 0.82rem; color: var(--primary-dark); font-weight: 700; margin-bottom: 0.4rem; background: #e0f2fe; padding: 0.4rem 0.8rem; border-radius: 8px;">
                         <i class="fas fa-info-circle"></i> اگر قبلاً ثبت‌نام نکرده‌اید، یک رمز عبور دلخواه انتخاب کنید.
                     </div>
                     
-                    <!-- دستور ۱: فیلد رمز عبور همراه با آیکن چشم -->
                     <div style="position: relative;">
                         <input type="password" id="auth_password" class="form-control" required placeholder="رمز عبور خود را وارد کنید" style="padding-left: 2.8rem;">
                         <i class="fas fa-eye" id="togglePasswordIcon" onclick="togglePasswordVisibility()" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; color: var(--text-muted); font-size: 1.1rem; z-index: 10; padding: 5px;" title="مشاهده رمز عبور"></i>
@@ -1197,7 +1252,7 @@
         </div>
     </div>
 
-    <!-- Modal: User Profile & Orders -->
+    <!-- Modal: User Profile & Orders (دستور ۱: افزودن تب تغییر رمز عبور) -->
     <div class="modal" id="profileModal">
         <div class="modal-dialog" style="max-width: 580px;">
             <div class="modal-header">
@@ -1215,11 +1270,12 @@
                 </button>
             </div>
 
-            <!-- Profile Tabs -->
+            <!-- Profile Tabs (دستور ۱) -->
             <div style="display: flex; gap: 8px; margin-bottom: 1.2rem; border-bottom: 2px solid var(--border); padding-bottom: 0.5rem; flex-wrap: wrap;">
                 <button id="tab-btn-addr" class="action-pill" onclick="switchProfileTab('addr')" style="background: var(--primary); color: white; padding: 0.5rem 0.9rem; font-size: 0.85rem;">آدرس پیش‌فرض</button>
                 <button id="tab-btn-orders" class="action-pill" onclick="switchProfileTab('orders')" style="padding: 0.5rem 0.9rem; font-size: 0.85rem;">تاریخچه سفارشات</button>
                 <button id="tab-btn-comments" class="action-pill" onclick="switchProfileTab('comments')" style="padding: 0.5rem 0.9rem; font-size: 0.85rem;">نظرات من</button>
+                <button id="tab-btn-password" class="action-pill" onclick="switchProfileTab('password')" style="padding: 0.5rem 0.9rem; font-size: 0.85rem;"><i class="fas fa-key"></i> تغییر رمز</button>
             </div>
 
             <!-- Tab 1: Address -->
@@ -1270,6 +1326,27 @@
                     <div class="soft-dots-loader"><span></span><span></span><span></span></div>
                 </div>
             </div>
+
+            <!-- دستور ۱: Tab 4: Change Password -->
+            <div id="prof-tab-password" style="display: none;">
+                <form onsubmit="submitChangePasswordForm(event)">
+                    <div class="form-group">
+                        <label>رمز عبور فعلی:</label>
+                        <input type="password" id="change_pwd_old" class="form-control" required placeholder="رمز فعلی خود را وارد کنید">
+                    </div>
+                    <div class="form-group">
+                        <label>رمز عبور جدید:</label>
+                        <input type="password" id="change_pwd_new" class="form-control" required placeholder="رمز عبور جدید (حداقل ۴ کاراکتر)">
+                    </div>
+                    <div class="form-group">
+                        <label>تکرار رمز عبور جدید:</label>
+                        <input type="password" id="change_pwd_confirm" class="form-control" required placeholder="رمز عبور جدید را مجدداً وارد کنید">
+                    </div>
+                    <button type="submit" class="checkout-btn" id="btn-submit-change-pwd">
+                        <i class="fas fa-key"></i> ذخیره رمز عبور جدید
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -1292,7 +1369,6 @@
             </div>
 
             <form onsubmit="submitCheckout(event)">
-                
                 <div class="form-group" style="background: #f0fdf4; padding: 0.8rem; border-radius: 12px; border: 1px solid var(--primary-light);">
                     <label style="color: var(--primary-dark); font-weight: 800;"><i class="fas fa-truck"></i> روش ارسال را انتخاب کنید:</label>
                     <select id="cust_shipping" class="form-control" required onchange="calculateFinalInvoice()" style="background: white; border-color: var(--primary); font-weight: 700; margin-top: 0.4rem;"></select>
@@ -1426,6 +1502,7 @@
         
         window.allProducts = [];
         window.allComments = [];
+        window.allQuestions = [];
         
         let products = [];
         let shippingMethods = []; 
@@ -1442,6 +1519,7 @@
 
         window.searchTimeout = null;
         let currentCarouselIndex = 0;
+        let selectedCommentRating = 5;
 
         const CATEGORY_MAP = {
             'adviyeh': { name: 'ادویه', seo: 'خرید بهترین ادویه‌جات ارگانیک، زردچوبه، فلفل، دارچین و محصولات متنوع ادویه‌ای با کیفیت تضمینی و عطر بی‌نظیر مستقیم از طبیعت.' },
@@ -1458,7 +1536,6 @@
             'Pakhayeekhtesasi': { name: 'پک های اختصاصی', seo: 'خرید پک‌های هدیه و اختصاصی طبیعتی. مجموعه‌ای از بهترین محصولات ارگانیک با بسته‌بندی زیبا، مناسب برای هدیه به عزیزان شما.' }
         };
 
-        // دستور ۱: تابع نمایش / مخفی کردن کاراکترهای رمز عبور
         function togglePasswordVisibility() {
             const pwdInput = document.getElementById('auth_password');
             const pwdIcon = document.getElementById('togglePasswordIcon');
@@ -1477,12 +1554,18 @@
             return /^09\d{9}$/.test(phone);
         }
 
+        function scrollToElement(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
         window.onload = async () => {
             let loaderTimeout = setTimeout(() => { hideStartupLoader(); }, 1500);
 
             updateAuthHeaderUI();
 
-            // دستور ۶: همگام‌سازی پس‌زمینه پروفایل کاربر با سرور
             if (currentUser && currentUser.phone) {
                 syncUserDataWithServer(currentUser.phone);
             }
@@ -1560,7 +1643,6 @@
             }
         };
 
-        // دستور ۶: همگام‌سازی پس‌زمینه پروفایل و آدرس با سرور
         async function syncUserDataWithServer(phone) {
             try {
                 let res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action: 'getUserProfile', phone: phone }) });
@@ -1804,6 +1886,7 @@
                     const data = JSON.parse(cachedData);
                     window.allProducts = data.products || [];
                     window.allComments = data.comments || [];
+                    window.allQuestions = data.questions || [];
                     shippingMethods = data.shipping || [];
                     window.allProducts.sort((a, b) => (Number(b.stock) > 0 ? 1 : 0) - (Number(a.stock) > 0 ? 1 : 0));
                     products = window.allProducts;
@@ -1820,6 +1903,7 @@
                 localStorage.setItem('tabiati_store_cache', JSON.stringify(data));
                 window.allProducts = data.products || [];
                 window.allComments = data.comments || [];
+                window.allQuestions = data.questions || [];
                 shippingMethods = data.shipping || [];
                 window.allProducts.sort((a, b) => (Number(b.stock) > 0 ? 1 : 0) - (Number(a.stock) > 0 ? 1 : 0));
                 products = window.allProducts;
@@ -1907,7 +1991,22 @@
             }
         }
 
-        /* Single Product View */
+        /* محاسبه آمار امتیاز و نظرات برای هر محصول */
+        function getProductRatingStats(productId) {
+            let prodComments = (window.allComments || []).filter(c => c.productId == productId);
+            let totalRaters = prodComments.length;
+            let totalQuestions = (window.allQuestions || []).filter(q => q.productId == productId).length;
+            
+            if (totalRaters === 0) {
+                return { avgRating: 5.0, totalRaters: 0, reviewsCount: 0, questionsCount: totalQuestions };
+            }
+
+            let sumRating = prodComments.reduce((sum, c) => sum + (Number(c.rating) || 5), 0);
+            let avg = (sumRating / totalRaters).toFixed(1);
+            return { avgRating: avg, totalRaters: totalRaters, reviewsCount: totalRaters, questionsCount: totalQuestions };
+        }
+
+        /* Single Product View (دستور ۲ و ۴: خلاصه دیجی‌کالایی و امتیاز ستاره‌ای) */
         function renderSingleProductPage(id) {
             const prod = window.allProducts.find(p => p.id == id);
             if(!prod) { 
@@ -1920,6 +2019,7 @@
                     </div>
                 `;
                 document.getElementById('sp-comments-area').innerHTML = '';
+                document.getElementById('sp-questions-area').innerHTML = '';
                 document.getElementById('sp-suggestions').innerHTML = '';
                 return; 
             }
@@ -1986,6 +2086,8 @@
 
             let descHtml = prod.description ? prod.description.replace(/\n/g, '<br>') : 'توضیحات تکمیلی برای این محصول ثبت نشده است.';
 
+            let stats = getProductRatingStats(id);
+
             let qtyControls = outOfStock ? 
                 `<button class="sp-btn-add" disabled><i class="fas fa-ban"></i> اتمام موجودی</button>` :
                 `<div style="display:flex; gap:0.5rem; flex:1; min-width:180px;">
@@ -2012,6 +2114,26 @@
                         </div>
 
                         <h1 class="sp-title">${prod.name}</h1>
+
+                        <!-- دستور ۲: نوار خلاصه وضعیت دیجی‌کالایی فوقانی -->
+                        <div class="digi-summary-bar">
+                            <a onclick="scrollToElement('sp-comments-area')" class="digi-summary-item" title="مشاهده امتیازات">
+                                <i class="fas fa-star" style="color: #f59e0b;"></i>
+                                <span>${stats.avgRating}</span>
+                                <span style="color: var(--text-muted); font-size: 0.8rem;">(${stats.totalRaters} امتیاز)</span>
+                            </a>
+                            <span style="color: var(--border);">|</span>
+                            <a onclick="scrollToElement('sp-comments-area')" class="digi-summary-item" title="مشاهده نظرات">
+                                <i class="fas fa-comment-dots" style="color: var(--primary);"></i>
+                                <span>${stats.reviewsCount} نظر خریداران</span>
+                            </a>
+                            <span style="color: var(--border);">|</span>
+                            <a onclick="scrollToElement('sp-questions-area')" class="digi-summary-item" title="مشاهده پرسش‌ها">
+                                <i class="fas fa-circle-question" style="color: var(--blue-primary);"></i>
+                                <span>${stats.questionsCount} پرسش</span>
+                            </a>
+                        </div>
+
                         <div class="sp-price-wrap">
                             <span class="sp-current-price">${finalPrice.toLocaleString('fa-IR')} <span style="font-size: 1.2rem; font-weight: normal; color: var(--text-dark);">تومان</span></span>
                             ${hasDiscount ? `<span class="sp-old-price">${price.toLocaleString('fa-IR')}</span>` : ''}
@@ -2032,6 +2154,7 @@
             
             currentCarouselIndex = 0;
             renderCommentsSection(id);
+            renderQuestionsSection(id);
             renderSuggestedProducts(id);
         }
 
@@ -2058,7 +2181,22 @@
             setCarouselSlide(currentCarouselIndex);
         }
 
-        /* Render Comments Section */
+        /* دستور ۴: ویجت انتخاب امتیاز ستاره‌ای در فرم */
+        function selectRatingStar(rating) {
+            selectedCommentRating = rating;
+            const stars = document.querySelectorAll('#star-rating-selector i');
+            stars.forEach((star, idx) => {
+                if (idx < rating) {
+                    star.classList.add('active');
+                    star.style.color = '#f59e0b';
+                } else {
+                    star.classList.remove('active');
+                    star.style.color = '#cbd5e1';
+                }
+            });
+        }
+
+        /* Render Comments & Ratings Section (دستور ۳ و ۵: فقط خریداران + پاسخ مدیریت) */
         function renderCommentsSection(productId) {
             const commentsContainer = document.getElementById('sp-comments-area');
             let prodComments = (window.allComments || []).filter(c => c.productId == productId);
@@ -2067,40 +2205,68 @@
             if (prodComments.length === 0) {
                 commentsListHtml = `<p style="color: var(--text-muted); font-size: 0.95rem; text-align: center; padding: 1.5rem; background: var(--surface); border-radius: 14px;">هنوز نظری برای این محصول ثبت نشده است. اگر خریدار این محصول هستید، اولین نظر را شما ثبت کنید!</p>`;
             } else {
-                commentsListHtml = prodComments.map(c => `
-                    <div class="comment-card">
-                        <div class="comment-author">
-                            <i class="fas fa-user-check"></i> ${c.name}
-                            <span class="comment-date"><i class="far fa-clock"></i> ${c.date}</span>
+                commentsListHtml = prodComments.map(c => {
+                    let ratingNum = Number(c.rating) || 5;
+                    let starsHtml = '';
+                    for (let s = 1; s <= 5; s++) {
+                        starsHtml += `<i class="fas fa-star" style="color: ${s <= ratingNum ? '#f59e0b' : '#cbd5e1'}; font-size: 0.85rem;"></i>`;
+                    }
+
+                    // دستور ۵: نمایش پاسخ مدیریت در صورت وجود
+                    let adminReplyHtml = '';
+                    if (c.adminReply && c.adminReply.trim().length > 0) {
+                        adminReplyHtml = `
+                            <div class="admin-reply-box">
+                                <strong><i class="fas fa-user-shield"></i> پاسخ مدیریت طبیعتی:</strong>
+                                <p style="margin-top: 0.3rem;">${c.adminReply.replace(/\n/g, '<br>')}</p>
+                            </div>
+                        `;
+                    }
+
+                    return `
+                        <div class="comment-card">
+                            <div class="comment-author">
+                                <i class="fas fa-user-check"></i> ${c.name}
+                                <span style="margin-right: 0.5rem; display: inline-flex; gap: 2px;">${starsHtml}</span>
+                                <span class="comment-date"><i class="far fa-clock"></i> ${c.date}</span>
+                            </div>
+                            <div class="comment-text">${c.text.replace(/\n/g, '<br>')}</div>
+                            ${adminReplyHtml}
                         </div>
-                        <div class="comment-text">${c.text.replace(/\n/g, '<br>')}</div>
-                    </div>
-                `).join('');
+                    `;
+                }).join('');
             }
 
             let formHtml = '';
             if (currentUser) {
                 formHtml = `
-                    <div class="add-comment-box" id="add-comment-form-box">
-                        <h4><i class="fas fa-pen-to-square" style="color:var(--primary);"></i> ثبت نظر شما برای این محصول:</h4>
+                    <div class="add-box" id="add-comment-form-box">
+                        <h4><i class="fas fa-pen-to-square" style="color:var(--primary);"></i> ثبت نظر و امتیاز شما بر این محصول (ویژه خریداران):</h4>
                         <form onsubmit="submitCommentForm(event, '${productId}')">
                             <div class="form-group">
-                                <label>نام شما: <strong>${currentUser.name}</strong></label>
+                                <label>امتیاز شما به کیفیت محصول:</label>
+                                <div class="star-rating-widget" id="star-rating-selector">
+                                    <i class="fas fa-star active" onclick="selectRatingStar(1)" style="color:#f59e0b;"></i>
+                                    <i class="fas fa-star active" onclick="selectRatingStar(2)" style="color:#f59e0b;"></i>
+                                    <i class="fas fa-star active" onclick="selectRatingStar(3)" style="color:#f59e0b;"></i>
+                                    <i class="fas fa-star active" onclick="selectRatingStar(4)" style="color:#f59e0b;"></i>
+                                    <i class="fas fa-star active" onclick="selectRatingStar(5)" style="color:#f59e0b;"></i>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label>متن نظر شما:</label>
-                                <textarea id="comment_text" class="form-control" rows="3" required placeholder="تجربه خرید یا نظرات خود را درباره این محصول بنویسید..."></textarea>
+                                <textarea id="comment_text" class="form-control" rows="3" required placeholder="تجربه خرید خود را درباره کیفیت و ویژگی‌های این محصول بنویسید..."></textarea>
                             </div>
                             <button type="submit" class="checkout-btn" id="btn-submit-comment" style="width: auto; padding: 0.8rem 2rem;">
-                                <i class="fas fa-paper-plane"></i> ارسال نظر برای تایید
+                                <i class="fas fa-paper-plane"></i> ثبت نظر خریدار
                             </button>
                         </form>
                     </div>
                 `;
             } else {
                 formHtml = `
-                    <div class="add-comment-box" style="text-align: center;">
-                        <p style="font-weight: 700; color: var(--text-dark); margin-bottom: 1rem;">برای ثبت نظر باید ابتدا وارد حساب کاربری خود شوید.</p>
+                    <div class="add-box" style="text-align: center;">
+                        <p style="font-weight: 700; color: var(--text-dark); margin-bottom: 1rem;">برای ثبت نظر و امتیاز باید ابتدا وارد حساب کاربری خود شوید.</p>
                         <button class="action-pill" onclick="openAuthOrProfileModal()" style="margin: 0 auto; background: var(--primary); color: white;">
                             <i class="fas fa-sign-in-alt"></i> ورود / ثبت‌نام
                         </button>
@@ -2110,11 +2276,12 @@
 
             commentsContainer.innerHTML = `
                 <div class="comments-section">
-                    <h3 class="comments-header"><i class="fas fa-comments" style="color:var(--primary);"></i> نظرات خریداران (${prodComments.length})</h3>
+                    <h3 class="section-tab-header"><i class="fas fa-comments" style="color:var(--primary);"></i> نظرات و امتیازات خریداران (${prodComments.length})</h3>
                     <div>${commentsListHtml}</div>
                     ${formHtml}
                 </div>
             `;
+            selectedCommentRating = 5;
         }
 
         async function submitCommentForm(e, productId) {
@@ -2136,7 +2303,8 @@
                 phone: currentUser.phone,
                 name: currentUser.name,
                 productId: productId,
-                text: text
+                text: text,
+                rating: selectedCommentRating
             };
 
             try {
@@ -2153,7 +2321,109 @@
             }
 
             btn.disabled = false;
-            btn.innerHTML = '<i class="fas fa-paper-plane"></i> ارسال نظر برای تایید';
+            btn.innerHTML = '<i class="fas fa-paper-plane"></i> ثبت نظر خریدار';
+        }
+
+        /* دستور ۳ و ۵: بخش پرسش و پاسخ آزاد همگان به همراه پاسخ مدیریت */
+        function renderQuestionsSection(productId) {
+            const qContainer = document.getElementById('sp-questions-area');
+            let prodQuestions = (window.allQuestions || []).filter(q => q.productId == productId);
+
+            let qListHtml = '';
+            if (prodQuestions.length === 0) {
+                qListHtml = `<p style="color: var(--text-muted); font-size: 0.95rem; text-align: center; padding: 1.5rem; background: var(--surface); border-radius: 14px;">هنوز پرسشی برای این محصول مطرح نشده است. سوالی دارید؟ بپرسید!</p>`;
+            } else {
+                qListHtml = prodQuestions.map(q => {
+                    let adminAnswerHtml = '';
+                    if (q.answer && q.answer.trim().length > 0) {
+                        adminAnswerHtml = `
+                            <div class="admin-reply-box">
+                                <strong><i class="fas fa-headset"></i> پاسخ پشتیبانی طبیعتی:</strong>
+                                <p style="margin-top: 0.3rem;">${q.answer.replace(/\n/g, '<br>')}</p>
+                            </div>
+                        `;
+                    } else {
+                        adminAnswerHtml = `<div style="font-size:0.82rem; color: var(--text-muted); margin-top:0.4rem;"><i class="fas fa-hourglass-half"></i> در انتظار پاسخ پشتیبانی...</div>`;
+                    }
+
+                    return `
+                        <div class="question-card">
+                            <div class="question-author">
+                                <i class="fas fa-circle-question" style="color: var(--blue-primary);"></i> ${q.name}
+                                <span class="question-date"><i class="far fa-clock"></i> ${q.date}</span>
+                            </div>
+                            <div class="question-text"><strong>سوال:</strong> ${q.question.replace(/\n/g, '<br>')}</div>
+                            ${adminAnswerHtml}
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            let qFormHtml = `
+                <div class="add-box">
+                    <h4><i class="fas fa-circle-question" style="color:var(--blue-primary);"></i> پرسش درباره این محصول (عموم کاربران):</h4>
+                    <form onsubmit="submitQuestionForm(event, '${productId}')">
+                        ${!currentUser ? `
+                        <div class="form-group">
+                            <label>نام و نام خانوادگی شما:</label>
+                            <input type="text" id="q_name" class="form-control" placeholder="نام خود را وارد کنید..." required>
+                        </div>
+                        ` : ''}
+                        <div class="form-group">
+                            <label>متن پرسش شما:</label>
+                            <textarea id="q_text" class="form-control" rows="3" required placeholder="سوال خود را درباره این محصول بپرسید..."></textarea>
+                        </div>
+                        <button type="submit" class="checkout-btn" id="btn-submit-question" style="width: auto; padding: 0.8rem 2rem; background: var(--blue-primary);">
+                            <i class="fas fa-paper-plane"></i> ارسال پرسش
+                        </button>
+                    </form>
+                </div>
+            `;
+
+            qContainer.innerHTML = `
+                <div class="questions-section">
+                    <h3 class="section-tab-header"><i class="fas fa-circle-question" style="color:var(--blue-primary);"></i> پرسش و پاسخ‌ها (${prodQuestions.length})</h3>
+                    <div>${qListHtml}</div>
+                    ${qFormHtml}
+                </div>
+            `;
+        }
+
+        async function submitQuestionForm(e, productId) {
+            e.preventDefault();
+            const text = document.getElementById('q_text').value.trim();
+            if (!text) return;
+
+            let name = currentUser ? currentUser.name : (document.getElementById('q_name') ? document.getElementById('q_name').value.trim() : 'کاربر');
+            let phone = currentUser ? currentUser.phone : '';
+
+            const btn = document.getElementById('btn-submit-question');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> در حال ثبت پرسش...';
+
+            const payload = {
+                action: 'addQuestion',
+                phone: phone,
+                name: name,
+                productId: productId,
+                text: text
+            };
+
+            try {
+                let res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload) });
+                let data = await res.json();
+                if (data.status === 'success') {
+                    showToast(data.message, 'success');
+                    document.getElementById('q_text').value = '';
+                } else {
+                    showToast(data.message, 'error');
+                }
+            } catch(err) {
+                showToast('خطا در ارتباط با سرور.', 'error');
+            }
+
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-paper-plane"></i> ارسال پرسش';
         }
 
         function shareProduct(id, name, price) {
@@ -2194,6 +2464,8 @@
                 let iconClass = p.image.includes('fa-') ? p.image : 'fa-box-open';
                 let imgHtml = p.image.startsWith('http') ? `<img src="${p.image}" alt="${p.name}" loading="lazy">` : `<i class="fas ${iconClass}"></i>`;
 
+                let stats = getProductRatingStats(p.id);
+
                 let qtyControls = outOfStock ? 
                     `<button class="inline-add-btn" style="width:100%;" disabled><i class="fas fa-ban"></i> اتمام موجودی</button>` :
                     `<div class="inline-qty-cart">
@@ -2214,6 +2486,13 @@
                     <h3 class="product-title">
                         <a href="?id=${p.id}" onclick="event.preventDefault(); event.stopPropagation(); navigateToProduct('${p.id}')" style="color: inherit; text-decoration: none;">${p.name}</a>
                     </h3>
+
+                    <div class="card-rating-bar">
+                        <i class="fas fa-star"></i>
+                        <span>${stats.avgRating}</span>
+                        <span style="color: var(--text-muted); font-size: 0.78rem;">(${stats.totalRaters})</span>
+                    </div>
+
                     <div class="price-section">
                         <div class="current-price">${finalPrice.toLocaleString('fa-IR')} <span style="font-size:0.8rem; font-weight:normal;">تومان</span></div>
                         ${hasDiscount ? `<div class="old-price">${price.toLocaleString('fa-IR')}</div>` : ''}
@@ -2309,6 +2588,7 @@
             isFetchingNext = false;
         }
 
+        /* دستور ۴: نمایش امتیاز ستاره‌ای و تعداد در کارت محصول در لیست محصولات */
         function renderProductsBatch(batch, gridElement) {
             batch.forEach(p => {
                 const price = Number(p.price);
@@ -2319,6 +2599,8 @@
                 
                 let iconClass = p.image.includes('fa-') ? p.image : 'fa-box-open';
                 let imgHtml = p.image.startsWith('http') ? `<img src="${p.image}" alt="${p.name}" loading="lazy">` : `<i class="fas ${iconClass}"></i>`;
+
+                let stats = getProductRatingStats(p.id);
 
                 let qtyControls = outOfStock ? 
                     `<button class="inline-add-btn" style="width:100%;" disabled><i class="fas fa-ban"></i> اتمام موجودی</button>` :
@@ -2343,6 +2625,12 @@
                         <a href="?id=${p.id}" onclick="event.preventDefault(); event.stopPropagation(); navigateToProduct('${p.id}')" style="color: inherit; text-decoration: none;">${p.name}</a>
                     </h3>
 
+                    <div class="card-rating-bar">
+                        <i class="fas fa-star"></i>
+                        <span>${stats.avgRating}</span>
+                        <span style="color: var(--text-muted); font-size: 0.78rem;">(${stats.totalRaters})</span>
+                    </div>
+
                     <div class="price-section">
                         <div class="current-price">${finalPrice.toLocaleString('fa-IR')} <span style="font-size:0.8rem; font-weight:normal;">تومان</span></div>
                         ${hasDiscount ? `<div class="old-price">${price.toLocaleString('fa-IR')}</div>` : ''}
@@ -2359,7 +2647,6 @@
         }
 
         /* Auth & Profile Functions */
-        // دستور ۲: عنوان «ورود» برای حالت عدم ورود
         function updateAuthHeaderUI() {
             const authBtnText = document.getElementById('auth-btn-text');
             if (currentUser) {
@@ -2523,10 +2810,12 @@
             } catch(e) {}
         }
 
+        /* دستور ۱: مدیریت تب‌های پروفایل از جمله تغییر رمز عبور */
         function switchProfileTab(tab) {
             document.getElementById('prof-tab-addr').style.display = tab === 'addr' ? 'block' : 'none';
             document.getElementById('prof-tab-orders').style.display = tab === 'orders' ? 'block' : 'none';
             document.getElementById('prof-tab-comments').style.display = tab === 'comments' ? 'block' : 'none';
+            document.getElementById('prof-tab-password').style.display = tab === 'password' ? 'block' : 'none';
 
             document.getElementById('tab-btn-addr').style.background = tab === 'addr' ? 'var(--primary)' : 'var(--surface)';
             document.getElementById('tab-btn-addr').style.color = tab === 'addr' ? 'white' : 'var(--text-dark)';
@@ -2536,6 +2825,64 @@
 
             document.getElementById('tab-btn-comments').style.background = tab === 'comments' ? 'var(--primary)' : 'var(--surface)';
             document.getElementById('tab-btn-comments').style.color = tab === 'comments' ? 'white' : 'var(--text-dark)';
+
+            document.getElementById('tab-btn-password').style.background = tab === 'password' ? 'var(--primary)' : 'var(--surface)';
+            document.getElementById('tab-btn-password').style.color = tab === 'password' ? 'white' : 'var(--text-dark)';
+        }
+
+        /* دستور ۱: فرم تغییر رمز عبور در کاربری */
+        async function submitChangePasswordForm(e) {
+            e.preventDefault();
+            if (!currentUser) return;
+
+            const oldPass = document.getElementById('change_pwd_old').value.trim();
+            const newPass = document.getElementById('change_pwd_new').value.trim();
+            const confirmPass = document.getElementById('change_pwd_confirm').value.trim();
+
+            if (!oldPass || !newPass || !confirmPass) {
+                showToast('لطفاً تمام فیلدهای تغییر رمز عبور را پر کنید.', 'error');
+                return;
+            }
+
+            if (newPass !== confirmPass) {
+                showToast('رمز عبور جدید و تکرار آن با یکدیگر مطابقت ندارند.', 'error');
+                return;
+            }
+
+            if (newPass.length < 4) {
+                showToast('رمز عبور جدید باید حداقل ۴ کاراکتر باشد.', 'error');
+                return;
+            }
+
+            const btn = document.getElementById('btn-submit-change-pwd');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> در حال ذخیره رمز جدید...';
+
+            const payload = {
+                action: 'changePassword',
+                phone: currentUser.phone,
+                oldPassword: oldPass,
+                newPassword: newPass
+            };
+
+            try {
+                let res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload) });
+                let data = await res.json();
+                if (data.status === 'success') {
+                    showToast(data.message, 'success');
+                    document.getElementById('change_pwd_old').value = '';
+                    document.getElementById('change_pwd_new').value = '';
+                    document.getElementById('change_pwd_confirm').value = '';
+                    switchProfileTab('addr');
+                } else {
+                    showToast(data.message, 'error');
+                }
+            } catch(err) {
+                showToast('خطا در تغییر رمز عبور.', 'error');
+            }
+
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-key"></i> ذخیره رمز عبور جدید';
         }
 
         async function saveProfileAddress(e) {
@@ -2783,8 +3130,7 @@
             const link = window.location.origin + window.location.pathname + "?shared_cart=" + encoded;
             
             if (navigator.clipboard) {
-                navigator.clipboard.writeText(link).then(() => {
-                    showToast('لینک سبد خرید کپی شد. می‌توانید آن را برای دوستان بفرستید.', 'success');
+              navigator.clipboard.writeText(link).then(() => { showToast('لینک سبد خرید کپی شد. می‌توانید آن را برای دوستان بفرستید.', 'success');
                 }).catch(() => {
                     showToast('خطا در کپی لینک.', 'error');
                 });
@@ -2795,6 +3141,7 @@
 
         function updateCartUI() {
             let totalQty = cart.reduce((sum, i) => sum + i.qty, 0);
+            document.getElementById('cart-badge').innerText = totalQty;
             
             const container = document.getElementById('cart-items');
             let totalAmount = 0;
@@ -2893,11 +3240,9 @@
         function openModal(id) { document.getElementById(id).classList.add('show'); }
         function closeModal(id) { document.getElementById(id).classList.remove('show'); }
         
-        // دستور ۴: حذف پیام خطا/هشدار هنگام کلیک بر روی «ادامه جهت تسویه حساب»
         function openCheckout() {
             if (!currentUser) {
                 window.pendingCheckout = true;
-                // حذف پیام toast قبلی جهت باز شدن مستقیم و بدون هشدار فرم ورود
                 document.getElementById('auth-name-group').style.display = 'block';
                 openModal('authModal');
                 return;
@@ -3134,4 +3479,4 @@
         });
     </script>
 </body>
-</html>
+</html>  
