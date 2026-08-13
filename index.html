@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -163,7 +163,7 @@
             100% { opacity: 1; transform: translateY(0); }
         }
 
-        /* ========== Header (ویرایش شده طبق دستور ۲ و ۱۷) ========== */
+        /* ========== Header ========== */
         .main-header {
             position: sticky; top: 0; z-index: 100;
             background: rgba(255,255,255,0.98);
@@ -181,7 +181,6 @@
         
         .header-icons { display: flex; gap: 0.8rem; align-items: center; }
         
-        /* طراحی جدید مستطیلی دکمه‌ها طبق دستور ۲ */
         .action-pill {
             background: var(--surface); border: 1px solid var(--border);
             padding: 0.65rem 1.2rem; border-radius: 12px; font-size: 0.95rem; font-weight: 700;
@@ -698,7 +697,7 @@
         .checkout-btn:hover:not(:disabled) { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(5, 150, 105, 0.3); }
         .checkout-btn:disabled { background: #cbd5e1; cursor: not-allowed; }
 
-        /* Modals & Profile Redesign (طبق دستور ۴ و ۵) */
+        /* Modals & Profile Redesign */
         .modal {
             position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7);
             z-index: 2000; display: flex; align-items: center; justify-content: center;
@@ -748,7 +747,7 @@
             color: #92400e; display: flex; align-items: center; gap: 0.8rem; line-height: 1.6;
         }
 
-        /* Saved Address Card (دستور ۸ و ۹) */
+        /* Saved Address Card */
         .saved-address-card {
             background: #f0fdf4; border: 1.5px dashed var(--primary-light);
             border-radius: 14px; padding: 1.2rem; margin-bottom: 1.2rem;
@@ -764,7 +763,7 @@
         .sac-edit-btn:hover { background: var(--primary); color: white; }
         .sac-body p { font-size: 0.9rem; color: var(--text-dark); margin-bottom: 0.4rem; line-height: 1.6; }
 
-        /* Order Accordion Card (دستور ۳ و ۶ و ۷ و ۱۲) */
+        /* Order Accordion Card */
         .order-acc-card {
             background: white; border: 1px solid var(--border); border-radius: 14px;
             margin-bottom: 1rem; overflow: hidden; transition: 0.3s;
@@ -800,7 +799,7 @@
         .bg-green { background: #d1fae5; color: #047857; }
         .bg-red { background: #fee2e2; color: #b91c1c; }
 
-        /* Checkout Order Summary (دستور ۱۲) */
+        /* Checkout Order Summary */
         .checkout-cart-summary {
             background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
             padding: 1rem; margin-bottom: 1.2rem; max-height: 180px; overflow-y: auto;
@@ -829,16 +828,17 @@
         .toast.success { border-right: 4px solid var(--primary-light); }
         .toast.error { border-right: 4px solid #ef4444; }
 
+        /* دستور ۳: بازگرداندن استایل شناور سبد خرید پایین به ابعاد و سایز اصلی */
         .sticky-bottom-cart {
             position: fixed; bottom: 0; left: 0; width: 100%;
             background: rgba(255, 255, 255, 0.98); 
             border-top: 1px solid var(--border); box-shadow: 0 -5px 25px rgba(0,0,0,0.1);
-            padding: 0.8rem 5%; z-index: 999;
+            padding: 1rem 5%; z-index: 999;
             display: flex; justify-content: space-between; align-items: center;
             transform: translateY(120%) translateZ(0); 
             -webkit-transform: translateY(120%) translateZ(0);
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            padding-bottom: calc(0.8rem + env(safe-area-inset-bottom));
+            padding-bottom: calc(1rem + env(safe-area-inset-bottom));
             will-change: transform;
         }
         .sticky-bottom-cart.visible { 
@@ -847,11 +847,11 @@
         }
         .sbc-details { display: flex; align-items: center; gap: 12px; }
         .sbc-text { display: flex; flex-direction: column; }
-        .sbc-title { font-weight: 800; font-size: 0.95rem; color: var(--text-dark); }
-        .sbc-price { font-weight: 900; font-size: 1.05rem; color: var(--primary-dark); }
+        .sbc-title { font-weight: 800; font-size: 1rem; color: var(--text-dark); }
+        .sbc-price { font-weight: 900; font-size: 1.1rem; color: var(--primary-dark); }
         .sbc-btn {
             background: var(--primary); color: white; border: none;
-            padding: 0.7rem 1.4rem; border-radius: 10px; font-weight: 800; font-size: 0.95rem;
+            padding: 0.8rem 1.5rem; border-radius: 12px; font-weight: 800; font-size: 1rem;
             cursor: pointer; box-shadow: 0 4px 15px rgba(5,150,105,0.3); transition: var(--transition);
         }
         .sbc-btn:hover { background: var(--primary-dark); transform: translateY(-2px); }
@@ -972,15 +972,15 @@
 
     <div id="toast-container"></div>
 
-    <!-- ========== Header (ویرایش شده طبق دستور ۱، ۲ و ۱۷) ========== -->
+    <!-- ========== Header (دستور ۲: متن دکمه «ورود» شد) ========== -->
     <header class="main-header">
         <a onclick="navigateToHome()" class="header-logo" title="طبیعتی | فروشگاه ارگانیک">
             <img src="https://tabiati.ir/logo.png" alt="لوگوی فروشگاه ارگانیک طبیعتی">
         </a>
         <div class="header-icons">
-            <button class="action-pill" onclick="openAuthOrProfileModal()" title="حساب کاربری / ورود">
+            <button class="action-pill" onclick="openAuthOrProfileModal()" title="ورود / حساب کاربری">
                 <i class="fas fa-user-circle" style="color: var(--primary);"></i>
-                <span id="auth-btn-text">حساب کاربری / ورود</span>
+                <span id="auth-btn-text">ورود</span>
             </button>
             <button class="action-pill" onclick="window.location.href='https://tabiati.ir/blog/'" title="مقالات و آموزش‌ها">
                 <i class="fas fa-book-open" style="color: #8b5cf6;"></i>
@@ -1104,12 +1104,12 @@
         <div id="sp-suggestions"></div>
     </div>
 
-    <!-- Sticky Cart Bar -->
+    <!-- Sticky Cart Bar (دستور ۳: بازگرداندن ابعاد و سایز درشت و اصلی قبلی) -->
     <div class="sticky-bottom-cart" id="sticky-bottom-cart" onclick="openCartSidebar()">
         <div class="sbc-details">
             <div style="position: relative;">
-                <i class="fas fa-shopping-basket" style="font-size: 1.8rem; color: var(--primary);"></i>
-                <span class="cart-badge" id="sbc-qty" style="top: -8px; right: -8px; font-size: 0.85rem; width: 22px; height: 22px;">0</span>
+                <i class="fas fa-shopping-basket" style="font-size: 2rem; color: var(--primary);"></i>
+                <span class="cart-badge" id="sbc-qty" style="top: -8px; right: -8px; font-size: 0.85rem; width: 24px; height: 24px;">0</span>
             </div>
             <div class="sbc-text">
                 <span class="sbc-title">سبد خرید شما</span>
@@ -1155,7 +1155,7 @@
         </div>
     </div>
 
-    <!-- Modal: Auth (Login/Register) -->
+    <!-- Modal: Auth (دستور ۱ و ۵: افزودن آیکن چشم + راهنمای رمز برای ثبت‌نام اولیه) -->
     <div class="modal" id="authModal">
         <div class="modal-dialog">
             <div class="modal-header">
@@ -1171,9 +1171,19 @@
                     <label>شماره موبایل:</label>
                     <input type="tel" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')" id="auth_phone" class="form-control" required placeholder="09123456789" maxlength="11">
                 </div>
+                
+                <!-- دستور ۵: متن راهنمای ثبت‌نام اولیه -->
                 <div class="form-group">
                     <label>رمز عبور:</label>
-                    <input type="password" id="auth_password" class="form-control" required placeholder="رمز عبور خود را وارد کنید">
+                    <div style="font-size: 0.82rem; color: var(--primary-dark); font-weight: 700; margin-bottom: 0.4rem; background: #e0f2fe; padding: 0.4rem 0.8rem; border-radius: 8px;">
+                        <i class="fas fa-info-circle"></i> اگر قبلاً ثبت‌نام نکرده‌اید، یک رمز عبور دلخواه انتخاب کنید.
+                    </div>
+                    
+                    <!-- دستور ۱: فیلد رمز عبور همراه با آیکن چشم -->
+                    <div style="position: relative;">
+                        <input type="password" id="auth_password" class="form-control" required placeholder="رمز عبور خود را وارد کنید" style="padding-left: 2.8rem;">
+                        <i class="fas fa-eye" id="togglePasswordIcon" onclick="togglePasswordVisibility()" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; color: var(--text-muted); font-size: 1.1rem; z-index: 10; padding: 5px;" title="مشاهده رمز عبور"></i>
+                    </div>
                 </div>
                 
                 <button type="submit" class="checkout-btn" id="btn-submit-auth" style="margin-top: 1rem;">
@@ -1187,7 +1197,7 @@
         </div>
     </div>
 
-    <!-- Modal: User Profile & Orders (جمع و جورتر و اختصاصی طبق دستور ۴، ۵ و ۱۴) -->
+    <!-- Modal: User Profile & Orders -->
     <div class="modal" id="profileModal">
         <div class="modal-dialog" style="max-width: 580px;">
             <div class="modal-header">
@@ -1212,7 +1222,7 @@
                 <button id="tab-btn-comments" class="action-pill" onclick="switchProfileTab('comments')" style="padding: 0.5rem 0.9rem; font-size: 0.85rem;">نظرات من</button>
             </div>
 
-            <!-- Tab 1: Address (دستور ۸ و ۱۰) -->
+            <!-- Tab 1: Address -->
             <div id="prof-tab-addr">
                 <div id="prof-saved-addr-container"></div>
                 <div id="prof-addr-form-wrapper" style="display: none;">
@@ -1247,14 +1257,14 @@
                 </div>
             </div>
 
-            <!-- Tab 2: Orders History (دستور ۳، ۶ و ۷) -->
+            <!-- Tab 2: Orders History -->
             <div id="prof-tab-orders" style="display: none; max-height: 50vh; overflow-y: auto;">
                 <div id="prof-orders-list">
                     <div class="soft-dots-loader"><span></span><span></span><span></span></div>
                 </div>
             </div>
 
-            <!-- Tab 3: My Comments (دستور ۱۴) -->
+            <!-- Tab 3: My Comments -->
             <div id="prof-tab-comments" style="display: none; max-height: 50vh; overflow-y: auto;">
                 <div id="prof-comments-list">
                     <div class="soft-dots-loader"><span></span><span></span><span></span></div>
@@ -1263,7 +1273,7 @@
         </div>
     </div>
 
-    <!-- Modal: Checkout (دستور ۹، ۱۰، ۱۱، ۱۲ و ۱۳) -->
+    <!-- Modal: Checkout -->
     <div class="modal" id="checkoutModal">
         <div class="modal-dialog">
             <div class="modal-header">
@@ -1283,7 +1293,6 @@
 
             <form onsubmit="submitCheckout(event)">
                 
-                <!-- دستور ۱۱: انتخاب روش ارسال در بالای صفحه -->
                 <div class="form-group" style="background: #f0fdf4; padding: 0.8rem; border-radius: 12px; border: 1px solid var(--primary-light);">
                     <label style="color: var(--primary-dark); font-weight: 800;"><i class="fas fa-truck"></i> روش ارسال را انتخاب کنید:</label>
                     <select id="cust_shipping" class="form-control" required onchange="calculateFinalInvoice()" style="background: white; border-color: var(--primary); font-weight: 700; margin-top: 0.4rem;"></select>
@@ -1298,7 +1307,6 @@
                     <input type="tel" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')" id="cust_phone" class="form-control" required placeholder="09123456789" maxlength="11">
                 </div>
                 
-                <!-- دستور ۹: نمایش آدرس پیش‌فرض در صورت وجود -->
                 <div id="checkout-default-addr-box"></div>
 
                 <div id="checkout-addr-inputs">
@@ -1318,7 +1326,6 @@
                         <textarea id="cust_address" class="form-control" rows="2" placeholder="آدرس دقیق خود را بنویسید..."></textarea>
                     </div>
 
-                    <!-- دستور ۱۰: الزامی بودن کد پستی -->
                     <div class="form-group">
                         <label>کد پستی (الزامی - ۱۰ رقمی):</label>
                         <input type="tel" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')" id="cust_postal" class="form-control" required placeholder="کد پستی 10 رقمی" maxlength="10">
@@ -1451,7 +1458,21 @@
             'Pakhayeekhtesasi': { name: 'پک های اختصاصی', seo: 'خرید پک‌های هدیه و اختصاصی طبیعتی. مجموعه‌ای از بهترین محصولات ارگانیک با بسته‌بندی زیبا، مناسب برای هدیه به عزیزان شما.' }
         };
 
-        // دستور ۱۳: اعتبارسنجی تلفن
+        // دستور ۱: تابع نمایش / مخفی کردن کاراکترهای رمز عبور
+        function togglePasswordVisibility() {
+            const pwdInput = document.getElementById('auth_password');
+            const pwdIcon = document.getElementById('togglePasswordIcon');
+            if (pwdInput.type === 'password') {
+                pwdInput.type = 'text';
+                pwdIcon.classList.remove('fa-eye');
+                pwdIcon.classList.add('fa-eye-slash');
+            } else {
+                pwdInput.type = 'password';
+                pwdIcon.classList.remove('fa-eye-slash');
+                pwdIcon.classList.add('fa-eye');
+            }
+        }
+
         function isValidPhone(phone) {
             return /^09\d{9}$/.test(phone);
         }
@@ -1460,6 +1481,11 @@
             let loaderTimeout = setTimeout(() => { hideStartupLoader(); }, 1500);
 
             updateAuthHeaderUI();
+
+            // دستور ۶: همگام‌سازی پس‌زمینه پروفایل کاربر با سرور
+            if (currentUser && currentUser.phone) {
+                syncUserDataWithServer(currentUser.phone);
+            }
 
             const urlParams = new URLSearchParams(window.location.search);
             const authority = urlParams.get('Authority');
@@ -1525,7 +1551,6 @@
             await fetchStoreData(CATEGORY_MAP[urlId] ? urlId : null, CATEGORY_MAP[urlId] ? null : urlId); 
             updateCartUI();
 
-            // دستور ۵: باز کردن مستقیم لینک اختصاصی پنل کاربری
             if (urlView === 'profile') {
                 if (currentUser) {
                     openAuthOrProfileModal();
@@ -1534,6 +1559,26 @@
                 }
             }
         };
+
+        // دستور ۶: همگام‌سازی پس‌زمینه پروفایل و آدرس با سرور
+        async function syncUserDataWithServer(phone) {
+            try {
+                let res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action: 'getUserProfile', phone: phone }) });
+                let data = await res.json();
+                if (data.status === 'success') {
+                    if (data.user) {
+                        currentUser = { ...currentUser, ...data.user };
+                    }
+                    if (data.savedAddress) {
+                        currentUser.savedAddress = data.savedAddress;
+                    }
+                    localStorage.setItem('tabiati_user', JSON.stringify(currentUser));
+                    updateAuthHeaderUI();
+                }
+            } catch(e) {
+                console.log("بروزرسانی پروفایل از سرور با خطا مواجه شد.");
+            }
+        }
 
         function hideStartupLoader() {
             document.getElementById('startup-loader').style.display = 'none';
@@ -1622,7 +1667,6 @@
             }
         }
 
-        // دستور ۵: دکمه بازگشت موبایل و مدیریت تاریخچه مرورگر برای بسته شدن پروفایل
         window.addEventListener('popstate', (e) => {
             const urlParams = new URLSearchParams(window.location.search);
             const urlId = urlParams.get('id');
@@ -2315,16 +2359,16 @@
         }
 
         /* Auth & Profile Functions */
+        // دستور ۲: عنوان «ورود» برای حالت عدم ورود
         function updateAuthHeaderUI() {
             const authBtnText = document.getElementById('auth-btn-text');
             if (currentUser) {
                 authBtnText.innerText = currentUser.name || 'حساب کاربری';
             } else {
-                authBtnText.innerText = 'حساب کاربری / ورود';
+                authBtnText.innerText = 'ورود';
             }
         }
 
-        // دستور ۵: باز کردن اختصاصی با لینک ?view=profile
         function openAuthOrProfileModal() {
             if (currentUser) {
                 history.pushState({view: 'profile'}, '', '?view=profile');
@@ -2343,7 +2387,6 @@
             }
         }
 
-        // دستور ۱۳: اعتبارسنجی دقیق فرم ورود و ثبت‌نام (09 و 11 رقم)
         async function submitAuthForm(e) {
             e.preventDefault();
             const phone = document.getElementById('auth_phone').value.trim();
@@ -2415,7 +2458,6 @@
             fetchUserProfileData();
         }
 
-        // دستور ۸: الگوی مناسب نمایش آدرس پیش‌فرض در پروفایل
         function renderProfileSavedAddressCard() {
             const container = document.getElementById('prof-saved-addr-container');
             const formWrapper = document.getElementById('prof-addr-form-wrapper');
@@ -2440,7 +2482,6 @@
                         container.style.display = 'block';
                         formWrapper.style.display = 'none';
 
-                        // پر کردن مقادیر اولیه فیلدها
                         document.getElementById('prof_prov').value = addr.province;
                         document.getElementById('prof_city').value = addr.city;
                         document.getElementById('prof_addr').value = addr.address;
@@ -2497,7 +2538,6 @@
             document.getElementById('tab-btn-comments').style.color = tab === 'comments' ? 'white' : 'var(--text-dark)';
         }
 
-        // دستور ۱۰: الزامی بودن کد پستی ۱۰ رقمی
         async function saveProfileAddress(e) {
             e.preventDefault();
             if (!currentUser) return;
@@ -2544,7 +2584,6 @@
             btn.innerHTML = '<i class="fas fa-save"></i> ذخیره آدرس پیش‌فرض';
         }
 
-        // دستور ۳، ۶ و ۷: تاریخچه سفارشات به صورت مرتب از جدید به قدیم + آکاردئونی + کلیک محصول + افزودن مجدد به سبد
         function renderUserOrdersHistory(orders) {
             const container = document.getElementById('prof-orders-list');
             if (!orders || orders.length === 0) {
@@ -2552,7 +2591,6 @@
                 return;
             }
 
-            // مرتب‌سازی سفارشات از جدیدترین به قدیمی‌ترین
             orders.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
 
             let html = orders.map((o, idx) => {
@@ -2633,7 +2671,6 @@
             }, 400);
         }
 
-        // دستور ۷: سفارش مجدد کامل همان سفارش با چک کردن موجودی انبار
         function reorderItems(cartItemsJson) {
             try {
                 let items = typeof cartItemsJson === 'string' ? JSON.parse(cartItemsJson) : cartItemsJson;
@@ -2678,7 +2715,6 @@
             }
         }
 
-        // دستور ۱۴: بخش مشاهده نظرات کاربر در پروفایل
         function renderUserCommentsHistory(comments) {
             const container = document.getElementById('prof-comments-list');
             if (!comments || comments.length === 0) {
@@ -2857,10 +2893,11 @@
         function openModal(id) { document.getElementById(id).classList.add('show'); }
         function closeModal(id) { document.getElementById(id).classList.remove('show'); }
         
+        // دستور ۴: حذف پیام خطا/هشدار هنگام کلیک بر روی «ادامه جهت تسویه حساب»
         function openCheckout() {
             if (!currentUser) {
                 window.pendingCheckout = true;
-                showToast('برای ادامه فرآیند خرید، ابتدا وارد حساب کاربری شوید.', 'error');
+                // حذف پیام toast قبلی جهت باز شدن مستقیم و بدون هشدار فرم ورود
                 document.getElementById('auth-name-group').style.display = 'block';
                 openModal('authModal');
                 return;
@@ -2872,7 +2909,6 @@
             document.getElementById('cust_name').value = currentUser.name || '';
             document.getElementById('cust_phone').value = currentUser.phone || '';
 
-            // دستور ۹: نمایش آدرس پیش‌فرض در تسویه حساب
             renderCheckoutAddressSection();
             renderCheckoutCartSummary();
             calculateFinalInvoice();
@@ -2903,7 +2939,6 @@
                         defAddrBox.style.display = 'block';
                         addrInputs.style.display = 'none';
 
-                        // پر کردن مقادیر مخفی برای ارسال فرم
                         document.getElementById('cust_province').value = addr.province;
                         document.getElementById('cust_city').value = addr.city;
                         document.getElementById('cust_address').value = addr.address;
@@ -2973,7 +3008,6 @@
             document.getElementById('invoice-final-total').innerText = (cartTotal + shipCost).toLocaleString('fa-IR') + ' تومان';
         }
 
-        // دستور ۱۰ و ۱۳: اعتبارسنجی دقیق کد پستی و تلفن در هنگام تسویه حساب
         async function submitCheckout(e) {
             e.preventDefault();
             
