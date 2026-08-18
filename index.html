@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -1968,6 +1968,8 @@
                 `).join('');
 
                 const cartJsonEscaped = JSON.stringify(cartItems).replace(/"/g, '&quot;');
+                
+                let trackCodeBox = o.trackingCode ? `<div style="background:#f0fdf4; padding:15px; border-radius:12px; margin-top:15px; margin-bottom:10px; text-align:center; border:1.5px dashed var(--primary-light);"><strong style="color:var(--text-muted); font-size:0.9rem;">کد رهگیری پستی مرسوله شما:</strong><br><span style="font-size:1.5rem; letter-spacing:3px; font-weight:900; color:var(--primary-dark); display:block; margin-top:8px; font-family: Tahoma, sans-serif;">${o.trackingCode}</span></div>` : '';
 
                 return `
                     <div class="order-acc-card">
@@ -1985,6 +1987,7 @@
                             <div style="margin-bottom: 0.8rem;">
                                 ${itemsHtml}
                             </div>
+                            ${trackCodeBox}
                             <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed var(--border); padding-top: 0.8rem; margin-top: 0.8rem;">
                                 <span style="font-size: 0.9rem;">مبلغ کل: <strong style="color: var(--primary-dark);">${Number(o.totalAmount).toLocaleString('fa-IR')} تومان</strong></span>
                                 <button class="action-pill" onclick="reorderItems('${cartJsonEscaped}')" style="background: var(--blue-primary); color: white; border: none; padding: 0.4rem 0.8rem; font-size: 0.82rem;">
