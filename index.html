@@ -144,10 +144,10 @@
         .btn-show-more:hover { background: var(--primary); color: white; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(5, 150, 105, 0.2); }
 
         .inline-qty-cart { display: flex; gap: 0.5rem; width: 100%; margin-top: auto; justify-content: space-between; }
-        .inline-qty-controls { display: flex; align-items: center; justify-content: space-between; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 0.3rem; flex: 1; min-width: 90px; }
+        .inline-qty-controls { display: flex; align-items: center; justify-content: space-between; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 0.3rem; flex: 1; min-width: 100px; }
         .inline-qty-controls button { background: white; border: none; width: 30px; height: 30px; border-radius: 8px; font-weight: bold; font-size: 1rem; color: var(--text-dark); cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: 0.2s; display: flex; align-items: center; justify-content: center; }
         .inline-qty-controls button:hover { background: #e2e8f0; }
-        .inline-qty-controls span { font-weight: 800; font-size: 1rem; color: var(--text-dark); min-width: 35px; width: auto; padding: 0 5px; text-align: center;}
+        .inline-qty-controls span { font-weight: 800; font-size: 0.95rem; color: var(--text-dark); width: 45px; text-align: center; white-space: nowrap;}
         
         .inline-add-btn { flex: 1.5; padding: 0.8rem 0.5rem; background: var(--blue-primary); color: white; border: none; border-radius: 12px; font-weight: 800; font-size: 0.95rem; cursor: pointer; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; align-items: center; justify-content: center; gap: 0.4rem; }
         .inline-add-btn:hover:not(:disabled) { background: var(--blue-dark); transform: scale(1.03); box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3); }
@@ -253,7 +253,7 @@
             .price-section { margin-bottom: 1rem; }
             
             .inline-qty-controls button { width: 25px; height: 25px; font-size: 0.9rem; }
-            .inline-qty-controls span { font-size: 0.9rem; width: 20px; }
+            .inline-qty-controls span { font-size: 0.85rem; width: 40px; }
             .inline-add-btn { padding: 0.6rem 0.2rem; font-size: 0.85rem; }
             .inline-qty-cart { flex-direction: column; gap: 0.3rem;}
 
@@ -282,7 +282,6 @@
         .qty-control { display: flex; align-items: center; gap: 0.5rem; background: white; border-radius: 10px; padding: 0.3rem; border: 1px solid var(--border); }
         .qty-btn { background: var(--surface); border: none; width: 28px; height: 28px; font-size: 1rem; display: flex; align-items: center; justify-content: center; cursor: pointer; border-radius: 6px; transition: 0.2s; font-weight: bold; }
         .qty-btn:hover { background: #e2e8f0; }
-        .qty-control span { min-width: 35px; width: auto; padding: 0 5px; text-align: center; }
         
         .cart-footer { padding: 1.5rem; border-top: 1px solid var(--border); background: white; padding-bottom: calc(1.5rem + env(safe-area-inset-bottom)); }
         .cart-total { display: flex; justify-content: space-between; align-items: center; font-size: 1.2rem; font-weight: 800; margin-bottom: 1.2rem; color: var(--text-dark); }
@@ -490,7 +489,7 @@
             
             <div class="search-container">
                 <div class="search-box">
-                    <input type="text" id="searchInput" placeholder="جستجوی محصولات (گردو، مغز گردو...)" onkeyup="handleSearchInput()">
+                    <input type="text" id="searchInput" placeholder="جستجوی محصولات (گردوی سبز، مغز گردو...)" onkeyup="handleSearchInput()">
                     <button onclick="executeSearch()">
                         <i class="fas fa-search"></i> 
                         <span>جستجو</span>
@@ -870,6 +869,63 @@
             'maqz': { name: 'مغز گردو', seo: 'خرید مغز گردوی اعلا، سفید و پرچرب. مناسب برای مصرف روزانه و آجیل، تهیه شده از بهترین گردوهای استان کرمان.' }
         };
 
+        // --- توابع جدید مربوط به اوزان مجاز پله‌ای ---
+        const ALLOWED_WEIGHTS = [
+            5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100,
+            200, 300, 400, 500, 600, 700, 800, 900, 1000,
+            2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000
+        ];
+
+        function formatWeight(kg) {
+            if (kg >= 1000) {
+                return (kg / 1000) + ' تن';
+            }
+            return kg + ' کیلو';
+        }
+
+        function getNextWeight(current, direction, maxStock) {
+            let currentIndex = ALLOWED_WEIGHTS.indexOf(current);
+            if (currentIndex === -1) {
+                let best = ALLOWED_WEIGHTS[0];
+                for(let w of ALLOWED_WEIGHTS) {
+                    if (w <= current) best = w;
+                    else break;
+                }
+                currentIndex = ALLOWED_WEIGHTS.indexOf(best);
+            }
+            
+            let nextIndex = currentIndex + direction;
+            if (nextIndex < 0) nextIndex = 0; 
+            if (nextIndex >= ALLOWED_WEIGHTS.length) nextIndex = ALLOWED_WEIGHTS.length - 1;
+            
+            let nextWeight = ALLOWED_WEIGHTS[nextIndex];
+            
+            if (nextWeight > maxStock) {
+                let maxAllowed = ALLOWED_WEIGHTS[0];
+                for(let w of ALLOWED_WEIGHTS) {
+                    if (w <= maxStock) maxAllowed = w;
+                    else break;
+                }
+                return maxAllowed <= maxStock ? maxAllowed : current; 
+            }
+            return nextWeight;
+        }
+
+        function getNearestValidWeight(w, maxStock) {
+            let best = ALLOWED_WEIGHTS[0];
+            let minDiff = Infinity;
+            for (let val of ALLOWED_WEIGHTS) {
+                if (val > maxStock) break;
+                let diff = Math.abs(val - w);
+                if (diff < minDiff) {
+                    minDiff = diff;
+                    best = val;
+                }
+            }
+            return best;
+        }
+        // ---------------------------------------------
+
         function togglePasswordVisibility() {
             const pwdInput = document.getElementById('auth_password');
             const pwdIcon = document.getElementById('togglePasswordIcon');
@@ -910,7 +966,6 @@
                         const cleanUrl = new URL(window.location);
                         cleanUrl.searchParams.delete('auto_login');
                         window.history.replaceState({}, document.title, cleanUrl.pathname + cleanUrl.search);
-                        // showToast is called later, or maybe wait until body is ready. It's fine here.
                     }
                 } catch(e) {
                     console.log("خطا در لاگین خودکار", e);
@@ -1181,7 +1236,7 @@
             document.getElementById('category-carousel-container').style.display = 'flex';
             document.getElementById('category-hero').style.display = 'none';
             document.getElementById('main-section-title').innerHTML = '<i class="fas fa-store"></i> فروشگاه';
-            document.getElementById('searchInput').placeholder = 'جستجوی محصولات (عسل، زعفران...)';
+            document.getElementById('searchInput').placeholder = 'جستجوی محصولات (گردوی سبز، مغز گردو...)';
 
             window.scrollTo(0,0);
             initProductsRender(window.allProducts);
@@ -1229,8 +1284,8 @@
                         let mergedCart = [];
                         decoded.forEach(item => {
                             const p = window.allProducts.find(prod => prod.id == item.id);
-                            if (p && p.stock > 0) {
-                                let validQty = Math.min(item.qty, p.stock);
+                            if (p && p.stock >= 5) {
+                                let validQty = getNearestValidWeight(item.qty, p.stock);
                                 let finalPrice = (p.discountPrice > 0 && p.discountPrice < p.price) ? p.discountPrice : p.price;
                                 mergedCart.push({ id: p.id, name: p.name, price: finalPrice, qty: validQty, stock: p.stock });
                             }
@@ -1304,48 +1359,59 @@
             }
         }
 
-        function changeTempQty(elementId, delta, maxStock) {
+        // تابع کنترل دکمه‌های +- با ساختار جدید پله‌ای
+        function changeTempQty(elementId, direction, maxStock) {
             if(event) event.stopPropagation();
-            
             let el = document.getElementById(elementId);
             if (!el) return;
-            let current = parseInt(el.innerText) || 1;
-            let next = current + delta;
-            if (next < 1) next = 1;
-            if (next > maxStock) {
-                showToast('موجودی انبار محدود است.', 'error');
-                next = maxStock;
+            
+            let current = parseInt(el.getAttribute('data-val')) || ALLOWED_WEIGHTS[0];
+            let nextW = getNextWeight(current, direction, maxStock);
+            
+            if (nextW === current && direction === 1) {
+                showToast('موجودی انبار (در پله‌های مجاز) محدود است.', 'error');
             }
-            el.innerText = next;
+            
+            el.setAttribute('data-val', nextW);
+            el.innerText = formatWeight(nextW);
         }
 
         function addToCartWithQty(id, contextPrefix, event, btnElement) {
             if(event) event.stopPropagation();
-            
             let qtyEl = document.getElementById('temp_qty_' + contextPrefix + '_' + id);
-            let qtyToAdd = qtyEl ? parseInt(qtyEl.innerText) : 1;
+            let qtyToAdd = qtyEl ? parseInt(qtyEl.getAttribute('data-val')) : ALLOWED_WEIGHTS[0];
             
+            qtyToAdd = getNearestValidWeight(qtyToAdd, Infinity); // امنیت فرانت‌اند
+
             const prod = window.allProducts.find(p => p.id == id);
             if(!prod) return;
+            
+            if (prod.stock < 5) {
+                 showToast('موجودی انبار کافی نیست.', 'error');
+                 return;
+            }
             
             const price = (prod.discountPrice > 0 && prod.discountPrice < prod.price) ? prod.discountPrice : prod.price;
             const existing = cart.find(i => i.id == id);
             
             let success = false;
             if(existing) {
-                if(existing.qty + qtyToAdd <= prod.stock) {
-                    existing.qty += qtyToAdd;
+                let proposed = existing.qty + qtyToAdd;
+                let nearestValid = getNearestValidWeight(proposed, prod.stock);
+                if (nearestValid > existing.qty && nearestValid <= prod.stock) {
+                    existing.qty = nearestValid;
                     success = true;
                 } else {
-                    showToast('موجودی انبار برای این تعداد کافی نیست.', 'error');
+                    showToast('موجودی انبار برای پله بعدی کافی نیست.', 'error');
                     return;
                 }
             } else {
-                if(qtyToAdd <= prod.stock) {
-                    cart.push({ id: prod.id, name: prod.name, price: price, qty: qtyToAdd, stock: prod.stock });
+                let validQty = getNearestValidWeight(qtyToAdd, prod.stock);
+                if(validQty <= prod.stock && validQty >= 5) {
+                    cart.push({ id: prod.id, name: prod.name, price: price, qty: validQty, stock: prod.stock });
                     success = true;
                 } else {
-                    showToast('موجودی انبار برای این تعداد کافی نیست.', 'error');
+                    showToast('موجودی انبار کافی نیست.', 'error');
                     return;
                 }
             }
@@ -1366,7 +1432,7 @@
                         btnElement.style.width = ''; 
                     }, 2000);
                 } else {
-                    showToast(qtyToAdd + ' عدد به سبد خرید اضافه شد.', 'success');
+                    showToast(formatWeight(qtyToAdd) + ' به سبد خرید اضافه شد.', 'success');
                 }
             }
         }
@@ -1375,7 +1441,6 @@
             addToCartWithQty(id, 'legacy', event, btnElement);
         }
 
-        // رندر صفحه تکی کالا - کاملاً برگشت داده شده به حالت یک عکس و بدون نظر
         function renderSingleProductPage(id) {
             const prod = window.allProducts.find(p => p.id == id);
             if(!prod) { 
@@ -1400,20 +1465,21 @@
             const discount = Number(prod.discountPrice);
             const hasDiscount = discount > 0 && discount < price;
             const finalPrice = hasDiscount ? discount : price;
-            const outOfStock = Number(prod.stock) <= 0;
+            const outOfStock = Number(prod.stock) < 5;
             
-            const catId = prod.category || 'adviyeh';
+            const catId = prod.category || 'sabz';
             const catName = CATEGORY_MAP[catId] ? CATEGORY_MAP[catId].name : 'دسته‌بندی نشده';
 
             let imgHtml = prod.image.startsWith('http') ? `<img src="${prod.image}" alt="${prod.name}" onclick="openImageModal('${prod.image}')">` : `<i class="fas ${prod.image.includes('fa-') ? prod.image : 'fa-box-open'}" style="font-size: 8rem; color: var(--primary-light); padding: 3rem;"></i>`;
             let descHtml = prod.description ? prod.description.replace(/\n/g, '<br>') : 'توضیحات تکمیلی برای این محصول ثبت نشده است.';
 
+            let initialQty = ALLOWED_WEIGHTS[0];
             let qtyControls = outOfStock ? 
                 `<button class="sp-btn-add" disabled><i class="fas fa-ban"></i> اتمام موجودی</button>` :
                 `<div style="display:flex; gap:0.5rem; flex:1; min-width:180px;">
                     <div class="inline-qty-controls" style="flex:0.6; padding:0.4rem; border-radius:14px; border:2px solid var(--border);">
                         <button type="button" onclick="changeTempQty('temp_qty_sp_${prod.id}', 1, ${prod.stock})" style="width:35px; height:35px;"><i class="fas fa-plus"></i></button>
-                        <span id="temp_qty_sp_${prod.id}" style="font-size:1.2rem;">1</span>
+                        <span id="temp_qty_sp_${prod.id}" data-val="${initialQty}" style="font-size:1.2rem;">${formatWeight(initialQty)}</span>
                         <button type="button" onclick="changeTempQty('temp_qty_sp_${prod.id}', -1, ${prod.stock})" style="width:35px; height:35px;"><i class="fas fa-minus"></i></button>
                     </div>
                     <button class="sp-btn-add" style="flex:1; min-width:auto;" onclick="addToCartWithQty('${prod.id}', 'sp', event, this)">
@@ -1435,7 +1501,7 @@
                         <h1 class="sp-title">${prod.name}</h1>
                         
                         <div class="sp-price-wrap">
-                            <span class="sp-current-price">${finalPrice.toLocaleString('fa-IR')} <span style="font-size: 1.2rem; font-weight: normal; color: var(--text-dark);">تومان</span></span>
+                            <span class="sp-current-price">${finalPrice.toLocaleString('fa-IR')} <span style="font-size: 1.2rem; font-weight: normal; color: var(--text-dark);">تومان / کیلوگرم</span></span>
                             ${hasDiscount ? `<span class="sp-old-price">${price.toLocaleString('fa-IR')}</span>` : ''}
                         </div>
                         <div class="sp-description">
@@ -1457,7 +1523,7 @@
 
         function shareProduct(id, name, price) {
             const productUrl = window.location.origin + window.location.pathname + "?id=" + id;
-            const shareText = `محصول: ${name}\nقیمت: ${price.toLocaleString('fa-IR')} تومان\n\nلینک خرید آنلاین:\n${productUrl}`;
+            const shareText = `محصول: ${name}\nقیمت: ${price.toLocaleString('fa-IR')} تومان به ازای هر کیلو\n\nلینک خرید آنلاین:\n${productUrl}`;
             
             if (navigator.share) {
                 navigator.share({
@@ -1474,7 +1540,7 @@
         }
 
         function renderSuggestedProducts(excludeId) {
-            let available = window.allProducts.filter(p => p.id != excludeId && Number(p.stock) > 0);
+            let available = window.allProducts.filter(p => p.id != excludeId && Number(p.stock) >= 5);
             let shuffled = available.sort(() => 0.5 - Math.random());
             let selected = shuffled.slice(0, 4);
 
@@ -1489,16 +1555,17 @@
                 const discount = Number(p.discountPrice);
                 const hasDiscount = discount > 0 && discount < price;
                 const finalPrice = hasDiscount ? discount : price;
-                const outOfStock = Number(p.stock) <= 0;
+                const outOfStock = Number(p.stock) < 5;
                 let iconClass = p.image.includes('fa-') ? p.image : 'fa-box-open';
                 let imgHtml = p.image.startsWith('http') ? `<img src="${p.image}" alt="${p.name}" loading="lazy">` : `<i class="fas ${iconClass}"></i>`;
 
+                let initialQty = ALLOWED_WEIGHTS[0];
                 let qtyControls = outOfStock ? 
                     `<button class="inline-add-btn" style="width:100%;" disabled><i class="fas fa-ban"></i> اتمام موجودی</button>` :
                     `<div class="inline-qty-cart">
                         <div class="inline-qty-controls">
                             <button type="button" onclick="changeTempQty('temp_qty_sugg_${p.id}', 1, ${p.stock})"><i class="fas fa-plus"></i></button>
-                            <span id="temp_qty_sugg_${p.id}">1</span>
+                            <span id="temp_qty_sugg_${p.id}" data-val="${initialQty}">${formatWeight(initialQty)}</span>
                             <button type="button" onclick="changeTempQty('temp_qty_sugg_${p.id}', -1, ${p.stock})"><i class="fas fa-minus"></i></button>
                         </div>
                         <button class="inline-add-btn" onclick="addToCartWithQty('${p.id}', 'sugg', event, this)">
@@ -1514,7 +1581,7 @@
                         <a href="?id=${p.id}" onclick="event.preventDefault(); event.stopPropagation(); navigateToProduct('${p.id}')" style="color: inherit; text-decoration: none;">${p.name}</a>
                     </h3>
                     <div class="price-section">
-                        <div class="current-price">${finalPrice.toLocaleString('fa-IR')} <span style="font-size:0.8rem; font-weight:normal;">تومان</span></div>
+                        <div class="current-price">${finalPrice.toLocaleString('fa-IR')} <span style="font-size:0.8rem; font-weight:normal;">تومان / کیلو</span></div>
                         ${hasDiscount ? `<div class="old-price">${price.toLocaleString('fa-IR')}</div>` : ''}
                     </div>
                     ${qtyControls}
@@ -1614,17 +1681,18 @@
                 const discount = Number(p.discountPrice);
                 const hasDiscount = discount > 0 && discount < price;
                 const finalPrice = hasDiscount ? discount : price;
-                const outOfStock = Number(p.stock) <= 0;
+                const outOfStock = Number(p.stock) < 5;
                 
                 let iconClass = p.image.includes('fa-') ? p.image : 'fa-box-open';
                 let imgHtml = p.image.startsWith('http') ? `<img src="${p.image}" alt="${p.name}" loading="lazy">` : `<i class="fas ${iconClass}"></i>`;
 
+                let initialQty = ALLOWED_WEIGHTS[0];
                 let qtyControls = outOfStock ? 
                     `<button class="inline-add-btn" style="width:100%;" disabled><i class="fas fa-ban"></i> اتمام موجودی</button>` :
                     `<div class="inline-qty-cart">
                         <div class="inline-qty-controls">
                             <button type="button" onclick="changeTempQty('temp_qty_grid_${p.id}', 1, ${p.stock})"><i class="fas fa-plus"></i></button>
-                            <span id="temp_qty_grid_${p.id}">1</span>
+                            <span id="temp_qty_grid_${p.id}" data-val="${initialQty}">${formatWeight(initialQty)}</span>
                             <button type="button" onclick="changeTempQty('temp_qty_grid_${p.id}', -1, ${p.stock})"><i class="fas fa-minus"></i></button>
                         </div>
                         <button class="inline-add-btn" onclick="addToCartWithQty('${p.id}', 'grid', event, this)">
@@ -1643,7 +1711,7 @@
                     </h3>
 
                     <div class="price-section">
-                        <div class="current-price">${finalPrice.toLocaleString('fa-IR')} <span style="font-size:0.8rem; font-weight:normal;">تومان</span></div>
+                        <div class="current-price">${finalPrice.toLocaleString('fa-IR')} <span style="font-size:0.8rem; font-weight:normal;">تومان / کیلو</span></div>
                         ${hasDiscount ? `<div class="old-price">${price.toLocaleString('fa-IR')}</div>` : ''}
                     </div>
                     
@@ -1939,7 +2007,7 @@
                     <div class="order-item-row">
                         <div>
                             <strong style="cursor: pointer; color: var(--primary-dark);" onclick="closeProfileModal(); navigateToProduct('${item.id}');" title="مشاهده کالا">${item.name}</strong>
-                            <span style="color: var(--text-muted); font-size: 0.82rem;"> (${item.qty} عدد)</span>
+                            <span style="color: var(--text-muted); font-size: 0.82rem;"> (${formatWeight(item.qty)})</span>
                         </div>
                         <div class="order-item-actions">
                             <button class="btn-mini btn-mini-primary" onclick="closeProfileModal(); navigateToProduct('${item.id}');">
@@ -2004,17 +2072,18 @@
 
                 items.forEach(item => {
                     let prod = window.allProducts.find(p => p.id == item.id);
-                    if (prod && Number(prod.stock) > 0) {
+                    if (prod && Number(prod.stock) >= 5) {
                         let currentInCart = cart.find(c => c.id == item.id);
                         let currQty = currentInCart ? currentInCart.qty : 0;
                         let qtyToAdd = Math.min(item.qty, Number(prod.stock) - currQty);
+                        let validQty = getNearestValidWeight(qtyToAdd, prod.stock);
 
-                        if (qtyToAdd > 0) {
+                        if (validQty >= 5) {
                             if (currentInCart) {
-                                currentInCart.qty += qtyToAdd;
+                                currentInCart.qty = getNearestValidWeight(currentInCart.qty + validQty, prod.stock);
                             } else {
                                 let finalPrice = (prod.discountPrice > 0 && prod.discountPrice < prod.price) ? prod.discountPrice : prod.price;
-                                cart.push({ id: prod.id, name: prod.name, price: finalPrice, qty: qtyToAdd, stock: prod.stock });
+                                cart.push({ id: prod.id, name: prod.name, price: finalPrice, qty: validQty, stock: prod.stock });
                             }
                             addedCount++;
                         } else {
@@ -2053,14 +2122,19 @@
             document.getElementById('cartOverlay').classList.add('active');
         }
 
-        function changeQty(id, delta) {
+        function changeQty(id, direction) {
             let item = cart.find(i => i.id == id);
             if(!item) return;
-            item.qty += delta;
-            if(item.qty <= 0) cart = cart.filter(i => i.id != id);
-            else if(item.qty > item.stock) {
-                item.qty = item.stock;
-                showToast('حداکثر موجودی انتخاب شد.', 'error');
+            
+            let nextW = getNextWeight(item.qty, direction, item.stock);
+            
+            if (direction === -1 && item.qty === ALLOWED_WEIGHTS[0]) {
+                cart = cart.filter(i => i.id != id);
+            } else {
+                if (nextW === item.qty && direction === 1) {
+                    showToast('حداکثر موجودی انبار (در پله‌های مجاز) انتخاب شد.', 'error');
+                }
+                item.qty = nextW;
             }
             saveCart();
         }
@@ -2140,12 +2214,12 @@
                             </div>
                             <div>
                                 <h4 onclick="toggleCart(); navigateToProduct('${i.id}');" style="cursor: pointer; transition: color 0.3s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-dark)'" title="مشاهده محصول">${i.name}</h4>
-                                <div class="cart-item-price">${i.price.toLocaleString('fa-IR')} تومان</div>
+                                <div class="cart-item-price">${i.price.toLocaleString('fa-IR')} تومان / کیلوگرم</div>
                             </div>
                         </div>
                         <div class="qty-control">
                             <button class="qty-btn" onclick="changeQty('${i.id}', 1)"><i class="fas fa-plus"></i></button>
-                            <span style="font-weight:800; width:24px; text-align:center; font-size:1.1rem; color:var(--text-dark);">${i.qty}</span>
+                            <span style="font-weight:800; width:55px; text-align:center; font-size:0.95rem; color:var(--text-dark);">${formatWeight(i.qty)}</span>
                             <button class="qty-btn" onclick="changeQty('${i.id}', -1)" style="color:#ef4444"><i class="fas fa-minus"></i></button>
                         </div>
                     </div>`;
@@ -2178,7 +2252,8 @@
                 }
 
                 stickyCart.classList.add('visible');
-                document.getElementById('sbc-qty').innerText = totalQty;
+                // Number of distinct items, or total kg? Usually total distinct items in cart badge
+                document.getElementById('sbc-qty').innerText = cart.length;
                 document.getElementById('sbc-price').innerText = totalAmount.toLocaleString('fa-IR') + ' تومان';
             } else {
                 stickyCart.classList.remove('visible');
@@ -2259,7 +2334,7 @@
 
             let html = cart.map(i => `
                 <div class="checkout-cart-item">
-                    <span>${i.name} (<strong>${i.qty} عدد</strong>)</span>
+                    <span>${i.name} (<strong>${formatWeight(i.qty)}</strong>)</span>
                     <strong>${(i.price * i.qty).toLocaleString('fa-IR')} تومان</strong>
                 </div>
             `).join('');
@@ -2373,7 +2448,7 @@
                     total += (item.price * item.qty);
                     html += `<div style="display:flex; justify-content:space-between; border-bottom:1px dashed #cbd5e1; padding:10px 0; font-size:0.95rem;">
                                 <span style="color:var(--text-dark);">${item.name}</span>
-                                <strong style="color:var(--primary-dark);">${item.qty} عدد</strong>
+                                <strong style="color:var(--primary-dark);">${formatWeight(item.qty)}</strong>
                              </div>`;
                 });
             } else {
