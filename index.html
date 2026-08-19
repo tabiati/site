@@ -966,6 +966,7 @@
                         const cleanUrl = new URL(window.location);
                         cleanUrl.searchParams.delete('auto_login');
                         window.history.replaceState({}, document.title, cleanUrl.pathname + cleanUrl.search);
+                        // showToast is called later, or maybe wait until body is ready. It's fine here.
                     }
                 } catch(e) {
                     console.log("خطا در لاگین خودکار", e);
@@ -2185,7 +2186,8 @@
                 let totalDiscount = 0; 
                 
                 cart.forEach(i => {
-                    totalAmount += (i.price * i.qty);
+                    let itemTotal = (i.price || 0) * (i.qty || 0);
+                    totalAmount += itemTotal;
                     
                     let productDetails = window.allProducts.find(p => p.id == i.id);
                     
@@ -2218,9 +2220,9 @@
                             </div>
                         </div>
                         <div class="qty-control">
-                            <button class="qty-btn" onclick="changeQty('${i.id}', 1)"><i class="fas fa-plus"></i></button>
-                            <span style="font-weight:800; width:55px; text-align:center; font-size:0.95rem; color:var(--text-dark);">${formatWeight(i.qty)}</span>
-                            <button class="qty-btn" onclick="changeQty('${i.id}', -1)" style="color:#ef4444"><i class="fas fa-minus"></i></button>
+                            <button class="qty-btn" onclick="changeQty('${i.id}', 5)"><i class="fas fa-plus"></i></button>
+                            <span style="font-weight:800; width:45px; text-align:center; font-size:1rem; color:var(--text-dark);">${i.qty} ک</span>
+                            <button class="qty-btn" onclick="changeQty('${i.id}', -5)" style="color:#ef4444"><i class="fas fa-minus"></i></button>
                         </div>
                     </div>`;
                 });
@@ -2252,13 +2254,29 @@
                 }
 
                 stickyCart.classList.add('visible');
-                // Number of distinct items, or total kg? Usually total distinct items in cart badge
                 document.getElementById('sbc-qty').innerText = cart.length;
                 document.getElementById('sbc-price').innerText = totalAmount.toLocaleString('fa-IR') + ' تومان';
             } else {
                 stickyCart.classList.remove('visible');
                 floatingSocials.classList.remove('cart-active');
                 floatingSocials.style.opacity = '1'; 
+            }
+        }
+
+        // سیستم Toast ارتقا یافته با دکمه بستن
+        function showToast(message, type = 'success', duration = 3000) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            const icon = type === 'success' ? '<i class="fas fa-check-circle" style="color:var(--primary-light); font-size:1.2rem;"></i>' : '<i class="fas fa-times-circle" style="color:#ef4444; font-size:1.2rem;"></i>';
+            toast.innerHTML = `<span style="cursor:pointer; margin-left:12px; font-size:1.2rem;" onclick="this.parentElement.remove()" title="بستن">&times;</span> ${icon} <span style="line-height:1.5;">${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => toast.classList.add('show'), 10);
+            if (duration > 0) {
+                setTimeout(() => { 
+                    toast.classList.remove('show'); 
+                    setTimeout(() => toast.remove(), 500); 
+                }, duration);
             }
         }
 
@@ -2421,7 +2439,13 @@
                 if(data.status === 'success') {
                     window.location.href = data.url; 
                 } else {
-                    showToast(data.message, 'error');
+                    // اخطار ویژه برای خطای 100 میلیون تومان با استفاده از alert مرورگر
+                    if(data.message.includes('۱۰۰ میلیون')) {
+                        alert(data.message); 
+                        showToast(data.message, 'error', 10000); 
+                    } else {
+                        showToast(data.message, 'error');
+                    }
                     btn.disabled = false;
                     btn.innerHTML = '<i class="fas fa-shield-alt"></i> اتصال امن به درگاه بانکی';
                 }
@@ -2464,17 +2488,6 @@
             
             document.getElementById('receipt-details').innerHTML = html;
             openModal('receiptModal');
-        }
-
-        function showToast(message, type = 'success') {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            const icon = type === 'success' ? '<i class="fas fa-check-circle" style="color:var(--primary-light); font-size:1.2rem;"></i>' : '<i class="fas fa-times-circle" style="color:#ef4444; font-size:1.2rem;"></i>';
-            toast.innerHTML = `${icon} <span>${message}</span>`;
-            container.appendChild(toast);
-            setTimeout(() => toast.classList.add('show'), 10);
-            setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 500); }, 3000);
         }
 
         function scrollCarousel(direction) {
