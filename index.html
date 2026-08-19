@@ -909,7 +909,6 @@
                         const cleanUrl = new URL(window.location);
                         cleanUrl.searchParams.delete('auto_login');
                         window.history.replaceState({}, document.title, cleanUrl.pathname + cleanUrl.search);
-                        // showToast is called later, or maybe wait until body is ready. It's fine here.
                     }
                 } catch(e) {
                     console.log("خطا در لاگین خودکار", e);
@@ -1180,7 +1179,7 @@
             document.getElementById('category-carousel-container').style.display = 'flex';
             document.getElementById('category-hero').style.display = 'none';
             document.getElementById('main-section-title').innerHTML = '<i class="fas fa-store"></i> فروشگاه';
-            document.getElementById('searchInput').placeholder = 'جستجوی محصولات (عسل، زعفران...)';
+            document.getElementById('searchInput').placeholder = 'جستجوی محصولات (گردوی سبز، مغز گردو...)';
 
             window.scrollTo(0,0);
             initProductsRender(window.allProducts);
@@ -1365,7 +1364,7 @@
                         btnElement.style.width = ''; 
                     }, 2000);
                 } else {
-                    showToast(qtyToAdd + ' عدد به سبد خرید اضافه شد.', 'success');
+                    showToast(qtyToAdd + ' کیلوگرم به سبد خرید اضافه شد.', 'success');
                 }
             }
         }
@@ -1374,7 +1373,6 @@
             addToCartWithQty(id, 'legacy', event, btnElement);
         }
 
-        // رندر صفحه تکی کالا - کاملاً برگشت داده شده به حالت یک عکس و بدون نظر
         function renderSingleProductPage(id) {
             const prod = window.allProducts.find(p => p.id == id);
             if(!prod) { 
@@ -1401,7 +1399,7 @@
             const finalPrice = hasDiscount ? discount : price;
             const outOfStock = Number(prod.stock) <= 0;
             
-            const catId = prod.category || 'adviyeh';
+            const catId = prod.category || 'sabz';
             const catName = CATEGORY_MAP[catId] ? CATEGORY_MAP[catId].name : 'دسته‌بندی نشده';
 
             let imgHtml = prod.image.startsWith('http') ? `<img src="${prod.image}" alt="${prod.name}" onclick="openImageModal('${prod.image}')">` : `<i class="fas ${prod.image.includes('fa-') ? prod.image : 'fa-box-open'}" style="font-size: 8rem; color: var(--primary-light); padding: 3rem;"></i>`;
@@ -1434,7 +1432,7 @@
                         <h1 class="sp-title">${prod.name}</h1>
                         
                         <div class="sp-price-wrap">
-                            <span class="sp-current-price">${finalPrice.toLocaleString('fa-IR')} <span style="font-size: 1.2rem; font-weight: normal; color: var(--text-dark);">تومان</span></span>
+                            <span class="sp-current-price">${finalPrice.toLocaleString('fa-IR')} <span style="font-size: 1.2rem; font-weight: normal; color: var(--text-dark);">تومان / کیلوگرم</span></span>
                             ${hasDiscount ? `<span class="sp-old-price">${price.toLocaleString('fa-IR')}</span>` : ''}
                         </div>
                         <div class="sp-description">
@@ -1456,7 +1454,7 @@
 
         function shareProduct(id, name, price) {
             const productUrl = window.location.origin + window.location.pathname + "?id=" + id;
-            const shareText = `محصول: ${name}\nقیمت: ${price.toLocaleString('fa-IR')} تومان\n\nلینک خرید آنلاین:\n${productUrl}`;
+            const shareText = `محصول: ${name}\nقیمت: ${price.toLocaleString('fa-IR')} تومان به ازای هر کیلو\n\nلینک خرید آنلاین:\n${productUrl}`;
             
             if (navigator.share) {
                 navigator.share({
@@ -1513,7 +1511,7 @@
                         <a href="?id=${p.id}" onclick="event.preventDefault(); event.stopPropagation(); navigateToProduct('${p.id}')" style="color: inherit; text-decoration: none;">${p.name}</a>
                     </h3>
                     <div class="price-section">
-                        <div class="current-price">${finalPrice.toLocaleString('fa-IR')} <span style="font-size:0.8rem; font-weight:normal;">تومان</span></div>
+                        <div class="current-price">${finalPrice.toLocaleString('fa-IR')} <span style="font-size:0.8rem; font-weight:normal;">تومان / کیلو</span></div>
                         ${hasDiscount ? `<div class="old-price">${price.toLocaleString('fa-IR')}</div>` : ''}
                     </div>
                     ${qtyControls}
@@ -1642,7 +1640,7 @@
                     </h3>
 
                     <div class="price-section">
-                        <div class="current-price">${finalPrice.toLocaleString('fa-IR')} <span style="font-size:0.8rem; font-weight:normal;">تومان</span></div>
+                        <div class="current-price">${finalPrice.toLocaleString('fa-IR')} <span style="font-size:0.8rem; font-weight:normal;">تومان / کیلو</span></div>
                         ${hasDiscount ? `<div class="old-price">${price.toLocaleString('fa-IR')}</div>` : ''}
                     </div>
                     
@@ -1938,7 +1936,7 @@
                     <div class="order-item-row">
                         <div>
                             <strong style="cursor: pointer; color: var(--primary-dark);" onclick="closeProfileModal(); navigateToProduct('${item.id}');" title="مشاهده کالا">${item.name}</strong>
-                            <span style="color: var(--text-muted); font-size: 0.82rem;"> (${item.qty} عدد)</span>
+                            <span style="color: var(--text-muted); font-size: 0.82rem;"> (${item.qty} کیلوگرم)</span>
                         </div>
                         <div class="order-item-actions">
                             <button class="btn-mini btn-mini-primary" onclick="closeProfileModal(); navigateToProduct('${item.id}');">
@@ -2059,7 +2057,7 @@
             if(item.qty <= 0) cart = cart.filter(i => i.id != id);
             else if(item.qty > item.stock) {
                 item.qty = item.stock;
-                showToast('حداکثر موجودی انتخاب شد.', 'error');
+                showToast('حداکثر موجودی انبار انتخاب شد.', 'error');
             }
             saveCart();
         }
@@ -2139,13 +2137,13 @@
                             </div>
                             <div>
                                 <h4 onclick="toggleCart(); navigateToProduct('${i.id}');" style="cursor: pointer; transition: color 0.3s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-dark)'" title="مشاهده محصول">${i.name}</h4>
-                                <div class="cart-item-price">${i.price.toLocaleString('fa-IR')} تومان</div>
+                                <div class="cart-item-price">${i.price.toLocaleString('fa-IR')} تومان / کیلوگرم</div>
                             </div>
                         </div>
                         <div class="qty-control">
-                            <button class="qty-btn" onclick="changeQty('${i.id}', 1)"><i class="fas fa-plus"></i></button>
-                            <span style="font-weight:800; width:24px; text-align:center; font-size:1.1rem; color:var(--text-dark);">${i.qty}</span>
-                            <button class="qty-btn" onclick="changeQty('${i.id}', -1)" style="color:#ef4444"><i class="fas fa-minus"></i></button>
+                            <button class="qty-btn" onclick="changeQty('${i.id}', 5)"><i class="fas fa-plus"></i></button>
+                            <span style="font-weight:800; width:45px; text-align:center; font-size:1rem; color:var(--text-dark);">${i.qty} ک</span>
+                            <button class="qty-btn" onclick="changeQty('${i.id}', -5)" style="color:#ef4444"><i class="fas fa-minus"></i></button>
                         </div>
                     </div>`;
                 });
@@ -2258,7 +2256,7 @@
 
             let html = cart.map(i => `
                 <div class="checkout-cart-item">
-                    <span>${i.name} (<strong>${i.qty} عدد</strong>)</span>
+                    <span>${i.name} (<strong>${i.qty} کیلوگرم</strong>)</span>
                     <strong>${(i.price * i.qty).toLocaleString('fa-IR')} تومان</strong>
                 </div>
             `).join('');
@@ -2372,7 +2370,7 @@
                     total += (item.price * item.qty);
                     html += `<div style="display:flex; justify-content:space-between; border-bottom:1px dashed #cbd5e1; padding:10px 0; font-size:0.95rem;">
                                 <span style="color:var(--text-dark);">${item.name}</span>
-                                <strong style="color:var(--primary-dark);">${item.qty} عدد</strong>
+                                <strong style="color:var(--primary-dark);">${item.qty} کیلوگرم</strong>
                              </div>`;
                 });
             } else {
