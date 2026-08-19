@@ -471,53 +471,17 @@
             <div class="category-carousel-wrapper" id="category-carousel-container">
                 <button class="carousel-btn right-btn" onclick="scrollCarousel(1)"><i class="fas fa-chevron-right"></i></button>
                 <div class="category-carousel" id="categoryCarousel">
-                    <a href="?id=asal-va-zaferan" onclick="navigateToCategory('asal-va-zaferan', event)" class="category-item">
-                        <div class="category-img"><img src="image/عسل.jpg" alt="عسل و زعفران"></div>
-                        <span class="category-name">عسل و زعفران</span>
+                    <a href="?id=sabz" onclick="navigateToCategory('sabz', event)" class="category-item">
+                        <div class="category-img"><img src="#" alt="گردوی سبز"></div>
+                        <span class="category-name">گردوی سبز</span>
                     </a>
-                    <a href="?id=Pakhayeekhtesasi" onclick="navigateToCategory('Pakhayeekhtesasi', event)" class="category-item">
-                        <div class="category-img"><img src="image/پک.jpg" alt="پک های اختصاصی"></div>
-                        <span class="category-name">پک های اختصاصی</span>
+                    <a href="?id=post" onclick="navigateToCategory('post', event)" class="category-item">
+                        <div class="category-img"><img src="#" alt="گردوی با پوست"></div>
+                        <span class="category-name">گردوی با پوست</span>
                     </a>
-                    <a href="?id=Arayeshivabehdashti" onclick="navigateToCategory('Arayeshivabehdashti', event)" class="category-item">
-                        <div class="category-img"><img src="image/آرایشی و بهداشتی.jpg" alt="آرایشی و بهداشتی"></div>
-                        <span class="category-name">آرایشی و بهداشتی</span>
-                    </a>
-                    <a href="?id=Giyahandaroi" onclick="navigateToCategory('Giyahandaroi', event)" class="category-item">
-                        <div class="category-img"><img src="image/گیاهان-دارویی.jpg" alt="گیاهان دارویی"></div>
-                        <span class="category-name">گیاهان دارویی</span>
-                    </a>
-                    <a href="?id=khoshkbar" onclick="navigateToCategory('khoshkbar', event)" class="category-item">
-                        <div class="category-img"><img src="image/خشکبار.jpg" alt="خشکبار"></div>
-                        <span class="category-name">خشکبار</span>
-                    </a>
-                    <a href="?id=araghijat" onclick="navigateToCategory('araghijat', event)" class="category-item">
-                        <div class="category-img"><img src="image/عرقیجات.jpg" alt="عرقیجات"></div>
-                        <span class="category-name">عرقیجات</span>
-                    </a>
-                    <a href="?id=roghan" onclick="navigateToCategory('roghan', event)" class="category-item">
-                        <div class="category-img"><img src="image/روغن.jpg" alt="روغن"></div>
-                        <span class="category-name">روغن</span>
-                    </a>
-                    <a href="?id=damnoosh" onclick="navigateToCategory('damnoosh', event)" class="category-item">
-                        <div class="category-img"><img src="image/دمنوش.jpg" alt="دمنوش"></div>
-                        <span class="category-name">دمنوش</span>
-                    </a>
-                    <a href="?id=shireh" onclick="navigateToCategory('shireh', event)" class="category-item">
-                        <div class="category-img"><img src="image/شیره.jpg" alt="شیره"></div>
-                        <span class="category-name">شیره</span>
-                    </a>
-                    <a href="?id=gerdoo" onclick="navigateToCategory('gerdoo', event)" class="category-item">
-                        <div class="category-img"><img src="image/گردو.jpg" alt="گردو"></div>
-                        <span class="category-name">گردو</span>
-                    </a>
-                    <a href="?id=chashni" onclick="navigateToCategory('chashni', event)" class="category-item">
-                        <div class="category-img"><img src="image/چاشنی.jpg" alt="چاشنی"></div>
-                        <span class="category-name">چاشنی</span>
-                    </a>
-                    <a href="?id=daneh-va-tokhm" onclick="navigateToCategory('daneh-va-tokhm', event)" class="category-item">
-                        <div class="category-img"><img src="image/بذریجات.jpg" alt="دانه و تخم"></div>
-                        <span class="category-name">دانه و تخم</span>
+                    <a href="?id=maqz" onclick="navigateToCategory('maqz', event)" class="category-item">
+                        <div class="category-img"><img src="#" alt="مغز گردو"></div>
+                        <span class="category-name">مغز گردو</span>
                     </a>
                 </div>
                 <button class="carousel-btn left-btn" onclick="scrollCarousel(-1)"><i class="fas fa-chevron-left"></i></button>
@@ -900,19 +864,9 @@
         window.searchTimeout = null;
 
         const CATEGORY_MAP = {
-            'adviyeh': { name: 'ادویه', seo: 'خرید بهترین ادویه‌جات ارگانیک، زردچوبه، فلفل، دارچین و محصولات متنوع ادویه‌ای با کیفیت تضمینی و عطر بی‌نظیر مستقیم از طبیعت.' },
-            'chashni': { name: 'چاشنی', seo: 'خرید انواع چاشنی‌های طبیعی و سالم برای طعم دادن به غذاهای شما. مجموعه‌ای از بهترین طعم‌دهنده‌های ارگانیک.' },
-            'khoshkbar': { name: 'خشکبار', seo: 'فروش مرغوب‌ترین خشکبار، گردو، بادام، پسته و محصولات تازه. تضمین سلامت و کیفیت برای میان‌وعده‌های مقوی شما.' },
-            'damnoosh': { name: 'دمنوش', seo: 'انواع دمنوش‌های گیاهی آرام‌بخش و درمانی. خرید دمنوش‌های ارگانیک برای سلامتی جسم و روح.' },
-            'roghan': { name: 'روغن', seo: 'خرید روغن‌های طبیعی و درمانی خالص. روغن زیتون، کنجد و روغن‌های گیاهی با پرس سرد و حفظ تمام خواص.' },
-            'araghijat': { name: 'عرقیجات', seo: 'بهترین عرقیجات گیاهی سنتی و خالص. گلاب، عرق نعنا و عرقیات درمانی با بالاترین غلظت و کیفیت.' },
-            'shireh': { name: 'شیره', seo: 'خرید شیره انگور، خرما، توت و شیره میکس طبیعی. بمب انرژی و خون‌ساز فوق‌العاده برای تمام سنین.' },
-            'daneh-va-tokhm': { name: 'دانه و تخم', seo: 'انواع دانه‌های مغذی و بذریجات گیاهی. دانه چیا، کینوا، تخم شربتی و دانه‌های ارگانیک سرشار از ویتامین.' },
-            'asal-va-zaferan': { name: 'عسل و زعفران', seo: 'خرید عسل طبیعی کوهستان و زعفران اصل قائنات. با برگه آزمایش و تضمین خلوص ۱۰۰ درصدی.' },
-            'Giyahandaroi': { name: 'گیاهان دارویی', seo: 'خرید انواع گیاهان دارویی کمیاب و کوهی. درمان طبیعی بیماری‌ها با مرغوب‌ترین و تازه‌ترین گیاهان دارویی ارگانیک و تضمین کیفیت.' },
-            'Arayeshivabehdashti': { name: 'آرایشی و بهداشتی', seo: 'خرید محصولات آرایشی و بهداشتی کاملا طبیعی و ارگانیک. مراقبت از پوست و مو با محصولات سالم و بدون مواد شیمیایی مضر.' },
-            'Pakhayeekhtesasi': { name: 'پک های اختصاصی', seo: 'خرید پک‌های هدیه و اختصاصی طبیعتی. مجموعه‌ای از بهترین محصولات ارگانیک با بسته‌بندی زیبا، مناسب برای هدیه به عزیزان شما.' },
-            'gerdoo': { name: 'گردو', seo: 'خرید بهترین گردوی کرمان، گردو ساردوئیه، رابر و بافت با کیفیت تضمینی و طعم بی‌نظیر مستقیم از باغدار.' }
+            'sabz': { name: 'گردوی سبز', seo: 'خرید مستقیم گردوی سبز تازه و باکیفیت کوهستان‌های کرمان (رابر، بافت، ساردوئیه) با تضمین اصالت و سلامت.' },
+            'post': { name: 'گردوی با پوست', seo: 'خرید گردوی با پوست کاغذی و پرچرب کرمان. بهترین کیفیت گردو با قیمت مناسب و بدون واسطه از باغدار.' },
+            'maqz': { name: 'مغز گردو', seo: 'خرید مغز گردوی اعلا، سفید و پرچرب. مناسب برای مصرف روزانه و آجیل، تهیه شده از بهترین گردوهای استان کرمان.' }
         };
 
         function togglePasswordVisibility() {
@@ -936,13 +890,39 @@
         window.onload = async () => {
             let loaderTimeout = setTimeout(() => { hideStartupLoader(); }, 1500);
 
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            // ========================================================
+            // اجرای لاگین خودکار (Auto-Login) از طریق ربات بله
+            // ========================================================
+            const autoLoginPhone = urlParams.get('auto_login');
+            if (autoLoginPhone && !currentUser) {
+                try {
+                    let res = await fetch(GAS_URL, { 
+                        method: 'POST', 
+                        body: JSON.stringify({ action: 'autoLogin', phone: autoLoginPhone }) 
+                    });
+                    let data = await res.json();
+                    if (data.status === 'success' && data.user) {
+                        currentUser = data.user;
+                        localStorage.setItem('tabiati_user', JSON.stringify(currentUser));
+                        const cleanUrl = new URL(window.location);
+                        cleanUrl.searchParams.delete('auto_login');
+                        window.history.replaceState({}, document.title, cleanUrl.pathname + cleanUrl.search);
+                        // showToast is called later, or maybe wait until body is ready. It's fine here.
+                    }
+                } catch(e) {
+                    console.log("خطا در لاگین خودکار", e);
+                }
+            }
+            // ========================================================
+
             updateAuthHeaderUI();
 
             if (currentUser && currentUser.phone) {
                 syncUserDataWithServer(currentUser.phone);
             }
 
-            const urlParams = new URLSearchParams(window.location.search);
             const authority = urlParams.get('Authority');
             const status = urlParams.get('Status');
             const urlId = urlParams.get('id');
