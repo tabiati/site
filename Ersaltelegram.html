@@ -3,188 +3,181 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>پنل ارسال پیام همگانی تلگرام - طبیعتی سبز گستر</title>
+  <title>پنل ارسال پیام همگانی تلگرام</title>
   <style>
-    * {
-      box-sizing: border-box;
-      font-family: Tahoma, 'Segoe UI', Arial, sans-serif;
-    }
     body {
-      background-color: #f0f4f8;
+      font-family: Tahoma, 'Segoe UI', sans-serif;
+      background-color: #f4f7f6;
+      margin: 0;
+      padding: 20px;
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
-      margin: 0;
-      padding: 15px;
+      min-height: 90vh;
     }
     .card {
       background: #ffffff;
-      max-width: 520px;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
       width: 100%;
-      border-radius: 16px;
-      padding: 25px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-      border-top: 6px solid #0088cc;
+      max-width: 520px;
+      box-sizing: border-box;
     }
     h2 {
       margin-top: 0;
-      color: #0088cc;
-      font-size: 1.3rem;
+      color: #2c7a4b;
+      font-size: 20px;
       text-align: center;
-      margin-bottom: 20px;
-    }
-    .form-group {
-      margin-bottom: 18px;
     }
     label {
-      display: block;
-      margin-bottom: 6px;
       font-weight: bold;
-      font-size: 0.88rem;
+      display: block;
+      margin-top: 15px;
+      margin-bottom: 5px;
       color: #333;
+      font-size: 14px;
     }
     input[type="password"], textarea {
       width: 100%;
       padding: 12px;
-      border: 1.5px solid #cfd8dc;
+      border: 1px solid #ccc;
       border-radius: 8px;
-      font-size: 0.95rem;
-      transition: border 0.3s;
+      box-sizing: border-box;
+      font-family: inherit;
+      font-size: 14px;
       outline: none;
     }
     input[type="password"]:focus, textarea:focus {
-      border-color: #0088cc;
+      border-color: #2c7a4b;
     }
     textarea {
+      height: 140px;
       resize: vertical;
-      min-height: 140px;
-      line-height: 1.6;
     }
-    .btn {
+    button {
       width: 100%;
-      background: #0088cc;
-      color: #fff;
+      background-color: #2c7a4b;
+      color: white;
       border: none;
-      padding: 14px;
-      font-size: 1rem;
-      font-weight: bold;
+      padding: 13px;
       border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
       cursor: pointer;
+      margin-top: 20px;
       transition: background 0.3s;
     }
-    .btn:hover {
-      background: #006699;
+    button:hover {
+      background-color: #225f3a;
     }
-    .btn:disabled {
-      background: #9e9e9e;
+    button:disabled {
+      background-color: #94c4a6;
       cursor: not-allowed;
     }
-    #statusBox {
-      margin-top: 15px;
-      padding: 14px;
-      border-radius: 8px;
+    #resultBox {
       display: none;
-      font-size: 0.92rem;
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 8px;
+      font-size: 14px;
       line-height: 1.6;
-      white-space: pre-line;
-      text-align: right;
     }
     .success {
-      background-color: #e1f5fe;
-      color: #01579b;
-      border: 1px solid #b3e5fc;
+      background-color: #e8f5e9;
+      color: #2e7d32;
+      border: 1px solid #a5d6a7;
     }
     .error {
       background-color: #ffebee;
       color: #c62828;
-      border: 1px solid #ffcdd2;
+      border: 1px solid #ef9a9a;
     }
     .loading {
       background-color: #e3f2fd;
       color: #1565c0;
-      border: 1px solid #bbdefb;
-      text-align: center;
+      border: 1px solid #90caf9;
     }
   </style>
 </head>
 <body>
 
-<div class="card">
-  <h2>✈️ پنل مدیریت و ارسال پیام همگانی تلگرام</h2>
-  
-  <form id="broadcastForm">
-    <div class="form-group">
-      <label for="password">🔑 رمز عبور مدیریت:</label>
-      <input type="password" id="password" placeholder="رمز عبور مدیریت را وارد کنید" required>
-    </div>
+  <div class="card">
+    <h2>🌿 ارسال پیام به کاربران تلگرام</h2>
+    
+    <label for="password">🔑 رمز عبور مدیریت:</label>
+    <input type="password" id="password" placeholder="رمز تعریف‌شده در اسکریپت را وارد کنید">
 
-    <div class="form-group">
-      <label for="message">✍️ متن پیام ارسالی:</label>
-      <textarea id="message" placeholder="متن پیام خود را برای کاربران تلگرام بنویسید..." required></textarea>
-    </div>
+    <label for="message">📝 متن پیام همگانی:</label>
+    <textarea id="message" placeholder="متن پیام تبریک، اطلاع‌رسانی یا تخفیف را اینجا بنویسید..."></textarea>
 
-    <button type="submit" id="submitBtn" class="btn">🚀 ارسال پیام به تمام کاربران تلگرام</button>
-  </form>
+    <button id="sendBtn" onclick="sendBroadcast()">🚀 ارسال پیام به همه کاربران</button>
 
-  <div id="statusBox"></div>
-</div>
+    <div id="resultBox"></div>
+  </div>
 
-<script>
-  // آدرس اسکریپت تلگرام شما
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwsxLB4cRmxgLr8cExjvyHBooEIuKymuVI1E6eN2YEvhGG-nI927ODGE5RRsjNKr4UP/exec';
+  <script>
+    // آدرس وب‌اپ گوگل اسکریپت شما
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwvpI-jiT6Wnv8M3t8rFGyhGcSWNDr8DsCQNL7HHqYeBrLUppVsJ1Hx86uOAxgyNr7R/exec";
 
-  const form = document.getElementById('broadcastForm');
-  const submitBtn = document.getElementById('submitBtn');
-  const statusBox = document.getElementById('statusBox');
+    async function sendBroadcast() {
+      const password = document.getElementById("password").value.trim();
+      const message = document.getElementById("message").value.trim();
+      const btn = document.getElementById("sendBtn");
+      const resultBox = document.getElementById("resultBox");
 
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    const password = document.getElementById('password').value.trim();
-    const message = document.getElementById('message').value.trim();
-
-    if (!confirm('آیا از ارسال این پیام به تمام کاربران تلگرام اطمینان دارید؟')) {
-      return;
-    }
-
-    submitBtn.disabled = true;
-    submitBtn.innerText = 'در حال ارسال پیام‌ها به تلگرام...';
-    showStatus('در حال ارسال پیام‌ها به کاربران فعال با سرعت ۴ پیام در ثانیه...', 'loading');
-
-    try {
-      const response = await fetch(SCRIPT_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({
-          action: 'admin_broadcast_telegram',
-          password: password,
-          message: message
-        })
-      });
-
-      const resData = await response.json();
-
-      if (resData.status === 'success') {
-        showStatus(resData.message, 'success');
-        document.getElementById('message').value = '';
-      } else {
-        showStatus('❌ خطا: ' + resData.message, 'error');
+      if (!password) {
+        alert("لطفاً رمز عبور مدیریت را وارد کنید.");
+        return;
       }
-    } catch (err) {
-      showStatus('❌ خطا در برقراری ارتباط با سرور تلگرام!', 'error');
-    } finally {
-      submitBtn.disabled = false;
-      submitBtn.innerText = '🚀 ارسال پیام به تمام کاربران تلگرام';
+      if (!message) {
+        alert("لطفاً متن پیام را وارد کنید.");
+        return;
+      }
+
+      // تاییدیه نهایی قبل از ارسال
+      if (!confirm("آیا از ارسال این پیام برای تمام کاربران مطمئن هستید؟")) {
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerText = "⏳ در حال ارسال به کاربران...";
+      resultBox.style.display = "block";
+      resultBox.className = "loading";
+      resultBox.innerHTML = "پیام در حال ارسال به لیست اعضا می‌باشد، لطفاً شکیبا باشید...";
+
+      try {
+        const response = await fetch(WEB_APP_URL, {
+          method: "POST",
+          body: JSON.stringify({
+            action: "send_broadcast",
+            password: password,
+            message: message
+          })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          resultBox.className = "success";
+          resultBox.innerHTML = `
+            <strong>✅ عملیات با موفقیت انجام شد!</strong><br>
+            ▫️ تعداد پیام موفق: <b>${data.sent}</b> کاربر<br>
+            ▫️ تعداد پیام ناموفق (بلاک یا خطا): <b>${data.failed}</b> کاربر
+          `;
+          document.getElementById("message").value = "";
+        } else {
+          resultBox.className = "error";
+          resultBox.innerHTML = `❌ <b>خطا:</b> ${data.message || "مشکلی در انجام عملیات پیش آمد."}`;
+        }
+      } catch (err) {
+        resultBox.className = "error";
+        resultBox.innerHTML = "❌ خطا در برقراری ارتباط با سرور گوگل. لطفاً اتصال اینترنت خود را بررسی کنید.";
+      } finally {
+        btn.disabled = false;
+        btn.innerText = "🚀 ارسال پیام به همه کاربران";
+      }
     }
-  });
-
-  function showStatus(text, type) {
-    statusBox.innerText = text;
-    statusBox.className = type;
-    statusBox.style.display = 'block';
-  }
-</script>
-
+  </script>
 </body>
 </html>
