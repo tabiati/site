@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پنل ارسال پیام همگانی | طبیعتی سبز گستر</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700;800&display=swap');
+        
+        :root {
+            --primary: #059669;
+            --primary-dark: #047857;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #0f172a;
+            --muted: #64748b;
+            --border: #e2e8f0;
+            --danger: #ef4444;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Vazirmatn', sans-serif; }
+        body { background: var(--bg); color: var(--text); padding: 2rem 1rem; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+
+        .container { background: var(--card); border: 1px solid var(--border); border-radius: 20px; width: 100%; max-width: 650px; padding: 2.5rem; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        
+        .header { text-align: center; margin-bottom: 2rem; border-bottom: 2px dashed var(--border); padding-bottom: 1.5rem; }
+        .header h1 { color: var(--primary-dark); font-size: 1.6rem; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
+        .header p { color: var(--muted); font-size: 0.9rem; margin-top: 0.5rem; }
+
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; font-weight: 700; margin-bottom: 0.5rem; font-size: 0.95rem; color: var(--text); }
+        .form-control { width: 100%; padding: 0.85rem 1rem; border: 2px solid var(--border); border-radius: 12px; font-size: 0.95rem; outline: none; transition: 0.3s; background: #fafafa; }
+        .form-control:focus { border-color: var(--primary); background: #ffffff; box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.1); }
+        
+        textarea.form-control { resize: vertical; min-height: 140px; line-height: 1.7; }
+
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        @media(max-width: 480px) { .grid-2 { grid-template-columns: 1fr; } }
+
+        .btn-submit { width: 100%; padding: 1.1rem; background: var(--primary); color: white; border: none; border-radius: 14px; font-size: 1.1rem; font-weight: 800; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 0.6rem; box-shadow: 0 8px 20px rgba(5, 150, 105, 0.25); }
+        .btn-submit:hover:not(:disabled) { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 12px 25px rgba(5, 150, 105, 0.35); }
+        .btn-submit:disabled { background: #cbd5e1; cursor: not-allowed; box-shadow: none; }
+
+        .rate-limit-badge { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; padding: 0.8rem 1rem; border-radius: 12px; font-size: 0.85rem; font-weight: 600; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem; }
+
+        #result-box { margin-top: 2rem; padding: 1.5rem; border-radius: 14px; display: none; }
+        .result-success { background: #f0fdf4; border: 1.5px solid #86efac; color: #166534; }
+        .result-error { background: #fef2f2; border: 1.5px solid #fecaca; color: #991b1b; }
+        .result-stats { display: flex; justify-content: space-around; margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed rgba(0,0,0,0.1); font-weight: 700; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-paper-plane"></i> پنل ارسال پیام همگانی</h1>
+            <p>ارسال پیام به تمام مخاطبان ثبت‌شده در شیت بله (طبیعتی سبز گستر)</p>
+        </div>
+
+        <div class="rate-limit-badge">
+            <i class="fas fa-shield-alt"></i>
+            <span>سیستم کنترل سرعت فعال است (ارسال حداکثر ۳ پیام در ثانیه جهت تضمین عدم مسدودی).</span>
+        </div>
+
+        <form id="broadcastForm" onsubmit="sendBroadcast(event)">
+            
+            <div class="form-group">
+                <label><i class="fas fa-lock"></i> رمز عبور مدیریت:</label>
+                <input type="password" id="admin_pass" class="form-control" placeholder="رمز عبور مدیریتی را وارد کنید" required>
+            </div>
+
+            <div class="form-group">
+                <label><i class="fas fa-comment-dots"></i> متن پیام همگانی:</label>
+                <textarea id="msg_text" class="form-control" placeholder="متن پیام خود را اینجا بنویسید..." required></textarea>
+            </div>
+
+            <div class="grid-2">
+                <div class="form-group">
+                    <label><i class="fas fa-link"></i> متن دکمه شیشه‌ای (اختیاری):</label>
+                    <input type="text" id="btn_text" class="form-control" placeholder="مثال: ورود به فروشگاه">
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-globe"></i> لینک دکمه (اختیاری):</label>
+                    <input type="url" id="btn_url" class="form-control" placeholder="https://tabiati.ir">
+                </div>
+            </div>
+
+            <button type="submit" class="btn-submit" id="btnSubmit">
+                <i class="fas fa-bullhorn"></i> شروع ارسال پیام همگانی
+            </button>
+        </form>
+
+        <div id="result-box"></div>
+    </div>
+
+    <script>
+        // آدرس Web App مربوط به اسکریپت BroadcastCode.gs را اینجا قرار دهید:
+        const BROADCAST_GAS_URL = "https://script.google.com/macros/s/AKfycbxOVUofi_i1meWHUB_enpiUraNYrYdbONBB8-jpq_7TgOU9XvIc3nvD9fr9xST6iNXY/exec";
+
+        async function sendBroadcast(e) {
+            e.preventDefault();
+
+            if (BROADCAST_GAS_URL.includes("لینک_اسکریپت")) {
+                alert("لطفاً ابتدا آدرس Web App اسکریپت ارسال همگانی را در کدهای HTML قرار دهید.");
+                return;
+            }
+
+            const pass = document.getElementById('admin_pass').value.trim();
+            const text = document.getElementById('msg_text').value.trim();
+            const btnText = document.getElementById('btn_text').value.trim();
+            const btnUrl = document.getElementById('btn_url').value.trim();
+
+            const btnSubmit = document.getElementById('btnSubmit');
+            const resultBox = document.getElementById('result-box');
+
+            if (!confirm("آیا از ارسال این پیام برای تمام مخاطبان ذخیره‌شده در شیت بله اطمینان دارید؟")) {
+                return;
+            }
+
+            btnSubmit.disabled = true;
+            btnSubmit.innerHTML = '<i class="fas fa-spinner fa-spin"></i> در حال ارسال آرام پیام‌ها (لطفاً منتظر بمانید)...';
+            resultBox.style.display = 'none';
+
+            const payload = {
+                password: pass,
+                message: text,
+                button_text: btnText,
+                button_url: btnUrl
+            };
+
+            try {
+                const response = await fetch(BROADCAST_GAS_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(payload)
+                });
+                const data = await response.json();
+
+                if (data.status === 'success') {
+                    resultBox.className = 'result-success';
+                    resultBox.innerHTML = `
+                        <h4><i class="fas fa-check-circle"></i> ${data.message}</h4>
+                        <div class="result-stats">
+                            <span>کل مخاطبان: ${data.total}</span>
+                            <span>ارسال موفق: ${data.sent} ✅</span>
+                            <span>ناموفق / مسدود: ${data.failed} ❌</span>
+                        </div>
+                    `;
+                    document.getElementById('msg_text').value = '';
+                } else {
+                    resultBox.className = 'result-error';
+                    resultBox.innerHTML = `<h4><i class="fas fa-times-circle"></i> خطا: ${data.message}</h4>`;
+                }
+            } catch (err) {
+                resultBox.className = 'result-error';
+                resultBox.innerHTML = `<h4><i class="fas fa-times-circle"></i> خطای شبکه یا تایم‌اوت ارتباط با سرور</h4>`;
+            }
+
+            resultBox.style.display = 'block';
+            btnSubmit.disabled = false;
+            btnSubmit.innerHTML = '<i class="fas fa-bullhorn"></i> شروع ارسال پیام همگانی';
+        }
+    </script>
+</body>
+</html>
