@@ -20,7 +20,7 @@
     }
     .card {
       background: #ffffff;
-      max-width: 500px;
+      max-width: 520px;
       width: 100%;
       border-radius: 16px;
       padding: 25px;
@@ -82,16 +82,17 @@
     }
     #statusBox {
       margin-top: 15px;
-      padding: 12px;
+      padding: 14px;
       border-radius: 8px;
       display: none;
-      font-size: 0.9rem;
-      text-align: center;
-      line-height: 1.5;
+      font-size: 0.92rem;
+      line-height: 1.6;
+      white-space: pre-line;
+      text-align: right;
     }
     .success {
       background-color: #e8f5e9;
-      color: #2e7d32;
+      color: #1b5e20;
       border: 1px solid #c8e6c9;
     }
     .error {
@@ -103,13 +104,14 @@
       background-color: #e3f2fd;
       color: #1565c0;
       border: 1px solid #bbdefb;
+      text-align: center;
     }
   </style>
 </head>
 <body>
 
 <div class="card">
-  <h2>🌿 پنل ارسال پیام همگانی ربات روبیکا</h2>
+  <h2>🌿 پنل مدیریت و ارسال پیام همگانی روبیکا</h2>
   
   <form id="broadcastForm">
     <div class="form-group">
@@ -129,7 +131,7 @@
 </div>
 
 <script>
-  // آدرس جدید اسکریپت شما
+  // آدرس اسکریپت فعال شما (بدون تغییر)
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyhq7bBvO3Mzmzue10iIy-hMu9kx-EyeHpxUDNiwCABjepT196-63Wq4g7eOv6Y9zC1/exec';
 
   const form = document.getElementById('broadcastForm');
@@ -142,13 +144,13 @@
     const password = document.getElementById('password').value.trim();
     const message = document.getElementById('message').value.trim();
 
-    if (!confirm('آیا از ارسال این پیام به تمام کاربران شیت اطمینان دارید؟')) {
+    if (!confirm('آیا از ارسال این پیام به کاربران شیت اطمینان دارید؟')) {
       return;
     }
 
     submitBtn.disabled = true;
     submitBtn.innerText = 'در حال ارسال پیام‌ها... لطفاً صبور باشید';
-    showStatus('در حال ارسال پیام‌ها با سرعت ایمن (۴ پیام در ثانیه)...', 'loading');
+    showStatus('در حال ارسال پیام‌ها به کاربران فعال با سرعت ۴ پیام در ثانیه...', 'loading');
 
     try {
       const response = await fetch(SCRIPT_URL, {
@@ -164,7 +166,7 @@
       const resData = await response.json();
 
       if (resData.status === 'success') {
-        showStatus('✅ ' + resData.message, 'success');
+        showStatus(resData.message, 'success');
         document.getElementById('message').value = '';
       } else {
         showStatus('❌ خطا: ' + resData.message, 'error');
