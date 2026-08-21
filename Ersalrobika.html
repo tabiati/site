@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>پنل ارسال پیام همگانی - طبیعتی سبز گستر</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Tahoma, 'Segoe UI', Arial, sans-serif;
+    }
+    body {
+      background-color: #f0f4f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 15px;
+    }
+    .card {
+      background: #ffffff;
+      max-width: 500px;
+      width: 100%;
+      border-radius: 16px;
+      padding: 25px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      border-top: 6px solid #2e7d32;
+    }
+    h2 {
+      margin-top: 0;
+      color: #1b5e20;
+      font-size: 1.3rem;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .form-group {
+      margin-bottom: 18px;
+    }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+      font-size: 0.88rem;
+      color: #333;
+    }
+    input[type="password"], textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1.5px solid #cfd8dc;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      transition: border 0.3s;
+      outline: none;
+    }
+    input[type="password"]:focus, textarea:focus {
+      border-color: #2e7d32;
+    }
+    textarea {
+      resize: vertical;
+      min-height: 140px;
+      line-height: 1.6;
+    }
+    .btn {
+      width: 100%;
+      background: #2e7d32;
+      color: #fff;
+      border: none;
+      padding: 14px;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .btn:hover {
+      background: #1b5e20;
+    }
+    .btn:disabled {
+      background: #9e9e9e;
+      cursor: not-allowed;
+    }
+    #statusBox {
+      margin-top: 15px;
+      padding: 12px;
+      border-radius: 8px;
+      display: none;
+      font-size: 0.9rem;
+      text-align: center;
+      line-height: 1.5;
+    }
+    .success {
+      background-color: #e8f5e9;
+      color: #2e7d32;
+      border: 1px solid #c8e6c9;
+    }
+    .error {
+      background-color: #ffebee;
+      color: #c62828;
+      border: 1px solid #ffcdd2;
+    }
+    .loading {
+      background-color: #e3f2fd;
+      color: #1565c0;
+      border: 1px solid #bbdefb;
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <h2>🌿 پنل ارسال پیام همگانی ربات روبیکا</h2>
+  
+  <form id="broadcastForm">
+    <div class="form-group">
+      <label for="password">🔑 رمز عبور مدیریت:</label>
+      <input type="password" id="password" placeholder="رمز عبور مدیریت را وارد کنید" required>
+    </div>
+
+    <div class="form-group">
+      <label for="message">✍️ متن پیام ارسالی:</label>
+      <textarea id="message" placeholder="متن پیام خود را اینجا بنویسید..." required></textarea>
+    </div>
+
+    <button type="submit" id="submitBtn" class="btn">🚀 ارسال پیام به تمام کاربران</button>
+  </form>
+
+  <div id="statusBox"></div>
+</div>
+
+<script>
+  // آدرس جدید اسکریپت شما
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyhq7bBvO3Mzmzue10iIy-hMu9kx-EyeHpxUDNiwCABjepT196-63Wq4g7eOv6Y9zC1/exec';
+
+  const form = document.getElementById('broadcastForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const statusBox = document.getElementById('statusBox');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const password = document.getElementById('password').value.trim();
+    const message = document.getElementById('message').value.trim();
+
+    if (!confirm('آیا از ارسال این پیام به تمام کاربران شیت اطمینان دارید؟')) {
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.innerText = 'در حال ارسال پیام‌ها... لطفاً صبور باشید';
+    showStatus('در حال ارسال پیام‌ها با سرعت ایمن (۴ پیام در ثانیه)...', 'loading');
+
+    try {
+      const response = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({
+          action: 'admin_broadcast',
+          password: password,
+          message: message
+        })
+      });
+
+      const resData = await response.json();
+
+      if (resData.status === 'success') {
+        showStatus('✅ ' + resData.message, 'success');
+        document.getElementById('message').value = '';
+      } else {
+        showStatus('❌ خطا: ' + resData.message, 'error');
+      }
+    } catch (err) {
+      showStatus('❌ خطا در برقراری ارتباط با سرور!', 'error');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.innerText = '🚀 ارسال پیام به تمام کاربران';
+    }
+  });
+
+  function showStatus(text, type) {
+    statusBox.innerText = text;
+    statusBox.className = type;
+    statusBox.style.display = 'block';
+  }
+</script>
+
+</body>
+</html>
